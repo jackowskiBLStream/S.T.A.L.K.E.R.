@@ -1,0 +1,31 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image"
+    android:scaleType="matrix"
+    android:id="@+id/loginLayout">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_thanks"
+            android:id="@+id/button2"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:background="@drawable/no_thanks_buttonselector"
+            android:shadowRadius="5"/>
+    </LinearLayout>
+</FrameLayout>
