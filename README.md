@@ -1,1 +1,2 @@
+![alt tag](http://i.imgur.com/DXRtLaa.jpg)
 # S.T.A.L.K.E.R.
