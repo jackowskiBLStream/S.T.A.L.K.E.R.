@@ -1,6 +1,5 @@
 package com.blstream.stalker;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -15,14 +14,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
@@ -42,12 +38,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
     private static final int PROFILE_PIC_SIZE = 400;
     SignInButton signInButton;
     Button signOutButton;
-    Button disconnectButton;
+    //    Button disconnectButton;
     private boolean mIntentInProgress;
-    private boolean mSignInClicked;
+    private boolean signedInUser;
     private ConnectionResult mConnectionResult;
     private GoogleApiClient mGoogleApiClient;
-    private ProgressDialog mProgressDialog;
     private ImageView imgProfilePic;
     private TextView txtName, txtEmail;
     private LinearLayout llProfileLayout;
@@ -67,11 +62,11 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
         mStatusTextView = (TextView) findViewById(R.id.status);
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signOutButton = (Button) findViewById(R.id.sign_out_button);
-        disconnectButton = (Button) findViewById(R.id.disconnect_button);
+//        disconnectButton = (Button) findViewById(R.id.disconnect_button);
         // Button listeners
         signInButton.setOnClickListener(this);
         signOutButton.setOnClickListener(this);
-        disconnectButton.setOnClickListener(this);
+//        disconnectButton.setOnClickListener(this);
 
         // Initializing google plus api client
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -82,13 +77,13 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
 
     }
 
-    protected void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         mGoogleApiClient.connect();
     }
 
-    protected void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
@@ -98,25 +93,27 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
      * Sign-in into google
      */
     private void signIn() {
-        if (!mGoogleApiClient.isConnecting()) {
-            mSignInClicked = true;
-            resolveSignInError();
-        }
+//        if (!mGoogleApiClient.isConnecting()) {
+//            signedInUser = true;
+//            resolveSignInError();
+//        }
+        googlePlusLogin();
     }
 
     /**
      * Method to resolve any signin errors
      */
     private void resolveSignInError() {
-        if (mConnectionResult.hasResolution()) {
             try {
-                mIntentInProgress = true;
-                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
+                boolean resolution = mConnectionResult.hasResolution();
+                if(resolution) {
+                    mIntentInProgress = true;
+                    mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                }
+            } catch (IntentSender.SendIntentException | NullPointerException e) {
                 mIntentInProgress = false;
                 mGoogleApiClient.connect();
             }
-        }
     }
 
     @Override
@@ -129,9 +126,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
             case R.id.sign_out_button:
                 signOut();
                 break;
-            case R.id.disconnect_button:
-                revokeAccess();
-                break;
+//            case R.id.disconnect_button:
+////                revokeAccess();
+//                break;
         }
     }
 
@@ -147,7 +144,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
             // Store the ConnectionResult for later usage
             mConnectionResult = result;
 
-            if (mSignInClicked) {
+            if (signedInUser) {
                 // The user has already clicked 'sign-in' so we attempt to
                 // resolve all
                 // errors until the user is signed in, or they cancel.
@@ -157,15 +154,12 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int responseCode,
-                                    Intent intent) {
+    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == RC_SIGN_IN) {
-            if (responseCode != RESULT_OK) {
-                mSignInClicked = false;
+            if (responseCode == RESULT_OK) {
+                signedInUser = false;
             }
-
             mIntentInProgress = false;
-
             if (!mGoogleApiClient.isConnecting()) {
                 mGoogleApiClient.connect();
             }
@@ -174,15 +168,12 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
 
     @Override
     public void onConnected(Bundle arg0) {
-        mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-
+        signedInUser = false;
+//        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
         // Get user's information
         getProfileInformation();
-
         // Update the UI after signin
         updateUI(true);
-
     }
 
     @Override
@@ -198,12 +189,12 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
         if (isSignedIn) {
             signInButton.setVisibility(View.GONE);
             signOutButton.setVisibility(View.VISIBLE);
-            disconnectButton.setVisibility(View.VISIBLE);
+//            disconnectButton.setVisibility(View.VISIBLE);
             llProfileLayout.setVisibility(View.VISIBLE);
         } else {
             signInButton.setVisibility(View.VISIBLE);
             signOutButton.setVisibility(View.GONE);
-            disconnectButton.setVisibility(View.GONE);
+//            disconnectButton.setVisibility(View.GONE);
             llProfileLayout.setVisibility(View.GONE);
         }
     }
@@ -212,6 +203,7 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
      * Fetching user's information name, email, profile pic
      */
     private void getProfileInformation() {
+//        Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
         try {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                 Person currentPerson = Plus.PeopleApi
@@ -221,9 +213,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
                 String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-                Log.e(TAG, "Name: " + personName + ", plusProfile: "
-                        + personGooglePlusProfile + ", email: " + email
-                        + ", Image: " + personPhotoUrl);
+//                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+//                        + personGooglePlusProfile + ", email: " + email
+//                        + ", Image: " + personPhotoUrl);
 
                 txtName.setText(personName);
                 txtEmail.setText(email);
@@ -237,41 +229,61 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
 
                 new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
 
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "Person information is null", Toast.LENGTH_LONG).show();
             }
+//            else {
+//                Toast.makeText(getApplicationContext(),
+//                        "Person information is null", Toast.LENGTH_SHORT).show();
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void signOut() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-            updateUI(false);
+        googlePlusLogout();
+//        if (mGoogleApiClient.isConnected()) {
+//            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+//            mGoogleApiClient.disconnect();
+//            mGoogleApiClient.connect();
+//            updateUI(false);
+//        }
+    }
+
+
+//    /**
+//     * Revoking access from google
+//     */
+//    private void revokeAccess() {
+//        if (mGoogleApiClient.isConnected()) {
+//            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+//            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
+//                    .setResultCallback(new ResultCallback<Status>() {
+//                        @Override
+//                        public void onResult(Status arg0) {
+//                            Log.e(TAG, "User access revoked!");
+//                            mStatusTextView.setText(arg0.toString());
+//                            mGoogleApiClient.connect();
+//                            updateUI(false);
+//                        }
+//
+//                    });
+//        }
+//    }
+
+    private void googlePlusLogin() {
+        if (!mGoogleApiClient.isConnecting()) {
+            signedInUser = true;
+            resolveSignInError();
         }
     }
 
-    /**
-     * Revoking access from google
-     */
-    private void revokeAccess() {
+    private void googlePlusLogout() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-                    .setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status arg0) {
-                            Log.e(TAG, "User access revoked!");
-                            mStatusTextView.setText(arg0.toString());
-                            mGoogleApiClient.connect();
-                            updateUI(false);
-                        }
-
-                    });
+            mGoogleApiClient.disconnect();
+//            mGoogleApiClient.connect();
+            updateUI(false);
+//            Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
         }
     }
 
