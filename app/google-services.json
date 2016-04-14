@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "stalker-16258",
+    "project_number": "675325928646",
+    "name": "STALKER"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675325928646:android:ad7b0edf1e00611f",
+        "client_id": "android:com.blstream.stalker",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.blstream.stalker",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675325928646-0mc0o0ef9qggvl18gl4ido1kgri673qm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blstream.stalker",
+            "certificate_hash": "18185912E9BE9528ABE9A168C7D16710B5DB2F7D"
+          }
+        },
+        {
+          "client_id": "675325928646-ulnbdl2slr7v47epbjpv03cqm5c9b41h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

@@ -1,30 +1,28 @@
 package com.blstream.stalker.view.fragments;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.blstream.stalker.R;
+import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
 import com.blstream.stalker.view.interfaces.IPlaceListFragment;
 
+import java.util.List;
+
 public class PlaceListFragment extends AbstractErrorClass implements IPlaceListFragment {
-
-
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
+    }
     @Override
-    public void uploadList() {
+    public void uploadList(List<PlaceData> placeDataList){
 
     }
     @Override
