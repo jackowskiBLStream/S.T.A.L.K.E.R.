@@ -6,4 +6,5 @@
     <dimen name="errorTextSize">15sp</dimen>
     <dimen name="cardCornerRadiusValue">15dp</dimen>
     <dimen name="cardEvlevationValue">3dp</dimen>
+    <dimen name="paddingLeftOfTextViewsInList">10dp</dimen>
 </resources>

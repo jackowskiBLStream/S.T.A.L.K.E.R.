@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/CardView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     card_view:cardBackgroundColor="#FEFEFE"
     card_view:cardCornerRadius="@dimen/cardCornerRadiusValue"
@@ -30,35 +30,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Title"
-            android:id="@+id/titleTextView"
+            android:text="Name"
+            android:id="@+id/nameTextView"
             android:layout_alignTop="@+id/articleImage"
             android:layout_toRightOf="@+id/articleImage"
             android:layout_toEndOf="@+id/articleImage"
-            android:textSize="12sp"/>
+            android:textSize="28sp"
+            android:paddingLeft="@dimen/paddingLeftOfTextViewsInList"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="title"
-            android:id="@+id/descriptionTextView"
-            android:layout_below="@+id/titleTextView"
-            android:layout_alignLeft="@+id/titleTextView"
-            android:layout_alignStart="@+id/titleTextView"
-            android:textSize="12sp"/>
+            android:text="Tags"
+            android:id="@+id/tagsTextView"
+            android:textSize="12sp"
+            android:layout_below="@+id/todayOpenHoursTextView"
+            android:layout_toRightOf="@+id/articleImage"
+            android:layout_toEndOf="@+id/articleImage"
+            android:paddingLeft="@dimen/paddingLeftOfTextViewsInList"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="PUBDATE"
-            android:id="@+id/publicDateTextView"
+            android:text="TodayOpenHours"
+            android:id="@+id/todayOpenHoursTextView"
             android:layout_gravity="center_vertical"
-            android:textSize="12sp"
-            android:layout_below="@+id/descriptionTextView"
+            android:textSize="18sp"
+            android:layout_below="@+id/nameTextView"
             android:layout_toRightOf="@+id/articleImage"
-            android:layout_toEndOf="@+id/articleImage" />
+            android:layout_toEndOf="@+id/articleImage"
+            android:paddingLeft="@dimen/paddingLeftOfTextViewsInList"/>
 
     </RelativeLayout>
 

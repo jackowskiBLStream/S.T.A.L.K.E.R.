@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
@@ -18,7 +17,6 @@ import com.google.android.gms.common.SignInButton;
 public class LoginScreenFragment extends AbstractErrorClass implements ILoginFragment {
     SignInButton signInButton;
     Button noThanksButton;
-    ErrorMessageFragment errorFragment = new ErrorMessageFragment();
     LoginScreenController controller;
 
     /**
@@ -42,7 +40,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
      *
      * @param fragmentType type of Fragment {LIST_FRAGMENT,DETAIL_FRAGMENT,LOGIN_FRAGMENT}
      */
-
     @Override
     public void changeFragment(@FragmentType int fragmentType) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -64,7 +61,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         signInButton.setOnClickListener(new View.OnClickListener() {
             /**
              *{@inheritDoc}
-             *
              */
             @Override
             public void onClick(View v) {
@@ -83,7 +79,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
             }
         });
     }
-
     public void sentLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
         controller.sentLoginResultToController(requestCode, responseCode, RESULT_OK);
     }
