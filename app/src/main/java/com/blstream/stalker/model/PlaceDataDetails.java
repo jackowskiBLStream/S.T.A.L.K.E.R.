@@ -1,5 +1,8 @@
 package com.blstream.stalker.model;
 
+import com.blstream.stalker.model.interfaces.IOpenHours;
+import com.blstream.stalker.model.interfaces.IPlaceDataDetails;
+
 import java.util.Collection;
 
 /**
@@ -7,10 +10,10 @@ import java.util.Collection;
  * // Good Job Patryk
  */
 public class PlaceDataDetails implements IPlaceDataDetails {
-    IOpenHours[] openHours;
+    private IOpenHours[] openHours;
     //FIXME probably other type
-    int rating;
-    Collection reviews;
+    private int rating;
+    private Collection reviews;
 
     /**
      * @return open hours for all days in week

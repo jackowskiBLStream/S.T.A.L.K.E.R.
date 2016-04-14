@@ -1,6 +1,7 @@
-package com.blstream.stalker.controller;
+package com.blstream.stalker.controller.interfaces;
 
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceDataWithDetails;
 
 import java.util.List;
 
@@ -25,5 +26,6 @@ public interface IDatabaseController {
      * @param data to be set
      * @return true when successfully added, false when error occurred during adding
      */
-    boolean addPlacesToDB(List<PlaceData> data);
+    boolean addPlacesToDB(List<PlaceDataWithDetails> data);
+
 }
