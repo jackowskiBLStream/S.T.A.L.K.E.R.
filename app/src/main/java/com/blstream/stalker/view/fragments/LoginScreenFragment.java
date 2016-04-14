@@ -83,4 +83,9 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
             }
         });
     }
+
+    @Override
+    public void onConnected() {
+        changeFragment(LIST_FRAGMENT);
+    }
 }
