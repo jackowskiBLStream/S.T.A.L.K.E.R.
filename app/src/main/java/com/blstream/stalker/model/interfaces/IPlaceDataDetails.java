@@ -1,7 +1,5 @@
 package com.blstream.stalker.model.interfaces;
 
-import com.blstream.stalker.model.interfaces.IOpenHours;
-
 import java.util.Collection;
 
 /**
@@ -33,5 +31,5 @@ public interface IPlaceDataDetails {
      *
      * @return three last place reviews
      */
-    Collection getReviews();
+    Collection<IReviews> getReviews();
 }

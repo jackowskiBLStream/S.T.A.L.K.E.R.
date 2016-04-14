@@ -6,8 +6,6 @@ import android.location.Location;
 import com.blstream.stalker.model.interfaces.IOpenHours;
 import com.blstream.stalker.model.interfaces.IPlaceData;
 
-import java.util.List;
-
 /**
  * Stores all data about particular place
  */

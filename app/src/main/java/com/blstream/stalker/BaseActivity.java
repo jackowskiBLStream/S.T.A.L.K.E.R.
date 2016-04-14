@@ -20,7 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         loginScreenFragment = new LoginScreenFragment();
         PlaceListFragment listFragment = new PlaceListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.mainContainer, listFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.mainContainer, loginScreenFragment).commit();
     }
 
     @Override
