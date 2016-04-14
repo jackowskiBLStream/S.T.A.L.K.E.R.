@@ -1,12 +1,14 @@
 package com.blstream.stalker.view.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.blstream.stalker.R;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
@@ -42,4 +44,5 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
                 break;
         }
     }
+
 }

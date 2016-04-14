@@ -3,21 +3,22 @@ package com.blstream.stalker.controller;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
-import com.blstream.stalker.view.LoginScreenFragment;
+
+import com.blstream.stalker.view.fragments.LoginScreenFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
-public class LoginScreenController {
+public class LoginScreenController implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
 
-    private static final int RC_SIGN_IN = 0;
+    public static final int RC_SIGN_IN = 0;
     LoginScreenFragment fragment;
     private GoogleApiClient mGoogleApiClient;
     Context context;
@@ -33,21 +34,18 @@ public class LoginScreenController {
 
     private void initalizeGPApiClient() {
         // Initializing google plus api client
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) context)
-                .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) context).addApi(Plus.API)
+        mGoogleApiClient = new GoogleApiClient.Builder(context.getApplicationContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
     }
 
-    private void googlePlusLogin() {
-
+    public void googlePlusLogin() {
         if (!mGoogleApiClient.isConnecting()) {
             signedInUser = true;
             resolveSignInError();
         }
     }
-
-
     /**
      * Method to resolve any signin errors
      */
@@ -56,7 +54,9 @@ public class LoginScreenController {
             boolean resolution = mConnectionResult.hasResolution();
             if (resolution) {
                 mIntentInProgress = true;
-                mConnectionResult.startResolutionForResult((Activity) context, RC_SIGN_IN);
+                mConnectionResult.startResolutionForResult(fragment.getActivity(), RC_SIGN_IN);
+                Toast.makeText(context,"startResolutionForResult",Toast.LENGTH_SHORT).show();
+
             }
         } catch (IntentSender.SendIntentException | NullPointerException e) {
             mIntentInProgress = false;
@@ -86,34 +86,14 @@ public class LoginScreenController {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
-        if (requestCode == RC_SIGN_IN) {
-            if (responseCode == Activity.RESULT_OK) {
-                signedInUser = false;
-            }
-            mIntentInProgress = false;
-            if (!mGoogleApiClient.isConnecting()) {
-                mGoogleApiClient.connect();
-            }
-        }
+    public void onConnected(Bundle arg0) {
+        Toast.makeText(context,"OnConnected",Toast.LENGTH_SHORT).show();
+        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
     }
 
     @Override
-    public void onConnected(Bundle arg0) {
-// change Fragments
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(context,"OnConnectedSuspended",Toast.LENGTH_SHORT).show();
+
     }
-
-    public void onResume() {
-        super.onResume();
-        mGoogleApiClient.connect();
-    }
-
-    public void onPause() {
-        super.onPause();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-
 }
