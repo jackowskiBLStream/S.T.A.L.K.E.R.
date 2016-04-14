@@ -1,11 +1,11 @@
 package com.blstream.stalker.view.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.view.*;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.LoginScreenController;
@@ -65,7 +65,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
             @Override
             public void onClick(View v) {
 
-               controller.googlePlusLogin();
+                controller.googlePlusLogin();
             }
         });
         noThanksButton.setOnClickListener(new View.OnClickListener() {
@@ -79,12 +79,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
             }
         });
     }
-
-    /**
-     *{@inheritDoc}
-     */
-    @Override
-    public void onActivityResult(int requestCode, int responseCode, Intent intent) {
-
+    public void sentLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
+        controller.sentLoginResultToController(requestCode, responseCode, RESULT_OK);
     }
 }
