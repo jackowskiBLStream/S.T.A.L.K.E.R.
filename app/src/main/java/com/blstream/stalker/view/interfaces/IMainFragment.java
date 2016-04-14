@@ -25,5 +25,6 @@ public interface IMainFragment {
     int LIST_FRAGMENT = 3;
 
     void showError(@ErrorMode int errorMode);
+    void hideError();
     void changeFragment(@FragmentType int fragmentType);
 }
