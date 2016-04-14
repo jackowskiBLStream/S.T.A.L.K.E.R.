@@ -30,5 +30,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
+    }git 
 }
