@@ -1,10 +1,9 @@
 package com.blstream.stalker;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.blstream.stalker.view.LoginScreenFragment;
+import com.blstream.stalker.view.fragments.LoginScreenFragment;
 
 /**
  *
