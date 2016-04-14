@@ -15,19 +15,13 @@ import com.blstream.stalker.view.interfaces.IErrorMessageFragment;
 
 public class ErrorMessageFragment extends Fragment implements IErrorMessageFragment {
 
-    private LinearLayout errorLayout;
-    private TextView errorText;
-    private View view;
     private String message;
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.error_layout,container,false);
-        errorText = (TextView) view.findViewById(R.id.errorTextView);
+        View view = inflater.inflate(R.layout.error_layout, container, false);
+        TextView errorText = (TextView) view.findViewById(R.id.errorTextView);
         errorText.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         errorText.setText(message);
         return view;

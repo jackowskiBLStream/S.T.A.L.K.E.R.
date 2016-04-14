@@ -9,14 +9,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.blstream.stalker.R;
+import com.blstream.stalker.controller.PlaceListController;
+import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
 import com.blstream.stalker.view.interfaces.ILoginFragment;
 import com.google.android.gms.common.SignInButton;
 
 
-public class LoginScreenFragment extends Fragment implements ILoginFragment {
+public class LoginScreenFragment extends AbstractErrorClass implements ILoginFragment {
     SignInButton signInButton;
     Button noThanksButton;
     ErrorMessageFragment errorFragment = new ErrorMessageFragment();
+    PlaceListController controller;
 
     /**
      * {@inheritDoc}
@@ -28,47 +31,10 @@ public class LoginScreenFragment extends Fragment implements ILoginFragment {
         View view = inflater.inflate(R.layout.login_screen_layout, container, false);
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
+        controller = new PlaceListController(this);
 
         customizeButtons();
         return view;
-    }
-
-    /**
-     * Shows specific error
-     *
-     * @param errorMode choose one of {NO_GPS_CONNECTION_ERROR,NO_INTERNET_CONNECTION_ERROR,NO_INTERNET_AND_GPS_CONNECTION_ERROR}
-     */
-    @Override
-    public void showError(@ErrorMode int errorMode) {
-        switch (errorMode) {
-            case NO_GPS_CONNECTION_ERROR: {
-                errorFragment.setErrorMessage(getString(NO_GPS_CONNECTION_ERROR));
-                break;
-            }
-            case NO_INTERNET_CONNECTION_ERROR: {
-                errorFragment.setErrorMessage(getString(NO_INTERNET_CONNECTION_ERROR));
-                break;
-            }
-            case NO_INTERNET_AND_GPS_CONNECTION_ERROR: {
-                errorFragment.setErrorMessage(getString(NO_INTERNET_AND_GPS_CONNECTION_ERROR));
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.mainContainer, errorFragment).commit();
-    }
-
-    /**
-     * method hide showed error message.
-     */
-    @Override
-    public void hideError() {
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().remove(errorFragment).commit();
-
     }
 
     /**
@@ -102,7 +68,8 @@ public class LoginScreenFragment extends Fragment implements ILoginFragment {
              */
             @Override
             public void onClick(View v) {
-                hideError();
+
+               controller.doSomething();
             }
         });
         noThanksButton.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +79,7 @@ public class LoginScreenFragment extends Fragment implements ILoginFragment {
              */
             @Override
             public void onClick(View v) {
-                showError(NO_INTERNET_AND_GPS_CONNECTION_ERROR);
+                hideError();
             }
         });
     }
