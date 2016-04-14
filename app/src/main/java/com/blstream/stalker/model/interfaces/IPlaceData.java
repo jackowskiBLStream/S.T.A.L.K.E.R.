@@ -6,14 +6,14 @@ import android.location.Location;
 import java.util.List;
 
 /**
- * Stores single place informations
+ * Stores single place information
  */
 public interface IPlaceData {
     /**
      *
      * @return place icon
      */
-    Bitmap getIcon();
+    String getIcon();
 
     /**
      *
