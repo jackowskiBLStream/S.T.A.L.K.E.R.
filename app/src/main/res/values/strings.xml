@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">S.T.A.L.K.E.R.</string>
+
     <string name="title_text">Google Sign-In\nQuickstart</string>
 
     <string name="signed_in_fmt">Signed in as: %s</string>
@@ -24,4 +25,9 @@
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>
 
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_gps_connection">No GPS connection</string>
+    <string name="no_gps_and_internet_connection_error">No Internet and Gps connection</string>
+    <string name="login_with_google">Login with google</string>
+    <string name="no_thanks">No Thanks</string>
 </resources>

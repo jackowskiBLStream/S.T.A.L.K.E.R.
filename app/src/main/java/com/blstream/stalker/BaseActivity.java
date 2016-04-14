@@ -24,10 +24,15 @@ import com.google.android.gms.plus.model.people.Person;
 
 import java.io.InputStream;
 
+
+import com.blstream.stalker.view.LoginScreenFragment;
+
+
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
  * profile.
  */
+
 public class BaseActivity extends AppCompatActivity implements OnClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -104,16 +109,16 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
      * Method to resolve any signin errors
      */
     private void resolveSignInError() {
-            try {
-                boolean resolution = mConnectionResult.hasResolution();
-                if(resolution) {
-                    mIntentInProgress = true;
-                    mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-                }
-            } catch (IntentSender.SendIntentException | NullPointerException e) {
-                mIntentInProgress = false;
-                mGoogleApiClient.connect();
+        try {
+            boolean resolution = mConnectionResult.hasResolution();
+            if (resolution) {
+                mIntentInProgress = true;
+                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
             }
+        } catch (IntentSender.SendIntentException | NullPointerException e) {
+            mIntentInProgress = false;
+            mGoogleApiClient.connect();
+        }
     }
 
     @Override
@@ -279,8 +284,9 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
 
     private void googlePlusLogout() {
         if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
+//            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.clearDefaultAccountAndReconnect();
+//            mGoogleApiClient.disconnect();
 //            mGoogleApiClient.connect();
             updateUI(false);
 //            Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
@@ -315,3 +321,13 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener,
         }
     }
 }
+
+//    public abstract class BaseActivity extends AppCompatActivity {
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        LoginScreenFragment loginScreenFragment = new LoginScreenFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.mainContainer,loginScreenFragment).commit();
+//    }
+//}
