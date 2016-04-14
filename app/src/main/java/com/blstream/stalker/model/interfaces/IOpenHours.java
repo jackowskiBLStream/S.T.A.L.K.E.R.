@@ -1,4 +1,4 @@
-package com.blstream.stalker.model;
+package com.blstream.stalker.model.interfaces;
 
 /**
  * Used for store open and closed Time of Place

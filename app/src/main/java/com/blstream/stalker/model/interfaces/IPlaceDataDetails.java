@@ -1,4 +1,6 @@
-package com.blstream.stalker.model;
+package com.blstream.stalker.model.interfaces;
+
+import com.blstream.stalker.model.interfaces.IOpenHours;
 
 import java.util.Collection;
 
