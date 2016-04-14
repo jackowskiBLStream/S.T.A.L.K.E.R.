@@ -1,4 +1,4 @@
-package com.blstream.stalker.controller;
+package com.blstream.stalker.controller.location;
 
 import android.content.Context;
 import android.location.Location;
@@ -18,7 +18,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 /**
- * //TODO: http://developer.android.com/training/location/receive-location-updates.html
+ * //TODO: Google Places
  */
 public class LocationController implements ILocationController,
         OnConnectionFailedListener, ConnectionCallbacks, LocationListener {
@@ -28,18 +28,28 @@ public class LocationController implements ILocationController,
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private LocationRequest locationRequest;
+    private Location currentLocation;
 
     public LocationController(Context context) {
         this.context = context;
-        createLocationRequest();
+    }
 
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
 
+    /**
+     * @return true - if GoogleApiClient is connected, false - if not
+     */
+    public boolean getGoogleApiState(){
+        return googleApiClient.isConnected();
     }
 
     public void createLocationRequest() {
+        //TODO: Interval depends on activity method(running, cycling etc)
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(5000); //Interval depends on activity method(running, cycling etc)
-        locationRequest.setFastestInterval(500);//TODO: Read more 'bout it
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(500);//works when location has been found earlier
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
@@ -69,8 +79,8 @@ public class LocationController implements ILocationController,
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         //TODO: Check if sth is not null)
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                googleApiClient, locationRequest, this);
+        startLocationUpdates();
+        Log.d(TAG, "onConnected: ");
 
 
     }
@@ -87,6 +97,17 @@ public class LocationController implements ILocationController,
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d(TAG, "onLocationChanged: Running");
+        Log.d(TAG, "onLocationChanged: ");
+        currentLocation = location;
+    }
+
+    public void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                googleApiClient, locationRequest, this);
+    }
+
+    public void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                googleApiClient, this);
     }
 }

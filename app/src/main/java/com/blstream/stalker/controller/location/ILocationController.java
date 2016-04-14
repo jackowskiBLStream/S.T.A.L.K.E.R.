@@ -1,4 +1,4 @@
-package com.blstream.stalker.controller;
+package com.blstream.stalker.controller.location;
 
 /**
  *
