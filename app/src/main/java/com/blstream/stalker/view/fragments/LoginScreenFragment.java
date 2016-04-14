@@ -2,14 +2,13 @@ package com.blstream.stalker.view.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.*;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-
 import com.blstream.stalker.R;
-import com.blstream.stalker.controller.PlaceListController;
+import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
 import com.blstream.stalker.view.interfaces.ILoginFragment;
 import com.google.android.gms.common.SignInButton;
@@ -18,8 +17,7 @@ import com.google.android.gms.common.SignInButton;
 public class LoginScreenFragment extends AbstractErrorClass implements ILoginFragment {
     SignInButton signInButton;
     Button noThanksButton;
-    ErrorMessageFragment errorFragment = new ErrorMessageFragment();
-    PlaceListController controller;
+    LoginScreenController controller;
 
     /**
      * {@inheritDoc}
@@ -31,7 +29,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         View view = inflater.inflate(R.layout.login_screen_layout, container, false);
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
-        controller = new PlaceListController(this);
+        controller = new LoginScreenController(this);
 
         customizeButtons();
         return view;
@@ -42,7 +40,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
      *
      * @param fragmentType type of Fragment {LIST_FRAGMENT,DETAIL_FRAGMENT,LOGIN_FRAGMENT}
      */
-
     @Override
     public void changeFragment(@FragmentType int fragmentType) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -64,12 +61,11 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         signInButton.setOnClickListener(new View.OnClickListener() {
             /**
              *{@inheritDoc}
-             *
              */
             @Override
             public void onClick(View v) {
 
-               controller.doSomething();
+                controller.googlePlusLogin();
             }
         });
         noThanksButton.setOnClickListener(new View.OnClickListener() {
@@ -82,5 +78,8 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
                 hideError();
             }
         });
+    }
+    public void sentLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
+        controller.sentLoginResultToController(requestCode, responseCode, RESULT_OK);
     }
 }
