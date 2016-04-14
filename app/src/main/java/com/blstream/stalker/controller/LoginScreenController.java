@@ -24,7 +24,7 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
     private boolean mIntentInProgress;
     private ConnectionResult mConnectionResult;
 
-    private LoginScreenController(Fragment fragment) {
+    public LoginScreenController(Fragment fragment) {
         this.fragment = (LoginScreenFragment) fragment;
         activity = fragment.getActivity();
         initializeGPApiClient();
@@ -35,6 +35,11 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
             signedInUser = true;
             resolveSignInError();
         }
+    }
+
+    public void runWithoutLogin() {
+        signedInUser = true;
+        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
     }
 
     public void sentLoginResultToController(int requestCode, int responseCode, final int RESULT_OK) {
@@ -77,26 +82,32 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-        boolean resolution = mConnectionResult.hasResolution();
-        if (!resolution) {
-            GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-            int code = googleApiAvailability.isGooglePlayServicesAvailable(activity);
-            if (googleApiAvailability.isUserResolvableError(code)) {
-                googleApiAvailability.getErrorDialog(activity, code, RC_SIGN_IN).show();
+        try {
+            boolean resolution = mConnectionResult.hasResolution();
+            if (!resolution) {
+                GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+                int code = googleApiAvailability.isGooglePlayServicesAvailable(activity);
+                if (googleApiAvailability.isUserResolvableError(code)) {
+                    googleApiAvailability.getErrorDialog(activity, code, RC_SIGN_IN).show();
+                }
+                return;
             }
-            return;
+
+            if (!mIntentInProgress) {
+                // Store the ConnectionResult for later usage
+                mConnectionResult = result;
+
+                if (signedInUser) {
+                    // The user has already clicked 'sign-in' so we attempt to
+                    // resolve all
+                    // errors until the user is signed in, or they cancel.
+                    resolveSignInError();
+                }
+            }
         }
-
-        if (!mIntentInProgress) {
-            // Store the ConnectionResult for later usage
-            mConnectionResult = result;
-
-            if (signedInUser) {
-                // The user has already clicked 'sign-in' so we attempt to
-                // resolve all
-                // errors until the user is signed in, or they cancel.
-                resolveSignInError();
-            }
+        catch (NullPointerException e) {
+            mIntentInProgress = false;
+            mGoogleApiClient.connect();
         }
     }
 
