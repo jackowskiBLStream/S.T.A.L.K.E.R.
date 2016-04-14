@@ -25,7 +25,7 @@ import com.google.android.gms.plus.model.people.Person;
 import java.io.InputStream;
 
 
-import com.blstream.stalker.view.LoginScreenFragment;
+import com.blstream.stalker.view.fragments.LoginScreenFragment;
 
 
 /**

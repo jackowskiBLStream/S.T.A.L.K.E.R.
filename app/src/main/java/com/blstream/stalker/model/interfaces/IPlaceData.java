@@ -1,4 +1,4 @@
-package com.blstream.stalker.model;
+package com.blstream.stalker.model.interfaces;
 
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -25,14 +25,13 @@ public interface IPlaceData {
      *
      * @return list of place types
      */
-    List<String> getTypes();
+    String getTypes();
 
     /**
      *
-     * @param day day number 0 - monday ... 6 - sunday
      * @return hours when place is opened at day specified
      */
-    IOpenHours getOpenHours(int day);
+    IOpenHours getTodayOpenHours();
 
     /**
      *
@@ -45,11 +44,6 @@ public interface IPlaceData {
      * @param location location to which distance will be calculated
      * @return distance to location specified in param
      */
-    double getDistanceFromLocation(Location location);
+    float getDistanceFromLocation(Location location);
 
-    /**
-     *
-     * @return details about place
-     */
-    IPlaceDataDetails getDetails();
 }

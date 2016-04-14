@@ -2,7 +2,9 @@ package com.blstream.stalker.model;
 
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.media.Image;
+
+import com.blstream.stalker.model.interfaces.IOpenHours;
+import com.blstream.stalker.model.interfaces.IPlaceData;
 
 import java.util.List;
 
@@ -11,11 +13,11 @@ import java.util.List;
  */
 public class PlaceData implements IPlaceData {
 
-    Bitmap icon;
-    String name;
-    List<String> types;
-    Location location;
-    IPlaceDataDetails details;
+    private Bitmap icon;
+    private String name;
+    private String types;
+    private Location location;
+    private IOpenHours todayOpenHours;
 
     /**
      * @return place icon
@@ -37,17 +39,16 @@ public class PlaceData implements IPlaceData {
      * @return list of place types
      */
     @Override
-    public List<String> getTypes() {
+    public String getTypes() {
         return types;
     }
 
     /**
-     * @param day day number 0 - monday ... 6 - sunday
      * @return hours when place is opened at day specified
      */
     @Override
-    public IOpenHours getOpenHours(int day) {
-        return details.getOpenHours(day);
+    public IOpenHours getTodayOpenHours() {
+        return todayOpenHours;
     }
 
     /**
@@ -63,16 +64,9 @@ public class PlaceData implements IPlaceData {
      * @return distance to location specified in param
      */
     @Override
-    public double getDistanceFromLocation(Location location) {
-        //TODO implement this!
-        return 0;
+    public float getDistanceFromLocation(Location location) {
+        return this.location.distanceTo(location);
     }
 
-    /**
-     * @return details about place
-     */
-    @Override
-    public IPlaceDataDetails getDetails() {
-        return details;
-    }
+
 }
