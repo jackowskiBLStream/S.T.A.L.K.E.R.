@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.blstream.stalker.view.fragments.LoginScreenFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
@@ -48,23 +47,6 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
         }
     }
 
-    public void runWithoutLogin() {
-        signedInUser = true;
-        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
-    }
-
-    public void sentLoginResultToController(int requestCode, int responseCode, final int RESULT_OK) {
-        if (requestCode == RC_SIGN_IN) {
-            if (responseCode == RESULT_OK) {
-                signedInUser = false;
-            }
-            mIntentInProgress = false;
-            if (!mGoogleApiClient.isConnecting()) {
-                mGoogleApiClient.connect();
-            }
-        }
-    }
-
     /**
      * Method to resolve any signin errors
      */
@@ -85,37 +67,23 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-//        try {
-//            boolean resolution = mConnectionResult.hasResolution();
-//            if (!resolution) {
-//                GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-//                int code = googleApiAvailability.isGooglePlayServicesAvailable(activity);
-//                if (googleApiAvailability.isUserResolvableError(code)) {
-//                    googleApiAvailability.getErrorDialog(activity, code, RC_SIGN_IN).show();
-//                }
-//                return;
-//            }
         if (!result.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), (Activity) context,
                     0).show();
             return;
         }
-            if (!mIntentInProgress) {
-                // Store the ConnectionResult for later usage
-                mConnectionResult = result;
 
-                if (signedInUser) {
-                    // The user has already clicked 'sign-in' so we attempt to
-                    // resolve all
-                    // errors until the user is signed in, or they cancel.
-                    resolveSignInError();
-                }
+        if (!mIntentInProgress) {
+            // Store the ConnectionResult for later usage
+            mConnectionResult = result;
+
+            if (signedInUser) {
+                // The user has already clicked 'sign-in' so we attempt to
+                // resolve all
+                // errors until the user is signed in, or they cancel.
+                resolveSignInError();
             }
-//        }
-//        catch (NullPointerException e) {
-//            mIntentInProgress = false;
-//            mGoogleApiClient.connect();
-//        }
+        }
     }
 
     @Override
@@ -129,4 +97,56 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
         Toast.makeText(context, "OnConnectedSuspended", Toast.LENGTH_SHORT).show();
         mGoogleApiClient.connect();
     }
+
+    public void sentLoginResultToController(int requestCode, int responseCode, final int RESULT_OK) {
+        if (requestCode == RC_SIGN_IN) {
+            if (responseCode == RESULT_OK) {
+                signedInUser = false;
+            }
+            mIntentInProgress = false;
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+
+    public void runWithoutLogin() {
+        signedInUser = true;
+        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
+    }
+
+//    @Override
+//    public void onConnectionFailed(@NonNull ConnectionResult result) {
+////        try {
+////            boolean resolution = mConnectionResult.hasResolution();
+////            if (!resolution) {
+////                GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+////                int code = googleApiAvailability.isGooglePlayServicesAvailable(activity);
+////                if (googleApiAvailability.isUserResolvableError(code)) {
+////                    googleApiAvailability.getErrorDialog(activity, code, RC_SIGN_IN).show();
+////                }
+////                return;
+////            }
+//        if (!result.hasResolution()) {
+//            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), (Activity) context,
+//                    0).show();
+//            return;
+//        }
+//        if (!mIntentInProgress) {
+//            // Store the ConnectionResult for later usage
+//            mConnectionResult = result;
+//
+//            if (signedInUser) {
+//                // The user has already clicked 'sign-in' so we attempt to
+//                // resolve all
+//                // errors until the user is signed in, or they cancel.
+//                resolveSignInError();
+//            }
+//        }
+////        }
+////        catch (NullPointerException e) {
+////            mIntentInProgress = false;
+////            mGoogleApiClient.connect();
+////        }
+//    }
 }
