@@ -29,6 +29,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             loginScreenFragment.sentLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         } else {
         }
+
         super.onActivityResult(requestCode, resultCode, data);
+
     }
 }
