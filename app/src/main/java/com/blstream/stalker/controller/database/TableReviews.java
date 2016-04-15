@@ -14,6 +14,8 @@ public class TableReviews {
     //Table columns
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_REVIEW = "review";
+    public static final String COLUMN_AUTHOR = "author";
+    public static final String COLUMN_RATING = "rating";
     public static final String COLUMN_PLACE_ID = "place_id";
 
     // creation SQL statement
@@ -22,7 +24,9 @@ public class TableReviews {
             + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_REVIEW + " text not null, "
-            + COLUMN_PLACE_ID + "integer not null "
+            + COLUMN_AUTHOR + " text not null, "
+            + COLUMN_RATING + " real not null, "
+            + COLUMN_PLACE_ID + " integer not null "
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
