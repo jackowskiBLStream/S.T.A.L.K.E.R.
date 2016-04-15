@@ -1,12 +1,10 @@
 package com.blstream.stalker.view.interfaces;
 
-import android.support.v4.app.Fragment;
-
 import com.blstream.stalker.model.PlaceData;
-import com.blstream.stalker.view.interfaces.IMainFragment;
 
 import java.util.List;
 
+//FIXME: nazwa -> to nie zawsze bedzie fragment
 public interface IPlaceListFragment extends IMainFragment {
     void uploadList(List<PlaceData> placeDataList);
 }

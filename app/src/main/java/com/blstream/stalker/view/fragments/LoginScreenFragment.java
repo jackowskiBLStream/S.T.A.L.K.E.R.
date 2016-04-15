@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.DatabaseController;
-import com.blstream.stalker.controller.LoginScreenController;
-import com.blstream.stalker.controller.PlaceListController;
+import com.blstream.stalker.controller.LoginScreenFragmetController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
@@ -27,11 +25,15 @@ import java.util.ArrayList;
 public class LoginScreenFragment extends AbstractErrorClass implements ILoginFragment {
     SignInButton signInButton;
     Button noThanksButton;
-    LoginScreenController loginScreenController;
+    LoginScreenFragmetController loginScreenController;
 
-    ErrorMessageFragment errorFragment = new ErrorMessageFragment();
-    PlaceListController placeListController;
     DatabaseController db;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        db = new DatabaseController(getContext());
+    }
 
     /**
      * {@inheritDoc}
@@ -40,14 +42,22 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.login_screen_layout, container, false);
+        return inflater.inflate(R.layout.login_screen_layout, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
-        loginScreenController = new LoginScreenController(this);
-        placeListController = new PlaceListController(this);
-        db = new DatabaseController(getContext());
+        initLoginController();
         customizeButtons();
-        return view;
+
+    }
+
+    private void initLoginController() {
+        loginScreenController = new LoginScreenFragmetController(this);
+        loginScreenController.setView(this);
     }
 
     /**
@@ -59,15 +69,14 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
     public void changeFragment(@FragmentType int fragmentType) {
         FragmentManager fragmentManager = getFragmentManager();
         switch (fragmentType) {
-            case LIST_FRAGMENT:
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, new PlaceListFragment()).commit();
-                break;
             case DETAIL_FRAGMENT:
                 break;
             case LOGIN_FRAGMENT:
                 break;
+            case LIST_FRAGMENT:
             default:
                 fragmentManager.beginTransaction().replace(R.id.mainContainer, new PlaceListFragment()).commit();
+                break;
         }
     }
 

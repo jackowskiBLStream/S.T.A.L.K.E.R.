@@ -29,9 +29,6 @@
             android:name=".controller.database.PlacesContentProvider"
             android:authorities="com.blstream.stalker.controller.database.PlacesContentProvider" />
 
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
         <service
             android:name=".controller.location.DetectActivitiesIntentService"
             android:exported="false" />

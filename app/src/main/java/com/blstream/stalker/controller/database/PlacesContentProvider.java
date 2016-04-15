@@ -17,6 +17,8 @@ import android.support.annotation.Nullable;
  */
 public class PlacesContentProvider extends ContentProvider {
 
+    //FIXME: a gdzie contact?
+
     public static final String AUTHORITY = "com.blstream.stalker.controller.database.PlacesContentProvider";
     public static final Uri URI_PLACES =
             Uri.parse("content://" + AUTHORITY + "/" + TablePlaces.TABLE_PLACES);

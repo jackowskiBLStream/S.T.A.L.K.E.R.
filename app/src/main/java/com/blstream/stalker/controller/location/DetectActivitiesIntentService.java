@@ -9,6 +9,7 @@ import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,7 +28,7 @@ public class DetectActivitiesIntentService extends IntentService {
         Log.d(TAG, "onHandleIntent: ");
         ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
         Intent i = new Intent(Constants.STRING_ACTION);
-        ArrayList<DetectedActivity> detectedActivities = (ArrayList) result.getProbableActivities();
+        ArrayList<DetectedActivity> detectedActivities = new ArrayList<>(result.getProbableActivities());
 
         i.putExtra(Constants.STRING_EXTRA, detectedActivities);
         LocalBroadcastManager.getInstance(this).sendBroadcast(i);

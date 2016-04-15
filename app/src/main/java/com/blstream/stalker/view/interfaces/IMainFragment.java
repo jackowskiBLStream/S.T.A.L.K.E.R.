@@ -8,6 +8,7 @@ import com.blstream.stalker.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+//FIXME: nazwa -> to nie zawsze bedzie fragment
 public interface IMainFragment {
 
     @Retention(RetentionPolicy.SOURCE)

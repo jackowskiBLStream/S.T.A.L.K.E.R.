@@ -1,7 +1,6 @@
 package com.blstream.stalker.view.interfaces;
 
-import com.blstream.stalker.view.interfaces.IMainFragment;
-
+//FIXME: nazwa -> to nie zawsze bedzie fragment
 public interface IPlaceDetailFragment extends IMainFragment {
     void uploadDetail();
 }

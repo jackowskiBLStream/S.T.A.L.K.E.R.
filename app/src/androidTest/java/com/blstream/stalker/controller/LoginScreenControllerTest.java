@@ -15,14 +15,14 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginScreenControllerTest extends TestCase {
-    LoginScreenController loginScreenController;
+    LoginScreenFragmetController loginScreenController;
     LoginScreenFragment loginScreenFragment;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
                 loginScreenFragment = new LoginScreenFragment();
-        loginScreenController = new LoginScreenController(loginScreenFragment);
+        loginScreenController = new LoginScreenFragmetController(loginScreenFragment);
     }
 
     @After

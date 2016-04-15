@@ -25,6 +25,13 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     private PlaceListAdapter adapter = new PlaceListAdapter();
     private LocationController locationController;
     private DetectActivityController detectActivityController;
+    PlacesListFragmentController {
+
+        observe content change w bazie danych
+                // -> pobrac content
+                // -> updateview with places list
+
+    }
 
     @Nullable
     @Override
@@ -45,6 +52,7 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
         adapter.setPlaceDataList(placeDataList);
     }
 
+    //FIXME: przeniesc do klasy bazowej zeby nie duplikowac kodu (generic)
     @Override
     public void changeFragment(@FragmentType int fragmentType) {
         FragmentManager fragmentManager = getFragmentManager();

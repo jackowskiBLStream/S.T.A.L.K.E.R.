@@ -13,10 +13,13 @@ import com.blstream.stalker.view.fragments.PlaceListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.wearable.Wearable;
 
 import java.util.List;
 
@@ -77,6 +80,7 @@ public class LocationController implements IOperationsController, OnConnectionFa
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
+//                    .addApi(Drive.API)
                     .build();
         }
 
@@ -133,6 +137,13 @@ public class LocationController implements IOperationsController, OnConnectionFa
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged: ");
         new GetPlaces().execute(location.getLatitude(), location.getLongitude());
+        //sync adaper -> sync
+        Bundle bundle = new Bundle();
+        bundle.putDouble("lat", location.getLatitude());
+        //....
+        fragment.getContext().getContentResolver().requestSync(acc,"", bundle);
+
+        //sync -> odczytuje dane z bundla -> wywoluje request do places api
     }
 
     public void startLocationUpdates() {
@@ -146,6 +157,7 @@ public class LocationController implements IOperationsController, OnConnectionFa
     }
 
 
+    //FIXME: to powinno byc w sync adapterze
     private class GetPlaces extends AsyncTask<Object, Object, List<PlaceData>> {
 
 

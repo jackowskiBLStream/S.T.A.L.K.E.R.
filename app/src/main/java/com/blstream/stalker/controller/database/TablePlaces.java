@@ -6,11 +6,15 @@ import android.util.Log;
 /**
  * SQlite table that contains places data data
  */
+
+//FIXME: BaseColumn
 public class TablePlaces {
 
     //table name
     public static final String TABLE_PLACES = "places";
     //Table columns
+
+    //FIXME: move to conteact
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_TYPES = "types";

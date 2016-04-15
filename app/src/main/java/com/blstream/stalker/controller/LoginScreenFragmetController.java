@@ -1,13 +1,12 @@
 package com.blstream.stalker.controller;
 
-import android.content.Context;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.blstream.stalker.controller.interfaces.ILoginScreenController;
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
+import com.blstream.stalker.view.interfaces.ILoginFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -15,11 +14,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
 
-public class LoginScreenController implements ILoginScreenController, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class LoginScreenFragmetController extends FragmentController<ILoginFragment> implements ILoginScreenController, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int RC_SIGN_IN = 0;
-    LoginScreenFragment fragment;
-    Context context;
 
     private GoogleApiClient googleApiClient;
 
@@ -27,9 +24,8 @@ public class LoginScreenController implements ILoginScreenController, GoogleApiC
     private boolean mIntentInProgress;
     private ConnectionResult mConnectionResult;
 
-    public LoginScreenController(Fragment fragment) {
-        this.fragment = (LoginScreenFragment) fragment;
-        context = fragment.getContext();
+    public LoginScreenFragmetController(Fragment fragment) {
+        super(fragment);
         initializeGPApiClient();
     }
 
@@ -48,7 +44,7 @@ public class LoginScreenController implements ILoginScreenController, GoogleApiC
      */
     public void runWithoutLogin() {
         signedInUser = false;
-        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
+        view.changeFragment(IMainFragment.LIST_FRAGMENT);
     }
 
     /**
@@ -70,7 +66,7 @@ public class LoginScreenController implements ILoginScreenController, GoogleApiC
      * Method initializes google plus api client
      */
     private void initializeGPApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(context.getApplicationContext())
+        googleApiClient = new GoogleApiClient.Builder(fragment.getActivity().getApplicationContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
@@ -107,7 +103,7 @@ public class LoginScreenController implements ILoginScreenController, GoogleApiC
     public void onConnectionFailed(@NonNull ConnectionResult result) {
         if (!result.hasResolution()) {
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-            int code = googleApiAvailability.isGooglePlayServicesAvailable(context);
+            int code = googleApiAvailability.isGooglePlayServicesAvailable(fragment.getActivity());
             if (googleApiAvailability.isUserResolvableError(code)) {
                 googleApiAvailability.getErrorDialog(fragment.getActivity(), code, RC_SIGN_IN).show();
             }
@@ -131,7 +127,7 @@ public class LoginScreenController implements ILoginScreenController, GoogleApiC
      */
     @Override
     public void onConnected(Bundle arg0) {
-        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
+        view.changeFragment(IMainFragment.LIST_FRAGMENT);
     }
 
     /**
