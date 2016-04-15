@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.blstream.stalker.R;
+import com.blstream.stalker.controller.location.LocationController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
 import com.blstream.stalker.view.adapters.PlaceListAdapter;
@@ -18,25 +20,27 @@ import java.util.List;
 
 public class PlaceListFragment extends AbstractErrorClass implements IPlaceListFragment {
 
-    View view;
-    PlaceListAdapter adapter = new PlaceListAdapter();
+    private View view;
+    private PlaceListAdapter adapter = new PlaceListAdapter();
+    private LocationController locationController;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.place_list_layout, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.allTasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        locationController = new LocationController(this);
         return view;
     }
+
     @Override
-    public void uploadList(List<PlaceData> placeDataList){
-    adapter.setPlaceDataList(placeDataList);
+    public void uploadList(List<PlaceData> placeDataList) {
+        adapter.setPlaceDataList(placeDataList);
     }
+
     @Override
     public void changeFragment(@FragmentType int fragmentType) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -50,6 +54,35 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
                 break;
             default:
                 break;
+        }
+    }
+
+
+    @Override
+    public void onStart() {
+        locationController.connectGoogleApiClient();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        locationController.disconnectGoogleApiClient();
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (locationController.getGoogleApiState()) {
+            locationController.startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (locationController.getGoogleApiState()) {
+            locationController.stopLocationUpdates();
         }
     }
 }

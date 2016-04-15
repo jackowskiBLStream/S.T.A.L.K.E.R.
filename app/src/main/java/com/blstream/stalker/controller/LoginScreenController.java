@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.blstream.stalker.view.fragments.LoginScreenFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
