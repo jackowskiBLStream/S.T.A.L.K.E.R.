@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         TableDetails.onCreate(db);
         TablePlaces.onCreate(db);
+        TableReviews.onCreate(db);
     }
 
     /**
@@ -34,5 +35,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         TableDetails.onUpgrade(db, oldVersion, newVersion);
         TablePlaces.onUpgrade(db, oldVersion, newVersion);
+        TableReviews.onUpgrade(db, oldVersion, newVersion);
     }
 }
