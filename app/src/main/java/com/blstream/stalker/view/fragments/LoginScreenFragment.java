@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.blstream.stalker.R;
-import com.blstream.stalker.controller.ImageController;
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
 import com.blstream.stalker.view.interfaces.ILoginFragment;
@@ -33,10 +31,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
 
-        ImageView back = (ImageView) view.findViewById(R.id.imageView);
-        ImageController cont = new ImageController(getContext(), R.drawable.background_image, R.drawable.background_image);
-        cont.getImage("http://oceanahmt.com/wp-content/uploads/2013/12/gitl.png",back);
-        
         controller = new LoginScreenController(this);
 
         customizeButtons();
