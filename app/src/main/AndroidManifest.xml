@@ -26,7 +26,7 @@
         </activity>
 
         <service
-            android:name=".controller.location.DetectActivitiesService"
+            android:name=".controller.location.DetectActivitiesIntentService"
             android:exported="false" />
     </application>
 

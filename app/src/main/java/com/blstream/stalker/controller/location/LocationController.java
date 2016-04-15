@@ -5,13 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.fragments.PlaceListFragment;
-import com.blstream.stalker.view.interfaces.IPlaceListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -27,11 +25,11 @@ import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFail
 /**
  *
  */
-public class LocationController implements ILocationController, OnConnectionFailedListener,
+public class LocationController implements IOperationsController, OnConnectionFailedListener,
         ConnectionCallbacks, LocationListener {
 
     private static final String TAG = "LocationController: ";
-    private GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClientLocation;
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
     private PlaceListFragment fragment;
@@ -46,7 +44,7 @@ public class LocationController implements ILocationController, OnConnectionFail
      * @return true -  GoogleApiClient connected, false - if not
      */
     public boolean getGoogleApiState() {
-        return googleApiClient.isConnected();
+        return googleApiClientLocation.isConnected();
     }
 
     public void createLocationRequest() {
@@ -61,24 +59,59 @@ public class LocationController implements ILocationController, OnConnectionFail
 
     @Override
     public void connectGoogleApiClient() {
-        googleApiClient.connect();
+        googleApiClientLocation.connect();
     }
 
     @Override
     public void disconnectGoogleApiClient() {
-        googleApiClient.disconnect();
+        if (googleApiClientLocation.isConnected()) {
+            googleApiClientLocation.disconnect();
+        }
+
     }
 
     @Override
     public void createGoogleApiClientInstance() {
-        if (googleApiClient == null) {
-            googleApiClient = new GoogleApiClient.Builder(fragment.getContext())
+        if (googleApiClientLocation == null) {
+            googleApiClientLocation = new GoogleApiClient.Builder(fragment.getContext())
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
         }
+
     }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onStop() {
+        disconnectGoogleApiClient();
+    }
+
+    @Override
+    public void onStart() {
+        connectGoogleApiClient();
+    }
+
+    @Override
+    public void onPause() {
+
+        if (getGoogleApiState()) {
+            stopLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        if (getGoogleApiState()) {
+            startLocationUpdates();
+        }
+    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -91,12 +124,13 @@ public class LocationController implements ILocationController, OnConnectionFail
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d(TAG, "Connection Suspended");
+        googleApiClientLocation.connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.d(TAG, "Connection failed. Error: " + connectionResult.getErrorCode());
     }
 
     @Override
@@ -107,13 +141,14 @@ public class LocationController implements ILocationController, OnConnectionFail
 
     public void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(
-                googleApiClient, locationRequest, this);
+                googleApiClientLocation, locationRequest, this);
     }
 
     public void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
-                googleApiClient, this);
+                googleApiClientLocation, this);
     }
+
 
     private class GetPlaces extends AsyncTask<Object, Object, List<PlaceData>> {
 

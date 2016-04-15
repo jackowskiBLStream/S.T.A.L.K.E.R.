@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blstream.stalker.R;
+import com.blstream.stalker.controller.location.DetectActivityController;
 import com.blstream.stalker.controller.location.LocationController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
@@ -23,6 +24,7 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     private View view;
     private PlaceListAdapter adapter = new PlaceListAdapter();
     private LocationController locationController;
+    private DetectActivityController detectActivityController;
 
     @Nullable
     @Override
@@ -32,7 +34,8 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.allTasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        locationController = new LocationController(this);
+        //locationController = new LocationController(this);
+        detectActivityController = new DetectActivityController(this);
         return view;
     }
 
@@ -60,29 +63,29 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
 
     @Override
     public void onStart() {
-        locationController.connectGoogleApiClient();
+       // locationController.onStart();
+        detectActivityController.onStart();
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        locationController.disconnectGoogleApiClient();
+       // locationController.onStop();
+        detectActivityController.onStop();
         super.onStop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (locationController.getGoogleApiState()) {
-            locationController.startLocationUpdates();
-        }
+       // locationController.onResume();
+        detectActivityController.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (locationController.getGoogleApiState()) {
-            locationController.stopLocationUpdates();
-        }
+       // locationController.onPause();
+        detectActivityController.onPause();
     }
 }
