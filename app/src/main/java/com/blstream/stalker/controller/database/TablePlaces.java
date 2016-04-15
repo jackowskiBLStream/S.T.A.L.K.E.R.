@@ -8,13 +8,12 @@ import android.util.Log;
  */
 public class TablePlaces {
 
-
-    //Table columns
+    //table name
     public static final String TABLE_PLACES = "places";
+    //Table columns
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_TYPES = "types";
-    public static final String COLUMN_ALTITUDE = "altitude";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_IMG_URL = "img_url";
@@ -27,7 +26,6 @@ public class TablePlaces {
             + COLUMN_NAME + " text not null, "
             + COLUMN_TYPES + " text not null, "
             + COLUMN_IMG_URL + " text, "
-            + COLUMN_ALTITUDE + " real not null, "
             + COLUMN_LATITUDE + " real not null, "
             + COLUMN_LONGITUDE + " real not null "
             + ");";
