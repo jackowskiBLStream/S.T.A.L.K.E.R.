@@ -34,7 +34,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
             if(placeDataList.size() != 0){
                 holder.mPubName.setText(placeDataList.get(position).getName());
 
-                holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
+               // holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
 
 //                holder.mOpenHours.setText(Long.toString(placeDataList.get(position).getTodayOpenHours().getOpenTime()));
 
