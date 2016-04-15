@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.database.DatabaseHelper;
 import com.blstream.stalker.controller.database.PlacesContentProvider;
+import com.blstream.stalker.controller.database.TableDetails;
 import com.blstream.stalker.controller.database.TablePlaces;
 import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.PlaceData;
@@ -52,7 +53,10 @@ public class DatabaseController implements IDatabaseController {
      */
     @Override
     public boolean addPlacesToDB(List<PlaceDataWithDetails> data) {
-        return addPlace(data.get(0));
+        for (PlaceDataWithDetails place : data){
+            addPlace(place);
+        }
+        return true;
     }
 
     private boolean addPlace(PlaceDataWithDetails data) {
@@ -65,6 +69,9 @@ public class DatabaseController implements IDatabaseController {
         valuesData.put(TablePlaces.COLUMN_LONGITUDE,placeData.getLocation().getLongitude());
         
         Log.d(TAG, "addPlace: "+context.getContentResolver().insert(PlacesContentProvider.URI_PLACES, valuesData));
+
+        ContentValues valuesDetails = new ContentValues();
+        valuesDetails.put(TableDetails.COLUMN_RATING, )
 
         return true;
     }
