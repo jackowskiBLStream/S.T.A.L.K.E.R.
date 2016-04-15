@@ -13,8 +13,7 @@ import java.util.Collection;
  */
 public class PlaceDataDetails implements IPlaceDataDetails {
     private IOpenHours[] openHours;
-    //FIXME probably other type
-    private int rating;
+    private double rating;
     private ArrayList<IReviews> reviews;
 
 
@@ -45,7 +44,7 @@ public class PlaceDataDetails implements IPlaceDataDetails {
      * @return place rating
      */
     @Override
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
