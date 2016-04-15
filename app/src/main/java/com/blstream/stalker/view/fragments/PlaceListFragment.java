@@ -28,13 +28,14 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.place_list_layout, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.allTasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        //locationController = new LocationController(this);
+        locationController = new LocationController(this);
         detectActivityController = new DetectActivityController(this);
         return view;
     }
@@ -63,14 +64,14 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
 
     @Override
     public void onStart() {
-       // locationController.onStart();
+        locationController.onStart();
         detectActivityController.onStart();
         super.onStart();
     }
 
     @Override
     public void onStop() {
-       // locationController.onStop();
+        locationController.onStop();
         detectActivityController.onStop();
         super.onStop();
     }
@@ -78,14 +79,14 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     @Override
     public void onResume() {
         super.onResume();
-       // locationController.onResume();
+        locationController.onResume();
         detectActivityController.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-       // locationController.onPause();
+        locationController.onPause();
         detectActivityController.onPause();
     }
 }

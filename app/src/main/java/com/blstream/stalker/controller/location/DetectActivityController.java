@@ -23,6 +23,7 @@ public class DetectActivityController implements IOperationsController, GoogleAp
         GoogleApiClient.ConnectionCallbacks, ResultCallback<Status> {
 
     private static final String TAG = "DetectController: ";
+    private static final int DETECTION_TIME = 0;
     private PlaceListFragment fragment;
     private ActivityDetectionBroadcastReceiver activityDetectionBroadcastReceiver;
     private GoogleApiClient googleApiClientActivityDetector;
@@ -91,6 +92,13 @@ public class DetectActivityController implements IOperationsController, GoogleAp
     @Override
     public void onPause() {
         unregisterReceiver();
+        stopActivityUpdates();
+    }
+
+    private void stopActivityUpdates() {
+        ActivityRecognition.ActivityRecognitionApi
+                .removeActivityUpdates(googleApiClientActivityDetector,
+                        getActivityDetectionPendingIntent()).setResultCallback(this);
     }
 
     @Override
@@ -101,8 +109,12 @@ public class DetectActivityController implements IOperationsController, GoogleAp
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected");
+        startActivityUpdates();
+    }
+
+    private void startActivityUpdates() {
         ActivityRecognition.ActivityRecognitionApi
-                .requestActivityUpdates(googleApiClientActivityDetector, 0,
+                .requestActivityUpdates(googleApiClientActivityDetector, DETECTION_TIME,
                         getActivityDetectionPendingIntent()).setResultCallback(this);
     }
 
