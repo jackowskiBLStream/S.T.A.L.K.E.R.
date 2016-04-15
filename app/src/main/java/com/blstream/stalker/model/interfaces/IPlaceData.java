@@ -13,7 +13,8 @@ public interface IPlaceData {
      *
      * @return place icon
      */
-    String getIcon();
+
+    String getIconUrl();
 
     /**
      *

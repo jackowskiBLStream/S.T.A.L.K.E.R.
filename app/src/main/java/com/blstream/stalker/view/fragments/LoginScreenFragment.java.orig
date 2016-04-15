@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.blstream.stalker.R;
+<<<<<<< HEAD
+=======
 import com.blstream.stalker.controller.DatabaseController;
+>>>>>>> siwy
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.controller.PlaceListController;
 import com.blstream.stalker.model.PlaceData;
@@ -43,9 +45,15 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         View view = inflater.inflate(R.layout.login_screen_layout, container, false);
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
+<<<<<<< HEAD
+
+        controller = new LoginScreenController(this);
+
+=======
         loginScreenController = new LoginScreenController(this);
         placeListController = new PlaceListController(this);
         db = new DatabaseController(getContext());
+>>>>>>> siwy
         customizeButtons();
         return view;
     }
@@ -84,7 +92,8 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
              */
             @Override
             public void onClick(View v) {
-                loginScreenController.googlePlusLogin();
+                placeListController.doSomething();
+                db.addPlacesToDB(list);
             }
         });
         noThanksButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +103,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
              */
             @Override
             public void onClick(View v) {
-                loginScreenController.runWithoutLogin();
                 hideError();
             }
         });

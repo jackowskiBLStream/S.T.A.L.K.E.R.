@@ -18,9 +18,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loginScreenFragment = new LoginScreenFragment();
-        PlaceListFragment listFragment = new PlaceListFragment();
+//        PlaceListFragment listFragment = new PlaceListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.mainContainer, listFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.mainContainer, loginScreenFragment).commit();
     }
 
     @Override
@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode == LoginScreenController.RC_SIGN_IN) {
             loginScreenFragment.sentLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
-    }git 
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

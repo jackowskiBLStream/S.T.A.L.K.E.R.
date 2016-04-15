@@ -2,7 +2,9 @@ package com.blstream.stalker.model;
 
 import com.blstream.stalker.model.interfaces.IOpenHours;
 import com.blstream.stalker.model.interfaces.IPlaceDataDetails;
+import com.blstream.stalker.model.interfaces.IReviews;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -11,9 +13,15 @@ import java.util.Collection;
  */
 public class PlaceDataDetails implements IPlaceDataDetails {
     private IOpenHours[] openHours;
-    //FIXME probably other type
-    private int rating;
-    private Collection reviews;
+    private double rating;
+    private ArrayList<IReviews> reviews;
+
+
+    public PlaceDataDetails(IOpenHours[] openHours, int rating, ArrayList<IReviews> reviews) {
+        this.openHours = openHours;
+        this.rating = rating;
+        this.reviews = reviews;
+    }
 
     /**
      * @return open hours for all days in week
@@ -36,7 +44,7 @@ public class PlaceDataDetails implements IPlaceDataDetails {
      * @return place rating
      */
     @Override
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -44,7 +52,7 @@ public class PlaceDataDetails implements IPlaceDataDetails {
      * @return three last place reviews
      */
     @Override
-    public Collection getReviews() {
+    public Collection<IReviews> getReviews() {
         return reviews;
     }
 }

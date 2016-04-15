@@ -24,16 +24,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.location.TempActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.TEMP" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
+        <provider
+            android:name=".controller.database.PlacesContentProvider"
+            android:authorities="com.blstream.stalker.controller.database.PlacesContentProvider" />
+
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
         <service
             android:name=".controller.location.DetectActivitiesService"
             android:exported="false" />
+
     </application>
+
+
 </manifest>
 

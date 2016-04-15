@@ -10,17 +10,17 @@ public interface IOpenHours {
      * @param timeOpened time open to be set
      * @param timeClosed time closed to be set
      */
-    void setHours(long timeOpened, long timeClosed);
+    void setHours(String timeOpened, String timeClosed);
 
     /**
      *
      * @return time when open
      */
-    long getOpenTime();
+    String getOpenTime();
 
     /**
      *
      * @return time when closed
      */
-    long getCloseTime();
+    String getCloseTime();
 }

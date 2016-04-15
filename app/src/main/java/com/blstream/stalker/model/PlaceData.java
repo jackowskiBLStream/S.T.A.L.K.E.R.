@@ -5,6 +5,7 @@ import android.location.Location;
 import com.blstream.stalker.model.interfaces.IOpenHours;
 import com.blstream.stalker.model.interfaces.IPlaceData;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ public class PlaceData implements IPlaceData {
     private double latitude;
     private IOpenHours todayOpenHours;
 
+    public PlaceData(){};
 
     public double getLongitude() {
         return longitude;
@@ -59,11 +61,20 @@ public class PlaceData implements IPlaceData {
         this.todayOpenHours = todayOpenHours;
     }
 
+    public PlaceData(String icon, String types, IOpenHours todayOpenHours, String name, Location location) {
+        this.icon = icon;
+        this.types = types;
+        this.todayOpenHours = todayOpenHours;
+        this.name = name;
+        this.location = location;
+
+    }
+
     /**
      * @return place icon
      */
     @Override
-    public String getIcon() {
+    public String getIconUrl() {
         return icon;
     }
 
