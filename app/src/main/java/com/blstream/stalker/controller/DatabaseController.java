@@ -71,7 +71,7 @@ public class DatabaseController implements IDatabaseController {
         Log.d(TAG, "addPlace: "+context.getContentResolver().insert(PlacesContentProvider.URI_PLACES, valuesData));
 
         ContentValues valuesDetails = new ContentValues();
-        valuesDetails.put(TableDetails.COLUMN_RATING, )
+        valuesDetails.put(TableDetails.COLUMN_RATING, "");
 
         return true;
     }
