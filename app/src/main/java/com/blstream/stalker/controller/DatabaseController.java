@@ -1,5 +1,12 @@
 package com.blstream.stalker.controller;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.util.Log;
+
+import com.blstream.stalker.controller.database.DatabaseHelper;
+import com.blstream.stalker.controller.database.PlacesContentProvider;
+import com.blstream.stalker.controller.database.TablePlaces;
 import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataWithDetails;
@@ -13,14 +20,18 @@ import java.util.List;
  */
 public class DatabaseController implements IDatabaseController {
 
+    private static final String TAG = DatabaseHelper.class.getSimpleName();
+    private Context context;
+
+    public DatabaseController(Context context) {
+        this.context = context;
+    }
 
     /**
      * clears all rows in Database
      */
     @Override
     public void clearDB() {
-        DatabaseController controller = new DatabaseController();
-        controller.clearDB();
     }
 
     /**
@@ -41,6 +52,20 @@ public class DatabaseController implements IDatabaseController {
      */
     @Override
     public boolean addPlacesToDB(List<PlaceDataWithDetails> data) {
-        return false;
+        return addPlace(data.get(0));
+    }
+
+    private boolean addPlace(PlaceDataWithDetails data) {
+        PlaceData placeData = data.getPlaceData();
+        ContentValues valuesData = new ContentValues();
+        valuesData.put(TablePlaces.COLUMN_NAME, placeData.getName());
+        valuesData.put(TablePlaces.COLUMN_IMG_URL, placeData.getIconUrl());
+        valuesData.put(TablePlaces.COLUMN_TYPES, placeData.getTypes());
+        valuesData.put(TablePlaces.COLUMN_LATITUDE, placeData.getLocation().getLatitude());
+        valuesData.put(TablePlaces.COLUMN_LONGITUDE,placeData.getLocation().getLongitude());
+        
+        Log.d(TAG, "addPlace: "+context.getContentResolver().insert(PlacesContentProvider.URI_PLACES, valuesData));
+
+        return true;
     }
 }

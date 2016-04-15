@@ -18,6 +18,12 @@ public class PlaceDataDetails implements IPlaceDataDetails {
     private ArrayList<IReviews> reviews;
 
 
+    public PlaceDataDetails(IOpenHours[] openHours, int rating, ArrayList<IReviews> reviews) {
+        this.openHours = openHours;
+        this.rating = rating;
+        this.reviews = reviews;
+    }
+
     /**
      * @return open hours for all days in week
      */
