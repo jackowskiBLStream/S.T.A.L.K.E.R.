@@ -1,6 +1,8 @@
 package com.blstream.stalker.model;
 
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.blstream.stalker.model.interfaces.IOpenHours;
 import com.blstream.stalker.model.interfaces.IPlaceData;
@@ -12,7 +14,7 @@ import org.json.JSONObject;
 /**
  * Stores all data about particular place
  */
-public class PlaceData implements IPlaceData {
+public class PlaceData implements IPlaceData, Parcelable {
 
     private String icon;
     private String name;
@@ -23,6 +25,27 @@ public class PlaceData implements IPlaceData {
     private IOpenHours todayOpenHours;
 
     public PlaceData(){};
+
+    protected PlaceData(Parcel in) {
+        icon = in.readString();
+        name = in.readString();
+        types = in.readString();
+        location = in.readParcelable(Location.class.getClassLoader());
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+    }
+
+    public static final Creator<PlaceData> CREATOR = new Creator<PlaceData>() {
+        @Override
+        public PlaceData createFromParcel(Parcel in) {
+            return new PlaceData(in);
+        }
+
+        @Override
+        public PlaceData[] newArray(int size) {
+            return new PlaceData[size];
+        }
+    };
 
     public double getLongitude() {
         return longitude;
@@ -137,4 +160,18 @@ public class PlaceData implements IPlaceData {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(icon);
+        dest.writeString(name);
+        dest.writeString(types);
+        dest.writeParcelable(location, flags);
+        dest.writeDouble(longitude);
+        dest.writeDouble(latitude);
+    }
 }

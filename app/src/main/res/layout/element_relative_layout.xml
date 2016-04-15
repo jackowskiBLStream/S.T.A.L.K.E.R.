@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="UnusedAttribute">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pubPlaceImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/background_image" />
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/textViewPaddingLeft"
+            android:paddingRight="@dimen/textViewPaddingLeft"
+            android:text="Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/nameTextSize"
+            android:layout_below="@+id/pubPlaceImageView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center" />
+
+
+        <TextView
+            android:id="@+id/openHourTodayTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/textViewPaddingLeft"
+            android:paddingRight="@dimen/textViewPaddingLeft"
+            android:text="OpenHourToday"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/openHourTextSize"
+            android:layout_below="@+id/nameTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tagsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/textViewPaddingLeft"
+            android:paddingRight="@dimen/textViewPaddingLeft"
+            android:text="Tags"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/tagsTextSize"
+            android:layout_below="@+id/openHourTodayTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"/>
+    </RelativeLayout>
+</LinearLayout>
