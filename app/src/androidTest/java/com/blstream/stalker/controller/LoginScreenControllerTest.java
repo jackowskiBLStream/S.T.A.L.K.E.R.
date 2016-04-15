@@ -6,12 +6,10 @@ import com.blstream.stalker.view.fragments.LoginScreenFragment;
 
 import junit.framework.TestCase;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 
 @RunWith(AndroidJUnit4.class)
 public class LoginScreenControllerTest extends TestCase {
@@ -21,7 +19,7 @@ public class LoginScreenControllerTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-                loginScreenFragment = new LoginScreenFragment();
+        loginScreenFragment = new LoginScreenFragment();
         loginScreenController = new LoginScreenController(loginScreenFragment);
     }
 
@@ -38,6 +36,7 @@ public class LoginScreenControllerTest extends TestCase {
         // then
         assertTrue(isConnected);
     }
+
     @Test
     public void testRunWithoutLogin() throws Exception {
         // given
@@ -47,6 +46,7 @@ public class LoginScreenControllerTest extends TestCase {
         // then
         assertFalse(isConnected);
     }
+
     @Test
     public void testIsLoggedIn() throws Exception {
         // given
