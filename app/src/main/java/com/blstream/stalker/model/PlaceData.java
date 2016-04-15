@@ -1,6 +1,5 @@
 package com.blstream.stalker.model;
 
-import android.graphics.Bitmap;
 import android.location.Location;
 
 import com.blstream.stalker.model.interfaces.IOpenHours;
@@ -11,17 +10,25 @@ import com.blstream.stalker.model.interfaces.IPlaceData;
  */
 public class PlaceData implements IPlaceData {
 
-    private Bitmap icon;
+    private String icon;
     private String name;
     private String types;
     private Location location;
     private IOpenHours todayOpenHours;
 
+    public PlaceData(String icon, String types, IOpenHours todayOpenHours, String name, Location location) {
+        this.icon = icon;
+        this.types = types;
+        this.todayOpenHours = todayOpenHours;
+        this.name = name;
+        this.location = location;
+    }
+
     /**
      * @return place icon
      */
     @Override
-    public Bitmap getIcon() {
+    public String getIconUrl() {
         return icon;
     }
 

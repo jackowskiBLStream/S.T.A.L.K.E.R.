@@ -1,4 +1,6 @@
-package com.blstream.stalker.model.interfaces;
+package com.blstream.stalker.model;
+
+import com.blstream.stalker.model.interfaces.IReviews;
 
 /**
  * Used for Storing Place Reviews

@@ -31,4 +31,5 @@ public class PlaceDataWithDetails {
     public PlaceDataDetails getPlaceDataDetails() {
         return placeDataDetails;
     }
+
 }
