@@ -1,72 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="4dp"
     card_view:cardBackgroundColor="#FEFEFE"
-    card_view:cardCornerRadius="@dimen/cardCornerRadiusValue"
-    card_view:cardElevation="@dimen/cardEvlevationValue">
+    card_view:cardCornerRadius="20dp"
+    card_view:cardElevation="3dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-        <ImageView
-            android:id="@+id/pubPlaceImageView"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@null"
-            android:paddingRight="5dp"
-            android:background="@drawable/background_image"/>
-
-        <TextView
-            android:id="@+id/nameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/textViewPaddingLeft"
-            android:text="Name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/nameTextSize"
-            android:layout_below="@+id/pubPlaceImageView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center"/>
-
-
-        <TextView
-            android:id="@+id/openHourTodayTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/textViewPaddingLeft"
-            android:text="OpenHourToday"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="@dimen/openHourTextSize"
-            android:layout_below="@+id/nameTextView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/tagsTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:paddingLeft="@dimen/textViewPaddingLeft"
-            android:text="Tags"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/tagsTextSize"
-            android:layout_below="@+id/openHourTodayTextView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center"/>
-    </RelativeLayout>
+    <include layout="@layout/element_relative_layout"/>
 </android.support.v7.widget.CardView>

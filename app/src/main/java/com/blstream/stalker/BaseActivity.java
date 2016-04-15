@@ -11,16 +11,16 @@ import com.blstream.stalker.view.fragments.PlaceListFragment;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
+    private static final String FRAGMENT_KEY = "ListFragment";
     LoginScreenFragment loginScreenFragment;
+    private PlaceListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loginScreenFragment = new LoginScreenFragment();
-        PlaceListFragment listFragment = new PlaceListFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.mainContainer, loginScreenFragment).commit();
+        initializationOfSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -31,4 +31,28 @@ public abstract class BaseActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, listFragment);
+    }
+    private void initializationOfSaveInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            listFragment = new PlaceListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, listFragment).commit();
+        } else {
+            listFragment = (PlaceListFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
+        }
+    }
+
 }

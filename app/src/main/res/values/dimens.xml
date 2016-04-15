@@ -5,9 +5,11 @@
     <dimen name="g_top_margin">100dp</dimen>
     <dimen name="errorTextSize">15sp</dimen>
     <dimen name="cardCornerRadiusValue">20dp</dimen>
-    <dimen name="cardEvlevationValue">5dp</dimen>
+    <dimen name="cardEvlevationValue">1dp</dimen>
     <dimen name="nameTextSize">28sp</dimen>
     <dimen name="openHourTextSize">20sp</dimen>
     <dimen name="tagsTextSize">14sp</dimen>
     <dimen name="textViewPaddingLeft">10dp</dimen>
+    <dimen name="detailTextViewPaddingLeft">10dp</dimen>
+    <dimen name="detailTextViewPaddingRight">10dp</dimen>
 </resources>
