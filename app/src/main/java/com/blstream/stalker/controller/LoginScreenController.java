@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.blstream.stalker.view.fragments.LoginScreenFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
@@ -68,8 +69,21 @@ public class LoginScreenController implements GoogleApiClient.ConnectionCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
         if (!result.hasResolution()) {
-            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), (Activity) context,
-                    0).show();
+//            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), (Activity) context,
+//                    0).show();
+            GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+               int code = googleApiAvailability.isGooglePlayServicesAvailable(context);
+               if (googleApiAvailability.isUserResolvableError(code)) {
+                   googleApiAvailability.getErrorDialog(fragment.getActivity(), code, RC_SIGN_IN).show();
+               }
+
+
+////                GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+////                int code = googleApiAvailability.isGooglePlayServicesAvailable(activity);
+////                if (googleApiAvailability.isUserResolvableError(code)) {
+////                    googleApiAvailability.getErrorDialog(activity, code, RC_SIGN_IN).show();
+////                }
+
             return;
         }
 
