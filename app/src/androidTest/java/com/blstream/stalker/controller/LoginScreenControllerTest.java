@@ -6,12 +6,12 @@ import com.blstream.stalker.view.fragments.LoginScreenFragment;
 
 import junit.framework.TestCase;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginScreenControllerTest extends TestCase {
@@ -21,7 +21,7 @@ public class LoginScreenControllerTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-                loginScreenFragment = new LoginScreenFragment();
+        loginScreenFragment = new LoginScreenFragment();
         loginScreenController = new LoginScreenController(loginScreenFragment);
     }
 
