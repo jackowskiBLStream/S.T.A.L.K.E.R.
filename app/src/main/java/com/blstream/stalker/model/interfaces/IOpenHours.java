@@ -10,7 +10,7 @@ public interface IOpenHours {
      * @param timeOpened time open to be set
      * @param timeClosed time closed to be set
      */
-    void setHours(long timeOpened, long timeClosed);
+    void setHours(int timeOpened, int timeClosed);
 
     /**
      *

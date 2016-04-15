@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.view.fragments.LoginScreenFragment;
+import com.blstream.stalker.view.fragments.PlaceListFragment;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -17,6 +18,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loginScreenFragment = new LoginScreenFragment();
+//        PlaceListFragment listFragment = new PlaceListFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.mainContainer, loginScreenFragment).commit();
     }
@@ -26,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode == LoginScreenController.RC_SIGN_IN) {
             loginScreenFragment.sentLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

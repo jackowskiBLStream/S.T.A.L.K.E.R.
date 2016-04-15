@@ -4,6 +4,7 @@ import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataWithDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,9 @@ public class DatabaseController implements IDatabaseController {
      */
     @Override
     public List<PlaceData> getAllPlacesData() {
-        return null;
+        ArrayList<PlaceData> list = new ArrayList<>();
+
+        return list;
     }
 
     /**
