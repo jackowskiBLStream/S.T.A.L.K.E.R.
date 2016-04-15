@@ -74,10 +74,6 @@ public class DetectActivityController implements IOperationsController, GoogleAp
         }
     }
 
-    @Override
-    public void onCreate() {
-
-    }
 
     @Override
     public void onStop() {

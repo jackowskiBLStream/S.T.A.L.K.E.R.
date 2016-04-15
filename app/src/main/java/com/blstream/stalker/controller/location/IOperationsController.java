@@ -11,8 +11,6 @@ public interface IOperationsController {
 
     void createGoogleApiClientInstance();
 
-    void onCreate();
-
     void onStop();
 
     void onStart();
@@ -20,9 +18,6 @@ public interface IOperationsController {
     void onPause();
 
     void onResume();
-
-
-
 
 
 }

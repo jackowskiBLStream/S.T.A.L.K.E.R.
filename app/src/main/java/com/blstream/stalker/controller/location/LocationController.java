@@ -82,10 +82,6 @@ public class LocationController implements IOperationsController, OnConnectionFa
 
     }
 
-    @Override
-    public void onCreate() {
-
-    }
 
     @Override
     public void onStop() {
