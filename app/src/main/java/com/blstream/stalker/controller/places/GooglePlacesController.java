@@ -63,7 +63,7 @@ public class GooglePlacesController {
             urlString.append(Double.toString(latitude));
             urlString.append(",");
             urlString.append(Double.toString(longitude));
-            urlString.append("&radius=1000");
+            urlString.append("&radius=50000");
             // urlString.append("&types="+place);
             urlString.append("&sensor=false&key=" + API_KEY);
         } else {//it's only if you want to search sth

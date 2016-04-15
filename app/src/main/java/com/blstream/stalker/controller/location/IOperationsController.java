@@ -3,7 +3,7 @@ package com.blstream.stalker.controller.location;
 /**
  *
  */
-public interface ILocationController {
+public interface IOperationsController {
 
     void connectGoogleApiClient();
 
@@ -11,7 +11,13 @@ public interface ILocationController {
 
     void createGoogleApiClientInstance();
 
+    void onStop();
 
+    void onStart();
+
+    void onPause();
+
+    void onResume();
 
 
 }

@@ -2,17 +2,22 @@ package com.blstream.stalker.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.blstream.stalker.controller.database.DatabaseHelper;
 import com.blstream.stalker.controller.database.PlacesContentProvider;
 import com.blstream.stalker.controller.database.TableDetails;
 import com.blstream.stalker.controller.database.TablePlaces;
+import com.blstream.stalker.controller.database.TableReviews;
 import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
+import com.blstream.stalker.model.interfaces.IReviews;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**

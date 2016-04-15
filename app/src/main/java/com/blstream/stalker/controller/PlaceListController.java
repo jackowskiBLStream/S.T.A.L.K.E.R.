@@ -1,12 +1,7 @@
 package com.blstream.stalker.controller;
 
-import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.fragments.LoginScreenFragment;
-import com.blstream.stalker.view.fragments.PlaceListFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlaceListController {
 
