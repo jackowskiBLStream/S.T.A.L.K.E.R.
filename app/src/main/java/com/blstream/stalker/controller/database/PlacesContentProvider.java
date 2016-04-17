@@ -1,10 +1,8 @@
 package com.blstream.stalker.controller.database;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -130,15 +128,34 @@ public class PlacesContentProvider extends ContentProvider {
      * {@inheritDoc}
      */
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+        int uriType = uriMatcher.match(uri);
+        SQLiteDatabase sqLiteDatabase = databse.getWritableDatabase();
+        int rowsDeleted = 0;
+        switch (uriType) {
+            case PLACES:
+                rowsDeleted = sqLiteDatabase.delete(TablePlaces.TABLE_PLACES, selection,
+                        selectionArgs);
+                break;
+            case DETAILS:
+                rowsDeleted = sqLiteDatabase.delete(TableDetails.TABLE_DETAILS, selection,
+                        selectionArgs);
+                break;
+            case REVIEWS:
+                rowsDeleted = sqLiteDatabase.delete(TableReviews.TABLE_REVIEWS, selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+        return rowsDeleted;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
 

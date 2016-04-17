@@ -1,16 +1,20 @@
 package com.blstream.stalker.model;
 
-import com.blstream.stalker.model.interfaces.IReviews;
-
 /**
  * Used for Storing Place Reviews
  */
-public class Review implements IReviews {
+public class Review {
     String author;
     String review;
-    int rating;
+    double rating;
 
-    public Review(String author, String review, int rating) {
+    /**
+     * Constructor that Creates new Review and fills it with Data given in parameter
+     * @param author Reviev author
+     * @param review Reviev contents
+     * @param rating Reviev rating from 0 to 5
+     */
+    public Review(String author, String review, double rating) {
         this.author = author;
         this.review = review;
         this.rating = rating;
@@ -19,7 +23,6 @@ public class Review implements IReviews {
     /**
      * @return review's Author
      */
-    @Override
     public String getAuthor() {
         return author;
     }
@@ -27,7 +30,6 @@ public class Review implements IReviews {
     /**
      * @return review's content
      */
-    @Override
     public String getReview() {
         return review;
     }
@@ -35,8 +37,7 @@ public class Review implements IReviews {
     /**
      * @return place rating
      */
-    @Override
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 }

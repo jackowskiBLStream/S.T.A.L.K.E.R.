@@ -1,25 +1,25 @@
 package com.blstream.stalker.model;
 
 import android.location.Location;
-
-import com.blstream.stalker.model.interfaces.IOpenHours;
-import com.blstream.stalker.model.interfaces.IPlaceData;
+import android.support.annotation.NonNull;
 
 /**
  * Stores all data about particular place
  */
-public class PlaceData implements IPlaceData {
+public class PlaceData {
 
     private String icon;
     private String name;
     private String types;
     private Location location;
-    private IOpenHours todayOpenHours;
+    private OpenHours todayOpenHours;
+    private int id;
 
-    public PlaceData(String icon, String types, IOpenHours todayOpenHours, String name, Location location) {
+
+    public PlaceData(@NonNull String icon, @NonNull String types,
+                     @NonNull String name, @NonNull Location location) {
         this.icon = icon;
         this.types = types;
-        this.todayOpenHours = todayOpenHours;
         this.name = name;
         this.location = location;
     }
@@ -27,7 +27,6 @@ public class PlaceData implements IPlaceData {
     /**
      * @return place icon
      */
-    @Override
     public String getIconUrl() {
         return icon;
     }
@@ -35,7 +34,6 @@ public class PlaceData implements IPlaceData {
     /**
      * @return place name
      */
-    @Override
     public String getName() {
         return name;
     }
@@ -43,7 +41,6 @@ public class PlaceData implements IPlaceData {
     /**
      * @return list of place types
      */
-    @Override
     public String getTypes() {
         return types;
     }
@@ -51,15 +48,13 @@ public class PlaceData implements IPlaceData {
     /**
      * @return hours when place is opened at day specified
      */
-    @Override
-    public IOpenHours getTodayOpenHours() {
+    public OpenHours getTodayOpenHours() {
         return todayOpenHours;
     }
 
     /**
      * @return place location
      */
-    @Override
     public Location getLocation() {
         return location;
     }
@@ -68,9 +63,48 @@ public class PlaceData implements IPlaceData {
      * @param location location to which distance will be calculated
      * @return distance to location specified in param
      */
-    @Override
     public float getDistanceFromLocation(Location location) {
         return this.location.distanceTo(location);
+    }
+
+    /**
+     * Overrided toString() method
+     * @return String that contains some basic information about Place
+     */
+    @Override
+    public String toString() {
+        return "PlaceData{" +
+                ", name='" + name + '\'' +
+                ", types='" + types + '\'' +
+                ", location=" + location +
+                ", todayOpenHours=" + todayOpenHours +
+                ", id=" + id +
+                '}';
+    }
+
+    /**
+     *
+     * @return Place Id in database
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id Sets Place id to
+     */
+    public void setId(int id){
+        this.id = id;
+    }
+
+    /**
+     * Sets Today Opening hours to given in parameter. Used in Database Controller to retrieve and set
+     * hours for current day of week
+     * @param hours to be set as today open hours
+     */
+    public void setTodayOpeningHours(OpenHours hours) {
+        this.todayOpenHours = hours;
     }
 
 
