@@ -21,7 +21,7 @@ import java.util.List;
 public class PlaceListFragment extends AbstracFragmentClass implements IPlaceListFragment {
     private LocationController locationController;
     private DetectActivityController detectActivityController;
-    PlaceListAdapter adapter;
+    private PlaceListAdapter adapter;
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
 
     @Nullable
@@ -41,7 +41,6 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
         recyclerView.setAdapter(adapter);
         locationController = new LocationController(this);
         detectActivityController = new DetectActivityController(this);
-        updateList(new ArrayList<PlaceData>());
         initialOnItemClickListener();
         initialScreenLayout();
     }
@@ -79,6 +78,7 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
             public void onItemClick(View v, int position) {
                 DetailItemFragment detailItemFragment = new DetailItemFragment();
                 createBundleForDetailsFragment(detailItemFragment, position);
+                //TODO: work in progress..
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainContainer, detailItemFragment).addToBackStack("")
                         .commit();
@@ -103,12 +103,6 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
         bundle.putString(DetailItemFragment.TAGS_BUNDLE_KEY,placeDataList.get(position).getTypes());
         bundle.putString(DetailItemFragment.OPEN_HOURS_KEY, "11:00 - 22:00");
         detailItemFragment.setArguments(bundle);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
     }
 
     @Override

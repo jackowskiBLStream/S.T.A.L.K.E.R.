@@ -3,16 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.blstream.stalker">
 
+    <!-- TODO: watch for duplicated permissions when merging -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
@@ -22,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="AllowBackup">
-        <receiver android:name=".controller.internetConnection.InternetConnectionListener" >
+        <receiver android:name=".controller.internetConnection.InternetConnectionListener">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -37,14 +35,12 @@
         <provider
             android:name=".controller.database.PlacesContentProvider"
             android:authorities="com.blstream.stalker.controller.database.PlacesContentProvider" />
+        <!-- TODO: watch for package changes when merging -->
         <service
-            android:name=".controller.placeLocation.DetectActivitiesIntentService"
+            android:name=".controller.location.DetectActivitiesIntentService"
             android:exported="false" />
 
     </application>
-
-
-
 
 
 </manifest>

@@ -64,7 +64,7 @@ public class DatabaseController implements IDatabaseController {
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_NAME)),
                     placeLocation);
             data.setId(cursor.getInt(cursor.getColumnIndex(DatabaseContract.TablePlaces._ID)));    //Sets PlaceData id to one Row id fromd atabase
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2; //TODO: today is so two days ago
             if (day == -1) {
                 day = 6;
             }
@@ -91,7 +91,7 @@ public class DatabaseController implements IDatabaseController {
      * @return number of rows deleted
      */
     protected int clearDetailsTable() {
-        return context.getContentResolver().delete(DatabaseContract.URI_DETAILS, null, null);
+        return context.getContentResolver().delete(DatabaseContract.TableDetails.CONTENT_URI, null, null);
     }
 
     /**
@@ -114,12 +114,13 @@ public class DatabaseController implements IDatabaseController {
         PlaceDataDetails details;
         String where = DatabaseContract.TableDetails.COLUMN_PLACE_ID + " = ?";
         String[] selection = {String.valueOf(place.getId())};
-        Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_DETAILS, null, where, selection, null);
+        Cursor cursor = context.getContentResolver().query(DatabaseContract.TableDetails.CONTENT_URI, null, where, selection, null);
         assert cursor != null;
         cursor.moveToFirst();
-        OpenHours[] openHours = new OpenHours[7];
+        OpenHours[] openHours = new OpenHours[DAYS_IN_WEEK];
         for (int i = 0; i < DAYS_IN_WEEK; i++) {
-            openHours[i] = new OpenHours(cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i])),
+            openHours[i] = new OpenHours(
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i])),
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_CLOSE_DAY[i])));
         }
         ArrayList<Review> reviews = getReviews(place.getId());
@@ -210,7 +211,7 @@ public class DatabaseController implements IDatabaseController {
             values.put(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i], placeDataDetails.getOpeningHours(i).getOpenTime());
             values.put(DatabaseContract.TableDetails.COLUMN_CLOSE_DAY[i], placeDataDetails.getOpeningHours(i).getCloseTime());
         }
-        context.getContentResolver().insert(DatabaseContract.URI_DETAILS, values);
+        context.getContentResolver().insert(DatabaseContract.TableDetails.CONTENT_URI, values);
         addDataReviews(placeDataDetails.getReviews(), placeDataId);
     }
 

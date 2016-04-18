@@ -20,8 +20,6 @@ public class LoginScreenFragment extends AbstracFragmentClass implements ILoginF
     SignInButton signInButton;
     Button noThanksButton;
     LoginScreenController loginScreenController;
-    PlaceListController placeListController;
-    DatabaseController db;
 
     /**
      * {@inheritDoc}
@@ -39,8 +37,6 @@ public class LoginScreenFragment extends AbstracFragmentClass implements ILoginF
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
         loginScreenController = new LoginScreenController(this);
-        placeListController = new PlaceListController(this);
-        db = new DatabaseController(getContext());
         customizeButtons();
     }
 

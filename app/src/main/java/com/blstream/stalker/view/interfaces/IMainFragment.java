@@ -9,6 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Observer;
 
+//TODO: add meaningfull name (eg. BaseView)
 public interface IMainFragment {
 
 

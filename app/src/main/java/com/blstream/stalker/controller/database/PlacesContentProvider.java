@@ -28,8 +28,8 @@ public class PlacesContentProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TablePlaces.TABLE_PLACES, PLACES);
         uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TablePlaces.TABLE_PLACES + "/#", PLACES_ID);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_DETAILS, DETAILS);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_DETAILS + "/#", DETAILS_ID);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_NAME, DETAILS);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_NAME + "/#", DETAILS_ID);
         uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableReviews.TABLE_REVIEWS, REVIEWS);
         uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableReviews.TABLE_REVIEWS + "/#", REVIEWS_ID);
 
@@ -62,7 +62,7 @@ public class PlacesContentProvider extends ContentProvider {
                 queryBuilder.setTables(DatabaseContract.TablePlaces.TABLE_PLACES);
                 break;
             case DETAILS:
-                queryBuilder.setTables(DatabaseContract.TableDetails.TABLE_DETAILS);
+                queryBuilder.setTables(DatabaseContract.TableDetails.TABLE_NAME);
                 break;
             case REVIEWS:
                 queryBuilder.setTables(DatabaseContract.TableReviews.TABLE_REVIEWS);
@@ -99,14 +99,16 @@ public class PlacesContentProvider extends ContentProvider {
         SQLiteDatabase sqLiteDatabase = databse.getWritableDatabase();
         long id;
         String tableName;
+        //TODO: refactor switch contentes
         switch (uriType) {
             case PLACES:
                 id = sqLiteDatabase.insert(DatabaseContract.TablePlaces.TABLE_PLACES, null, values);
+                //FIXME: notify observers
                 tableName = DatabaseContract.TablePlaces.TABLE_PLACES;
                 break;
             case DETAILS:
-                id = sqLiteDatabase.insert(DatabaseContract.TableDetails.TABLE_DETAILS, null, values);
-                tableName = DatabaseContract.TableDetails.TABLE_DETAILS;
+                id = sqLiteDatabase.insert(DatabaseContract.TableDetails.TABLE_NAME, null, values);
+                tableName = DatabaseContract.TableDetails.TABLE_NAME;
                 break;
             case REVIEWS:
                 id = sqLiteDatabase.insert(DatabaseContract.TableReviews.TABLE_REVIEWS, null, values);
@@ -130,9 +132,10 @@ public class PlacesContentProvider extends ContentProvider {
             case PLACES:
                 rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TablePlaces.TABLE_PLACES, selection,
                         selectionArgs);
+                //FIXME: notify observers
                 break;
             case DETAILS:
-                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TableDetails.TABLE_DETAILS, selection,
+                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TableDetails.TABLE_NAME, selection,
                         selectionArgs);
                 break;
             case REVIEWS:

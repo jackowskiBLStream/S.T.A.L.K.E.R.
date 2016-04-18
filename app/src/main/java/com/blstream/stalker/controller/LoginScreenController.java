@@ -25,8 +25,6 @@ public class LoginScreenController extends FragmentController<LoginScreenFragmen
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int RC_SIGN_IN = 0;
-    LoginScreenFragment fragment;
-    Context context;
 
     private GoogleApiClient googleApiClient;
     private boolean signedInUser;
@@ -35,10 +33,6 @@ public class LoginScreenController extends FragmentController<LoginScreenFragmen
 
     public LoginScreenController(LoginScreenFragment fragment) {
         super(fragment);
-        this.fragment = fragment;
-        context = fragment.getContext();
-        InternetConnectionObserver internetConnectionObserver = InternetConnectionObserver.getInstance();
-        internetConnectionObserver.addObserver(this);
         initializeGPApiClient();
     }
 
@@ -57,7 +51,7 @@ public class LoginScreenController extends FragmentController<LoginScreenFragmen
      */
     public void runWithoutLogin() {
         signedInUser = false;
-        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
+        view.changeFragment(IMainFragment.LIST_FRAGMENT);
     }
 
     /**
@@ -79,10 +73,13 @@ public class LoginScreenController extends FragmentController<LoginScreenFragmen
      * Method initializes google plus api client
      */
     private void initializeGPApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(context.getApplicationContext())
+        googleApiClient = new GoogleApiClient.Builder(fragment.getActivity().getApplicationContext())
+                //.enableAutoManage
                 .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
     }
 
     /**
@@ -116,7 +113,7 @@ public class LoginScreenController extends FragmentController<LoginScreenFragmen
     public void onConnectionFailed(@NonNull ConnectionResult result) {
         if (!result.hasResolution()) {
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-            int code = googleApiAvailability.isGooglePlayServicesAvailable(context);
+            int code = googleApiAvailability.isGooglePlayServicesAvailable(fragment.getActivity());
             if (googleApiAvailability.isUserResolvableError(code)) {
                 googleApiAvailability.getErrorDialog(fragment.getActivity(), code, RC_SIGN_IN).show();
             }
@@ -140,7 +137,7 @@ public class LoginScreenController extends FragmentController<LoginScreenFragmen
      */
     @Override
     public void onConnected(Bundle arg0) {
-        fragment.changeFragment(IMainFragment.LIST_FRAGMENT);
+        view.changeFragment(IMainFragment.LIST_FRAGMENT);
     }
 
     /**

@@ -1,7 +1,5 @@
 package com.blstream.stalker;
 
-import android.graphics.Point;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.test.rule.ActivityTestRule;
 
@@ -124,8 +122,8 @@ public class DatabaseTest {
         );
     }
 
-    private PlaceDataTest getPlaceData(int name) {
-        return new PlaceDataTest(
+    private PlaceData getPlaceData(int name) {
+        return new PlaceData(
                 "http:/icon",
                 "Store, Bank",
                 "Name " + name,

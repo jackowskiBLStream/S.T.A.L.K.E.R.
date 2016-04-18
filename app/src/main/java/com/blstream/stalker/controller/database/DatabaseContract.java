@@ -14,8 +14,6 @@ public class DatabaseContract {
     public static final String AUTHORITY = "com.blstream.stalker.controller.database.PlacesContentProvider";
     public static final Uri URI_PLACES =
             Uri.parse("content://" + AUTHORITY + "/" + TablePlaces.TABLE_PLACES);
-    public static final Uri URI_DETAILS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableDetails.TABLE_DETAILS);
     public static final Uri URI_REVIEWS =
             Uri.parse("content://" + AUTHORITY + "/" + TableReviews.TABLE_REVIEWS);
 
@@ -25,13 +23,22 @@ public class DatabaseContract {
     }
 
 
-    /**
-     * SQLite table that contains detailed data about places
-     */
     public static class TableDetails implements BaseColumns {
-
+        /**
+         * SQLite table that contains detailed data about places
+         */
         //Table name
-        public static final String TABLE_DETAILS = "details";
+        public static final String TABLE_NAME = "details";
+
+        public static final Uri CONTENT_URI =  Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
+
+        /**
+         * Open hours on monday
+         * type: TEXT
+         */
+        public static final String OPEN_MON = "open_monday";
+
+
         //Table columns
         public static final String[] COLUMN_OPEN_DAY = {"open_mon", "open_tue", "open_wed", "open_thu", "open_fri", "open_sat", "open_sun"};
         public static final String[] COLUMN_CLOSE_DAY = {"close_mon", "close_tue", "close_wed", "close_thu", "close_fri", "close_sat", "close_sun"};
@@ -41,10 +48,10 @@ public class DatabaseContract {
 
         // creation SQL statement
         private static final String TABLE_CREATE = "create table "
-                + TABLE_DETAILS
+                + TABLE_NAME
                 + "("
                 + _ID + " integer primary key autoincrement, "
-                + COLUMN_OPEN_DAY[0] + " text not null, "
+                + OPEN_MON + " text not null, "
                 + COLUMN_CLOSE_DAY[0] + " text not null, "
                 + COLUMN_OPEN_DAY[1] + " text not null, "
                 + COLUMN_CLOSE_DAY[1] + " text not null, "
@@ -71,7 +78,7 @@ public class DatabaseContract {
             Log.w(TablePlaces.class.getName(), "Upgrading database from version "
                     + oldVersion + " to " + newVersion
                     + ", which will destroy all old data");
-            database.execSQL("DROP TABLE IF EXISTS " + TABLE_DETAILS);
+            database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(database);
         }
     }
