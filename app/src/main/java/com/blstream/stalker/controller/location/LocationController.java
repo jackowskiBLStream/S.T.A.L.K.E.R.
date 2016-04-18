@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceDataWithDetails;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -147,7 +148,6 @@ public class LocationController extends LocationFragmentController implements IO
 
 
     private class GetPlaces extends AsyncTask<Object, Object, List<PlaceData>> {
-
 
         @Override
         protected List<PlaceData> doInBackground(Object... params) {

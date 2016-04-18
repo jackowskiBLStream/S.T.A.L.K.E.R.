@@ -16,7 +16,24 @@ public class PlaceData {
     private Location location;
     private OpenHours todayOpenHours;
     private int id;
+    private String place_id;
 
+    public String getPlace_id() {
+        return place_id;
+    }
+
+    public void setPlace_id(String place_id) {
+        this.place_id = place_id;
+    }
+
+    public PlaceData(@NonNull String icon, @NonNull String types,
+                     @NonNull String name, @NonNull Location location, String place_id) {
+        this.icon = icon;
+        this.types = types;
+        this.name = name;
+        this.location = location;
+        this.place_id = place_id;
+    }
 
     public PlaceData(@NonNull String icon, @NonNull String types,
                      @NonNull String name, @NonNull Location location) {
@@ -24,6 +41,24 @@ public class PlaceData {
         this.types = types;
         this.name = name;
         this.location = location;
+    }
+
+
+    public static PlaceData parseJsonObjects(JSONObject jsonObject) {
+        try {
+            JSONObject geometry = (JSONObject) jsonObject.get("geometry");
+            JSONObject location = (JSONObject) geometry.get("location");
+            return new PlaceData(jsonObject.getString("icon"),
+                    jsonObject.getString("types"),
+                    jsonObject.getString("name"),
+                    new Location((Double) location.get("lng"),
+                            (Double) location.get("lng")),
+                    jsonObject.getString("place_id"));
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
@@ -67,26 +102,6 @@ public class PlaceData {
      */
     public double getDistanceFromLocation(Location location) {
         return this.location.getDistance(location);
-    }
-//TODO: WHA THE FUCK IS PONTON?
-    public static PlaceData jsonToPontoReferencia(JSONObject pontoReferencia) {
-        try {
-           // PlaceData placeData = new PlaceData();
-            JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
-            JSONObject location = (JSONObject) geometry.get("location");
-            /*placeData.setPlaceID(pontoReferencia.getString("place_id"));
-            placeData.setLatitude((Double) location.get("lat"));
-            placeData.setLongitude((Double) location.get("lng"));
-            placeData.setIcon(pontoReferencia.getString("icon"));
-            placeData.setName(pontoReferencia.getString("name"));
-            placeData.setTypes(pontoReferencia.getString("types"));*/
-            //TODO: into contructor
-           // return placeData;
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.blstream.stalker.model;
 
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Patryk Gwiazdowski on 13.04.2016.
- * // Good Job Patryk
+ * // Good Job Patryk COS
  */
 public class PlaceDataDetails {
     private OpenHours[] openHours;
@@ -19,14 +18,27 @@ public class PlaceDataDetails {
 
     /**
      * Constructor that sets Details to ones given as parameters
+     *
      * @param openHours 7 element table with open hours in all week
-     * @param rating Place rating
+     * @param rating    Place rating
      * @param reviews   List of 3 first place reviews
      */
     public PlaceDataDetails(OpenHours[] openHours, double rating, ArrayList<Review> reviews) {
         this.openHours = openHours;
         this.rating = rating;
         this.reviews = reviews;
+    }
+
+    public static PlaceDataDetails parseJsonObject(JSONObject jsonObject) {
+        try {
+            OpenHours[] openHours = new OpenHours[7];
+            return new PlaceDataDetails(openHours,
+                    jsonObject.getDouble("rating"),
+                    new ArrayList<Review>());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -56,15 +68,5 @@ public class PlaceDataDetails {
      */
     public ArrayList<Review> getReviews() {
         return reviews;
-    }
-
-    public static PlaceDataDetails jsonToPontoReferencia(JSONObject pontoReferencia) {
-        try {
-            JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
-
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 }

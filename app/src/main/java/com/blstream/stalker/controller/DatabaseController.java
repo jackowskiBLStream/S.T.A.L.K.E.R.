@@ -8,10 +8,7 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.database.DatabaseContract;
 import com.blstream.stalker.controller.database.DatabaseHelper;
-import com.blstream.stalker.controller.database.PlacesContentProvider;
-import com.blstream.stalker.controller.database.TableDetails;
-import com.blstream.stalker.controller.database.TablePlaces;
-import com.blstream.stalker.controller.database.TableReviews;
+
 import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.Location;
 import com.blstream.stalker.model.OpenHours;
@@ -19,7 +16,6 @@ import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
 import com.blstream.stalker.model.Review;
-import com.blstream.stalker.model.interfaces.IReviews;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,7 +56,7 @@ public class DatabaseController implements IDatabaseController {
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             Log.d(TAG, "getAllPlacesData: " + i);
-            Location location = new Location();  //Creates new Location for current PlaceData class instance
+            Location location = new Location(30.0,30.0 );  //Creates new Location for current PlaceData class instance
             location.setLatitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LATITUDE))); //Sets location parameters
             location.setLongitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LONGITUDE)));
             PlaceData data = new PlaceData(  //Creates new PlaceData instance, and fills it fields by Ones Retrieved from Cursor

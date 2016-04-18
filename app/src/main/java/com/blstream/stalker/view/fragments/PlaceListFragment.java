@@ -42,10 +42,9 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         if(savedInstanceState!= null){
-            ArrayList<PlaceData> placeDataList = savedInstanceState.getParcelableArrayList(ADAPTER_PLACE_LIST);
-            adapter.setPlaceDataList(placeDataList);
+          // ArrayList<PlaceData> placeDataList = savedInstanceState.getParcelableArrayList(ADAPTER_PLACE_LIST);
+            //adapter.setPlaceDataList(placeDataList);
         }
         else{
             adapter = new PlaceListAdapter();
@@ -166,7 +165,7 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
         ArrayList<PlaceData> adapterPlaceDataList = new ArrayList();
         List<PlaceData> adapterList = adapter.getPlaceDataList();
         adapterPlaceDataList.addAll(adapterList);
-        outState.putParcelableArrayList(ADAPTER_PLACE_LIST,adapterPlaceDataList);
+       // outState.putParcelableArrayList(ADAPTER_PLACE_LIST,adapterPlaceDataList);
 
     }
 }

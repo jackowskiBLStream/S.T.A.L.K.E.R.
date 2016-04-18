@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
+import com.blstream.stalker.model.PlaceDataWithDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +33,6 @@ public class GooglePlacesController {
         try {
             String json = getJSON(urlString);
 
-            System.out.println(json);
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
@@ -40,7 +40,7 @@ public class GooglePlacesController {
             for (int i = 0; i < array.length(); i++) {
                 try {
                     PlaceData place = PlaceData
-                            .jsonToPontoReferencia((JSONObject) array.get(i));
+                            .parseJsonObjects((JSONObject) array.get(i));
                     Log.v("Places Services ", "" + place);
                     arrayList.add(place);
                 } catch (Exception e) {
@@ -53,30 +53,48 @@ public class GooglePlacesController {
         }
         return null;
     }
-    public List<PlaceDataDetails> findPlacesDetails(String place_id) {
-        String urlString = makeUrl(place_id);
-        try {
-            String json = getJSON(urlString);
-            System.out.println(json);
-            JSONObject object = new JSONObject(json);
-            JSONArray array = object.getJSONArray("result");
+  /* public List<PlaceDataWithDetails> findPlaces(double latitude, double longitude,
+                                                String placeSpecification) {
 
-            List<PlaceDataDetails> arrayList = new ArrayList<>();
-            for (int i = 0; i < array.length(); i++) {
-                try {
-                    PlaceDataDetails placeDetails = PlaceDataDetails
-                            .jsonToPontoReferencia((JSONObject) array.get(i));
-                    Log.v("Places Services ", "" + placeDetails);
-                    arrayList.add(placeDetails);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return arrayList;
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        return null;
+       String urlPlaceString = makeUrl(latitude, longitude, placeSpecification);
+
+       try {
+           String json = getJSON(urlPlaceString);
+
+           System.out.println(json);
+           JSONObject object = new JSONObject(json);
+           JSONArray array = object.getJSONArray("results");
+
+           List<PlaceDataWithDetails> arrayList = new ArrayList<>();
+           for (int i = 0; i < array.length(); i++) {
+               try {
+                   PlaceData place = PlaceData
+                           .parseJsonObjects((JSONObject) array.get(i));
+                   PlaceDataDetails placeDataDetails;
+                   if (place != null) {
+                       placeDataDetails = findPlaceDetails(place.getPlace_id());
+                       arrayList.add(new PlaceDataWithDetails(place, placeDataDetails));
+                   }
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+           return arrayList;
+       } catch (JSONException ex) {
+           ex.printStackTrace();
+       }
+       return null;
+   }*/
+
+    public PlaceDataDetails findPlaceDetails(String place_id) throws JSONException {
+        String urlString = makeUrl(place_id);
+        String json = getJSON(urlString);
+        JSONObject object = new JSONObject(json);
+
+        PlaceDataDetails placeDetails = PlaceDataDetails
+                .parseJsonObject(object);
+        Log.v("Places Services ", "" + placeDetails);
+        return placeDetails;
     }
 
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
@@ -101,6 +119,7 @@ public class GooglePlacesController {
         }
         return searchPlaceUrl.toString();
     }
+
     // https://maps.googleapis.com/maps/api/place/search/json?place_id=dasdasgwe&key=apikey
     private String makeUrl(String place_id) {
         StringBuilder detailsPlaceUrl = new StringBuilder(
@@ -111,6 +130,7 @@ public class GooglePlacesController {
 
         return detailsPlaceUrl.toString();
     }
+
     protected String getJSON(String url) {
         return getUrlContents(url);
     }
