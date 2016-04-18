@@ -1,6 +1,6 @@
 package com.blstream.stalker.controller;
 
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
+import com.blstream.stalker.view.fragments.LoginScreenView;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,11 +11,11 @@ import static org.junit.Assert.*;
 public class LoginScreenControllerTest {
 
     LoginScreenController loginScreenController;
-    LoginScreenFragment loginScreenFragment;
+    LoginScreenView loginScreenView;
 
     @Before
     public void setUp() throws Exception {
-//        loginScreenFragment = new LoginScreenFragment();
+//        loginScreenFragment = new LoginScreenView();
 //        loginScreenController = new LoginScreenController(loginScreenFragment);
     }
 
@@ -27,7 +27,7 @@ public class LoginScreenControllerTest {
     @Test
     public void testGooglePlusLoginWhenSuccess() throws Exception {
         // given
-        loginScreenFragment = new LoginScreenFragment();
+        loginScreenFragment = new LoginScreenView();
         loginScreenController = new LoginScreenController(loginScreenFragment);
         // when
         loginScreenController.googlePlusLogin();
@@ -39,7 +39,7 @@ public class LoginScreenControllerTest {
     @Test
     public void testRunWithoutLogin() throws Exception {
         // given
-        loginScreenFragment = new LoginScreenFragment();
+        loginScreenFragment = new LoginScreenView();
         loginScreenController = new LoginScreenController(loginScreenFragment);
         // when
         loginScreenController.runWithoutLogin();

@@ -4,31 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.blstream.stalker.controller.LoginScreenController;
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
-import com.blstream.stalker.view.fragments.PlaceListFragment;
+import com.blstream.stalker.view.fragments.LoginScreenView;
+import com.blstream.stalker.view.fragments.PlaceListView;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private static final String FRAGMENT_KEY = "LoginScreenFragment";
-    LoginScreenFragment loginScreenFragment;
-    private PlaceListFragment listFragment;
+    private static final String FRAGMENT_KEY = "LoginScreenView";
+    LoginScreenView loginScreenView;
+    private PlaceListView listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializationOfSaveInstanceState(savedInstanceState);
-
+        
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == LoginScreenController.RC_SIGN_IN) {
-            loginScreenFragment.sendLoginResultToFragment(requestCode, resultCode, RESULT_OK);
-//        } else {
-//        }
 
+        loginScreenView.sendLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         super.onActivityResult(requestCode, resultCode, data);
 
     }
@@ -47,12 +43,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+
     private void initializationOfSaveInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            loginScreenFragment = new LoginScreenFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, loginScreenFragment).commit();
+            loginScreenView = new LoginScreenView();
+            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, loginScreenView).commit();
         } else {
-            loginScreenFragment = (LoginScreenFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
+            loginScreenView = (LoginScreenView) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
         }
     }
 

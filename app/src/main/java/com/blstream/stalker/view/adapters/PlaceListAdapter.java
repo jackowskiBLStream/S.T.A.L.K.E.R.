@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.ImageController;
 import com.blstream.stalker.model.PlaceData;
-import com.blstream.stalker.view.fragments.DetailItemFragment;
+import com.blstream.stalker.view.fragments.DetailItemView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,9 +111,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
          @TargetApi(Build.VERSION_CODES.LOLLIPOP)
          private void initialTransactionName(){
              if (android.os.Build.VERSION.SDK_INT >= 21) {
-                 mPubName.setTransitionName(DetailItemFragment.NAME_TRANSACTION_NAME);
-                 mOpenHours.setTransitionName(DetailItemFragment.OPEN_HOURS_TRANSACTION_NAME);
-                 mTags.setTransitionName(DetailItemFragment.TAGS_TRANSACTION_NAME);
+                 mPubName.setTransitionName(DetailItemView.NAME_TRANSACTION_NAME);
+                 mOpenHours.setTransitionName(DetailItemView.OPEN_HOURS_TRANSACTION_NAME);
+                 mTags.setTransitionName(DetailItemView.TAGS_TRANSACTION_NAME);
              }
          }
 

@@ -10,11 +10,10 @@ import android.util.Log;
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceLocation;
-import com.blstream.stalker.view.fragments.PlaceListFragment;
+import com.blstream.stalker.view.fragments.PlaceListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -34,9 +33,9 @@ public class LocationController implements IOperationsController, OnConnectionFa
     private GoogleApiClient googleApiClientLocation;
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
-    private PlaceListFragment fragment;
+    private PlaceListView fragment;
 
-    public LocationController(PlaceListFragment fragment) {
+    public LocationController(PlaceListView fragment) {
         this.fragment = fragment;
         createGoogleApiClientInstance();
         createLocationRequest();

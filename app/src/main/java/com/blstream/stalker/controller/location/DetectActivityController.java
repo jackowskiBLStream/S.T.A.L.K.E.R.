@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.blstream.stalker.view.fragments.PlaceListFragment;
+import com.blstream.stalker.view.fragments.PlaceListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -24,11 +24,11 @@ public class DetectActivityController implements IOperationsController, GoogleAp
 
     private static final String TAG = "DetectController: ";
     private static final int DETECTION_TIME = 0;
-    private PlaceListFragment fragment;
+    private PlaceListView fragment;
     private ActivityDetectionBroadcastReceiver activityDetectionBroadcastReceiver;
     private GoogleApiClient googleApiClientActivityDetector;
 
-    public DetectActivityController(PlaceListFragment fragment) {
+    public DetectActivityController(PlaceListView fragment) {
         this.fragment = fragment;
         activityDetectionBroadcastReceiver = new ActivityDetectionBroadcastReceiver();
         createGoogleApiClientInstance();

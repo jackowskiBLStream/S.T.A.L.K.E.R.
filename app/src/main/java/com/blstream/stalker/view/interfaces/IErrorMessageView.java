@@ -1,6 +1,6 @@
 package com.blstream.stalker.view.interfaces;
 
-public interface IErrorMessageFragment {
+public interface IErrorMessageView {
     void setErrorMessage(String message);
 
 }

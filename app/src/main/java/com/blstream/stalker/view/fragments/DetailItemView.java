@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.blstream.stalker.R;
 
-public class DetailItemFragment extends Fragment {
+public class DetailItemView extends Fragment {
 
     public final static String POSITION_BUNDLE_KEY = "PositionKey";
     public final static String IMAGE_BUNDLE_KEY = "imageKEY";

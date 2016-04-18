@@ -11,12 +11,12 @@ import com.blstream.stalker.R;
 import com.blstream.stalker.controller.DatabaseController;
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.controller.PlaceListController;
-import com.blstream.stalker.view.abstractClass.AbstracFragmentClass;
-import com.blstream.stalker.view.interfaces.ILoginFragment;
+import com.blstream.stalker.view.abstractClass.BasicView;
+import com.blstream.stalker.view.interfaces.ILoginView;
 import com.google.android.gms.common.SignInButton;
 
 
-public class LoginScreenFragment extends AbstracFragmentClass implements ILoginFragment {
+public class LoginScreenView extends BasicView implements ILoginView {
     SignInButton signInButton;
     Button noThanksButton;
     LoginScreenController loginScreenController;

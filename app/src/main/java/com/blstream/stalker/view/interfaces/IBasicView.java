@@ -1,15 +1,13 @@
 package com.blstream.stalker.view.interfaces;
 
 import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
 
 import com.blstream.stalker.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Observer;
 
-public interface IMainFragment {
+public interface IBasicView {
 
 
     /**
@@ -35,7 +33,7 @@ public interface IMainFragment {
 
     /**
      *  Shows error selecgted in the argument
-     * @param errorMode {@link com.blstream.stalker.view.interfaces.IMainFragment.ErrorMode}
+     * @param errorMode {@link IBasicView.ErrorMode}
      */
     void showError(@ErrorMode int errorMode);
 
@@ -46,7 +44,7 @@ public interface IMainFragment {
 
     /**
      *  Changs fragment to a selected fragment in the argument
-     * @param fragmentType {@link com.blstream.stalker.view.interfaces.IMainFragment.FragmentType}
+     * @param fragmentType {@link IBasicView.FragmentType}
      */
     void changeFragment(@FragmentType int fragmentType);
 
