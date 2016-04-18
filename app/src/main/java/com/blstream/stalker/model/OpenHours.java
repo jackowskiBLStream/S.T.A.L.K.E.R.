@@ -17,7 +17,7 @@ public class OpenHours {
      * @param timeOpened time open to be set
      * @param timeClosed time closed to be set
      */
-    public OpenHours(@NonNull String timeClosed,@NonNull String timeOpened) {
+    public OpenHours(@NonNull String timeOpened, @NonNull String timeClosed) {
         this.timeClosed = timeClosed;
         this.timeOpened = timeOpened;
     }

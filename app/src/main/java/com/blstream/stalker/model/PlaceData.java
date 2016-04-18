@@ -1,6 +1,5 @@
 package com.blstream.stalker.model;
 
-import android.location.Location;
 import android.support.annotation.NonNull;
 
 /**
@@ -8,8 +7,8 @@ import android.support.annotation.NonNull;
  */
 public class PlaceData {
 
-    private String icon;
     private String name;
+    private String icon;
     private String types;
     private Location location;
     private OpenHours todayOpenHours;
@@ -64,11 +63,12 @@ public class PlaceData {
      * @return distance to location specified in param
      */
     public float getDistanceFromLocation(Location location) {
-        return this.location.distanceTo(location);
+        return this.location.getDistance(location);
     }
 
     /**
      * Overrided toString() method
+     *
      * @return String that contains some basic information about Place
      */
     @Override
@@ -83,7 +83,6 @@ public class PlaceData {
     }
 
     /**
-     *
      * @return Place Id in database
      */
     public int getId() {
@@ -91,16 +90,16 @@ public class PlaceData {
     }
 
     /**
-     *
      * @param id Sets Place id to
      */
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
     /**
      * Sets Today Opening hours to given in parameter. Used in Database Controller to retrieve and set
      * hours for current day of week
+     *
      * @param hours to be set as today open hours
      */
     public void setTodayOpeningHours(OpenHours hours) {

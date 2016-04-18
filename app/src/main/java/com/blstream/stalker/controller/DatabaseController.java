@@ -3,16 +3,13 @@ package com.blstream.stalker.controller;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import com.blstream.stalker.controller.database.DatabaseContract;
 import com.blstream.stalker.controller.database.DatabaseHelper;
-import com.blstream.stalker.controller.database.PlacesContentProvider;
-import com.blstream.stalker.controller.database.TableDetails;
-import com.blstream.stalker.controller.database.TablePlaces;
-import com.blstream.stalker.controller.database.TableReviews;
 import com.blstream.stalker.controller.interfaces.IDatabaseController;
+import com.blstream.stalker.model.Location;
 import com.blstream.stalker.model.OpenHours;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
@@ -42,9 +39,9 @@ public class DatabaseController implements IDatabaseController {
      */
     @Override
     public void clearDB() {
-        Log.d(TAG, "clearDB: rows Deleted from Places:" + context.getContentResolver().delete(PlacesContentProvider.URI_PLACES, null, null));
-        Log.d(TAG, "clearDB: rows Deleted from Details:" + context.getContentResolver().delete(PlacesContentProvider.URI_DETAILS, null, null));
-        Log.d(TAG, "clearDB: rows Deleted from Reviews:" + context.getContentResolver().delete(PlacesContentProvider.URI_REVIEWS, null, null));
+        Log.d(TAG, "clearDB: rows Deleted from Places:" + clearPlacesTable());
+        Log.d(TAG, "clearDB: rows Deleted from Details:" + clearDetailsTable());
+        Log.d(TAG, "clearDB: rows Deleted from Reviews:" + clearReviewsTable());
     }
 
     /**
@@ -53,21 +50,20 @@ public class DatabaseController implements IDatabaseController {
     @Override
     public List<PlaceData> getAllPlacesData() {
         ArrayList<PlaceData> list = new ArrayList<>();
-        Cursor cursor = context.getContentResolver().query(PlacesContentProvider.URI_PLACES, null, null, null, null);
+        Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_PLACES, null, null, null, null);
         assert cursor != null;
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             Log.d(TAG, "getAllPlacesData: " + i);
-            //FIXME ask Jackowski whats going on
-            Location location = new Location("");  //Creates new Location for current PlaceData class instance
-            location.setLatitude(cursor.getLong(cursor.getColumnIndex(TablePlaces.COLUMN_LATITUDE))); //Sets location parameters
-            location.setLongitude(cursor.getLong(cursor.getColumnIndex(TablePlaces.COLUMN_LONGITUDE)));
+            Location location = new Location();  //Creates new Location for current PlaceData class instance
+            location.setLatitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LATITUDE))); //Sets location parameters
+            location.setLongitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LONGITUDE)));
             PlaceData data = new PlaceData(  //Creates new PlaceData instance, and fills it fields by Ones Retrieved from Cursor
-                    cursor.getString(cursor.getColumnIndex(TablePlaces.COLUMN_IMG_URL)),
-                    cursor.getString(cursor.getColumnIndex(TablePlaces.COLUMN_TYPES)),
-                    cursor.getString(cursor.getColumnIndex(TablePlaces.COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_IMG_URL)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_TYPES)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_NAME)),
                     location);
-            data.setId(cursor.getInt(cursor.getColumnIndex(TablePlaces.COLUMN_ID)));    //Sets PlaceData id to one Row id fromd atabase
+            data.setId(cursor.getInt(cursor.getColumnIndex(DatabaseContract.TablePlaces._ID)));    //Sets PlaceData id to one Row id fromd atabase
             int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
             if (day == -1) {
                 day = 6;
@@ -81,6 +77,30 @@ public class DatabaseController implements IDatabaseController {
     }
 
     /**
+     * Clears TableReviews
+     * @return number of rows deleted
+     */
+    protected int clearReviewsTable(){
+        return context.getContentResolver().delete(DatabaseContract.URI_REVIEWS, null, null);
+    }
+
+    /**
+     * Clears TableDetails
+     * @return number of rows deleted
+     */
+    protected int clearDetailsTable() {
+        return context.getContentResolver().delete(DatabaseContract.URI_DETAILS, null, null);
+    }
+
+    /**
+     * Clears TablePlaces
+     * @return number of rows deleted
+     */
+    protected int clearPlacesTable(){
+        return context.getContentResolver().delete(DatabaseContract.URI_PLACES, null, null);
+    }
+
+    /**
      * Gets PlaceDataDetails for PlaceData given as parameter
      *
      * @param place for which data will be returned
@@ -89,49 +109,24 @@ public class DatabaseController implements IDatabaseController {
     @Override
     public PlaceDataDetails getPlaceDetails(PlaceData place) {
         PlaceDataDetails details;
-        String where = TableDetails.COLUMN_PLACE_ID + " = ?";
+        String where = DatabaseContract.TableDetails.COLUMN_PLACE_ID + " = ?";
         String[] selection = {String.valueOf(place.getId())};
-        Cursor cursor = context.getContentResolver().query(PlacesContentProvider.URI_DETAILS, null, where, selection, null);
+        Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_DETAILS, null, where, selection, null);
         assert cursor != null;
         cursor.moveToFirst();
         OpenHours[] openHours = new OpenHours[7];
         for (int i = 0; i < DAYS_IN_WEEK; i++) {
-            openHours[i] = new OpenHours(cursor.getString(cursor.getColumnIndex(TableDetails.COLUMN_OPEN_DAY[i])),
-                    cursor.getString(cursor.getColumnIndex(TableDetails.COLUMN_CLOSE_DAY[i])));
+            openHours[i] = new OpenHours(cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i])),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_CLOSE_DAY[i])));
         }
         ArrayList<Review> reviews = getReviews(place.getId());
         details = new PlaceDataDetails(
                 openHours,
-                cursor.getDouble(cursor.getColumnIndex(TableDetails.COLUMN_RATING)),
+                cursor.getDouble(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_RATING)),
                 reviews);
         cursor.close();
         return details;
     }
-
-    /**
-     * @param id of Place
-     * @return list of reviews of place with id specified in parameter
-     */
-    private ArrayList<Review> getReviews(int id) {
-        String where = TableReviews.COLUMN_PLACE_ID + "= ?";
-        String[] selection = {String.valueOf(id)};
-        Cursor cursor = context.getContentResolver().query(PlacesContentProvider.URI_REVIEWS, null, where, selection, null);
-        ArrayList<Review> list = new ArrayList<>();
-        assert cursor != null;
-        cursor.moveToFirst();
-        for (int i = 0; i < cursor.getCount(); i++) {
-            Review review = new Review(
-                    cursor.getString(cursor.getColumnIndex(TableReviews.COLUMN_AUTHOR)),
-                    cursor.getString(cursor.getColumnIndex(TableReviews.COLUMN_REVIEW)),
-                    cursor.getDouble(cursor.getColumnIndex(TableReviews.COLUMN_RATING))
-            );
-            list.add(review);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return list;
-    }
-
 
     /**
      * add specified data to database
@@ -145,6 +140,31 @@ public class DatabaseController implements IDatabaseController {
             addPlace(place);
         }
         return true;
+    }
+
+
+    /**
+     * @param id of Place
+     * @return list of reviews of place with id specified in parameter
+     */
+    private ArrayList<Review> getReviews(int id) {
+        String where = DatabaseContract.TableReviews.COLUMN_PLACE_ID + "= ?";
+        String[] selection = {String.valueOf(id)};
+        Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_REVIEWS, null, where, selection, null);
+        ArrayList<Review> list = new ArrayList<>();
+        assert cursor != null;
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            Review review = new Review(
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TableReviews.COLUMN_AUTHOR)),
+                    cursor.getString(cursor.getColumnIndex(DatabaseContract.TableReviews.COLUMN_REVIEW)),
+                    cursor.getDouble(cursor.getColumnIndex(DatabaseContract.TableReviews.COLUMN_RATING))
+            );
+            list.add(review);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
     }
 
     private boolean addPlace(PlaceDataWithDetails data) {
@@ -164,12 +184,12 @@ public class DatabaseController implements IDatabaseController {
      */
     private int addPlaceData(PlaceData placeData) {
         ContentValues valuesData = new ContentValues();
-        valuesData.put(TablePlaces.COLUMN_NAME, placeData.getName());
-        valuesData.put(TablePlaces.COLUMN_IMG_URL, placeData.getIconUrl());
-        valuesData.put(TablePlaces.COLUMN_TYPES, placeData.getTypes());
-        valuesData.put(TablePlaces.COLUMN_LATITUDE, placeData.getLocation().getLatitude());
-        valuesData.put(TablePlaces.COLUMN_LONGITUDE, placeData.getLocation().getLongitude());
-        Uri uri = context.getContentResolver().insert(PlacesContentProvider.URI_PLACES, valuesData);
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_NAME, placeData.getName());
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_IMG_URL, placeData.getIconUrl());
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_TYPES, placeData.getTypes());
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_LATITUDE, placeData.getLocation().getLatitude());
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_LONGITUDE, placeData.getLocation().getLongitude());
+        Uri uri = context.getContentResolver().insert(DatabaseContract.URI_PLACES, valuesData);
         String rowNumber;
         if (uri != null) {
             rowNumber = uri.getLastPathSegment();
@@ -181,13 +201,13 @@ public class DatabaseController implements IDatabaseController {
 
     private void addDataDetails(PlaceDataDetails placeDataDetails, int placeDataId) {
         ContentValues values = new ContentValues();
-        values.put(TableDetails.COLUMN_RATING, placeDataDetails.getRating());
-        values.put(TableDetails.COLUMN_PLACE_ID, placeDataId);
+        values.put(DatabaseContract.TableDetails.COLUMN_RATING, placeDataDetails.getRating());
+        values.put(DatabaseContract.TableDetails.COLUMN_PLACE_ID, placeDataId);
         for (int i = 0; i < 7; i++) {
-            values.put(TableDetails.COLUMN_OPEN_DAY[i], placeDataDetails.getOpeningHours(i).getOpenTime());
-            values.put(TableDetails.COLUMN_CLOSE_DAY[i], placeDataDetails.getOpeningHours(i).getCloseTime());
+            values.put(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i], placeDataDetails.getOpeningHours(i).getOpenTime());
+            values.put(DatabaseContract.TableDetails.COLUMN_CLOSE_DAY[i], placeDataDetails.getOpeningHours(i).getCloseTime());
         }
-        context.getContentResolver().insert(PlacesContentProvider.URI_DETAILS, values);
+        context.getContentResolver().insert(DatabaseContract.URI_DETAILS, values);
         addDataReviews(placeDataDetails.getReviews(), placeDataId);
     }
 
@@ -195,11 +215,11 @@ public class DatabaseController implements IDatabaseController {
         ContentValues values;
         for (Review review : reviews) {
             values = new ContentValues();
-            values.put(TableReviews.COLUMN_REVIEW, review.getReview());
-            values.put(TableReviews.COLUMN_AUTHOR, review.getAuthor());
-            values.put(TableReviews.COLUMN_RATING, review.getRating());
-            values.put(TableReviews.COLUMN_PLACE_ID, placeDataId);
-            context.getContentResolver().insert(PlacesContentProvider.URI_REVIEWS, values);
+            values.put(DatabaseContract.TableReviews.COLUMN_REVIEW, review.getReview());
+            values.put(DatabaseContract.TableReviews.COLUMN_AUTHOR, review.getAuthor());
+            values.put(DatabaseContract.TableReviews.COLUMN_RATING, review.getRating());
+            values.put(DatabaseContract.TableReviews.COLUMN_PLACE_ID, placeDataId);
+            context.getContentResolver().insert(DatabaseContract.URI_REVIEWS, values);
         }
     }
 }
