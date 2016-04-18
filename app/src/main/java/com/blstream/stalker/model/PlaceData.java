@@ -1,12 +1,6 @@
 package com.blstream.stalker.model;
 
-import android.location.Location;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.blstream.stalker.model.interfaces.IOpenHours;
-import com.blstream.stalker.model.interfaces.IPlaceData;
-
+import android.support.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,99 +8,27 @@ import org.json.JSONObject;
 /**
  * Stores all data about particular place
  */
-public class PlaceData implements IPlaceData, Parcelable {
+public class PlaceData {
 
-    private String icon;
     private String name;
+    private String icon;
     private String types;
     private Location location;
-    private double longitude;
-    private double latitude;
-    private IOpenHours todayOpenHours;
-    private String placeID;
-
-    public PlaceData(){}
-
-    protected PlaceData(Parcel in) {
-        icon = in.readString();
-        name = in.readString();
-        types = in.readString();
-        location = in.readParcelable(Location.class.getClassLoader());
-        longitude = in.readDouble();
-        latitude = in.readDouble();
-    }
+    private OpenHours todayOpenHours;
+    private int id;
 
 
-    public static final Creator<PlaceData> CREATOR = new Creator<PlaceData>() {
-        @Override
-        public PlaceData createFromParcel(Parcel in) {
-            return new PlaceData(in);
-        }
-
-        @Override
-        public PlaceData[] newArray(int size) {
-            return new PlaceData[size];
-        }
-    };
-
-    public String getPlaceID() {
-        return placeID;
-    }
-
-    public void setPlaceID(String placeID) {
-        this.placeID = placeID;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTypes(String types) {
-        this.types = types;
-    }
-
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setTodayOpenHours(IOpenHours todayOpenHours) {
-        this.todayOpenHours = todayOpenHours;
-    }
-
-    public PlaceData(String icon, String types, IOpenHours todayOpenHours, String name, Location location) {
+    public PlaceData(@NonNull String icon, @NonNull String types,
+                     @NonNull String name, @NonNull Location location) {
         this.icon = icon;
         this.types = types;
-        this.todayOpenHours = todayOpenHours;
         this.name = name;
         this.location = location;
-
     }
 
     /**
      * @return place icon
      */
-    @Override
     public String getIconUrl() {
         return icon;
     }
@@ -114,7 +36,6 @@ public class PlaceData implements IPlaceData, Parcelable {
     /**
      * @return place name
      */
-    @Override
     public String getName() {
         return name;
     }
@@ -122,7 +43,6 @@ public class PlaceData implements IPlaceData, Parcelable {
     /**
      * @return list of place types
      */
-    @Override
     public String getTypes() {
         return types;
     }
@@ -130,15 +50,13 @@ public class PlaceData implements IPlaceData, Parcelable {
     /**
      * @return hours when place is opened at day specified
      */
-    @Override
-    public IOpenHours getTodayOpenHours() {
+    public OpenHours getTodayOpenHours() {
         return todayOpenHours;
     }
 
     /**
      * @return place location
      */
-    @Override
     public Location getLocation() {
         return location;
     }
@@ -147,43 +65,54 @@ public class PlaceData implements IPlaceData, Parcelable {
      * @param location location to which distance will be calculated
      * @return distance to location specified in param
      */
-    @Override
-    public float getDistanceFromLocation(Location location) {
-        return this.location.distanceTo(location);
+    public double getDistanceFromLocation(Location location) {
+        return this.location.getDistance(location);
     }
 //TODO: WHA THE FUCK IS PONTON?
     public static PlaceData jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
-            PlaceData placeData = new PlaceData();
+           // PlaceData placeData = new PlaceData();
             JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
             JSONObject location = (JSONObject) geometry.get("location");
-            placeData.setPlaceID(pontoReferencia.getString("place_id"));
+            /*placeData.setPlaceID(pontoReferencia.getString("place_id"));
             placeData.setLatitude((Double) location.get("lat"));
             placeData.setLongitude((Double) location.get("lng"));
             placeData.setIcon(pontoReferencia.getString("icon"));
             placeData.setName(pontoReferencia.getString("name"));
-            placeData.setTypes(pontoReferencia.getString("types"));
-            return placeData;
+            placeData.setTypes(pontoReferencia.getString("types"));*/
+            //TODO: into contructor
+           // return placeData;
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
         return null;
+
+    }
+
+    /**
+     * @return Place Id in database
+     */
+    public int getId() {
+        return id;
     }
 
 
-
-    @Override
-    public int describeContents() {
-        return 0;
+    /**
+     * @param id Sets Place id to
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(icon);
-        dest.writeString(name);
-        dest.writeString(types);
-        dest.writeParcelable(location, flags);
-        dest.writeDouble(longitude);
-        dest.writeDouble(latitude);
+    /**
+     * Sets Today Opening hours to given in parameter. Used in Database Controller to retrieve and set
+     * hours for current day of week
+     *
+     * @param hours to be set as today open hours
+     */
+    public void setTodayOpeningHours(OpenHours hours) {
+        this.todayOpenHours = hours;
     }
+
+
 }

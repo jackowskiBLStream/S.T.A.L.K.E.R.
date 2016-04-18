@@ -1,26 +1,29 @@
 package com.blstream.stalker.model;
 
-import com.blstream.stalker.model.interfaces.IOpenHours;
-import com.blstream.stalker.model.interfaces.IPlaceDataDetails;
-import com.blstream.stalker.model.interfaces.IReviews;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by Patryk Gwiazdowski on 13.04.2016.
  * // Good Job Patryk
  */
-public class PlaceDataDetails implements IPlaceDataDetails {
-    private IOpenHours[] openHours;
+public class PlaceDataDetails {
+    private OpenHours[] openHours;
     private double rating;
-    private ArrayList<IReviews> reviews;
 
-    public PlaceDataDetails(){}
-    public PlaceDataDetails(IOpenHours[] openHours, int rating, ArrayList<IReviews> reviews) {
+    private ArrayList<Review> reviews;
+
+    /**
+     * Constructor that sets Details to ones given as parameters
+     * @param openHours 7 element table with open hours in all week
+     * @param rating Place rating
+     * @param reviews   List of 3 first place reviews
+     */
+    public PlaceDataDetails(OpenHours[] openHours, double rating, ArrayList<Review> reviews) {
         this.openHours = openHours;
         this.rating = rating;
         this.reviews = reviews;
@@ -29,8 +32,7 @@ public class PlaceDataDetails implements IPlaceDataDetails {
     /**
      * @return open hours for all days in week
      */
-    @Override
-    public IOpenHours[] getAllOpenHours() {
+    public OpenHours[] getAllOpenHours() {
         return openHours;
     }
 
@@ -38,15 +40,13 @@ public class PlaceDataDetails implements IPlaceDataDetails {
      * @param day day number 0 - monday ... 6 - sunday
      * @return hours when place is opened at day specified
      */
-    @Override
-    public IOpenHours getOpenHours(int day) {
+    public OpenHours getOpeningHours(int day) {
         return openHours[day];
     }
 
     /**
      * @return place rating
      */
-    @Override
     public double getRating() {
         return rating;
     }
@@ -54,8 +54,7 @@ public class PlaceDataDetails implements IPlaceDataDetails {
     /**
      * @return three last place reviews
      */
-    @Override
-    public Collection<IReviews> getReviews() {
+    public ArrayList<Review> getReviews() {
         return reviews;
     }
 

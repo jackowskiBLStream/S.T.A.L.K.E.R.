@@ -1,10 +1,8 @@
 package com.blstream.stalker.controller.database;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -17,13 +15,7 @@ import android.support.annotation.Nullable;
  */
 public class PlacesContentProvider extends ContentProvider {
 
-    public static final String AUTHORITY = "com.blstream.stalker.controller.database.PlacesContentProvider";
-    public static final Uri URI_PLACES =
-            Uri.parse("content://" + AUTHORITY + "/" + TablePlaces.TABLE_PLACES);
-    public static final Uri URI_DETAILS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableDetails.TABLE_DETAILS);
-    public static final Uri URI_REVIEWS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableReviews.TABLE_REVIEWS);
+
     private static final int PLACES = 0;
     private static final int PLACES_ID = 1;
     private static final int DETAILS = 2;
@@ -34,12 +26,12 @@ public class PlacesContentProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_PLACES, PLACES);
-        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_PLACES + "/#", PLACES_ID);
-        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_DETAILS, DETAILS);
-        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_DETAILS + "/#", DETAILS_ID);
-        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_REVIEWS, REVIEWS);
-        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_REVIEWS + "/#", REVIEWS_ID);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TablePlaces.TABLE_PLACES, PLACES);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TablePlaces.TABLE_PLACES + "/#", PLACES_ID);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_DETAILS, DETAILS);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_DETAILS + "/#", DETAILS_ID);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableReviews.TABLE_REVIEWS, REVIEWS);
+        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableReviews.TABLE_REVIEWS + "/#", REVIEWS_ID);
 
     }
 
@@ -67,13 +59,13 @@ public class PlacesContentProvider extends ContentProvider {
 
         switch (uriType) {
             case PLACES:
-                queryBuilder.setTables(TablePlaces.TABLE_PLACES);
+                queryBuilder.setTables(DatabaseContract.TablePlaces.TABLE_PLACES);
                 break;
             case DETAILS:
-                queryBuilder.setTables(TableDetails.TABLE_DETAILS);
+                queryBuilder.setTables(DatabaseContract.TableDetails.TABLE_DETAILS);
                 break;
             case REVIEWS:
-                queryBuilder.setTables(TableReviews.TABLE_REVIEWS);
+                queryBuilder.setTables(DatabaseContract.TableReviews.TABLE_REVIEWS);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI");
@@ -109,16 +101,16 @@ public class PlacesContentProvider extends ContentProvider {
         String tableName;
         switch (uriType) {
             case PLACES:
-                id = sqLiteDatabase.insert(TablePlaces.TABLE_PLACES, null, values);
-                tableName = TablePlaces.TABLE_PLACES;
+                id = sqLiteDatabase.insert(DatabaseContract.TablePlaces.TABLE_PLACES, null, values);
+                tableName = DatabaseContract.TablePlaces.TABLE_PLACES;
                 break;
             case DETAILS:
-                id = sqLiteDatabase.insert(TableDetails.TABLE_DETAILS, null, values);
-                tableName = TableDetails.TABLE_DETAILS;
+                id = sqLiteDatabase.insert(DatabaseContract.TableDetails.TABLE_DETAILS, null, values);
+                tableName = DatabaseContract.TableDetails.TABLE_DETAILS;
                 break;
             case REVIEWS:
-                id = sqLiteDatabase.insert(TableReviews.TABLE_REVIEWS, null, values);
-                tableName = TableReviews.TABLE_REVIEWS;
+                id = sqLiteDatabase.insert(DatabaseContract.TableReviews.TABLE_REVIEWS, null, values);
+                tableName = DatabaseContract.TableReviews.TABLE_REVIEWS;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -130,15 +122,34 @@ public class PlacesContentProvider extends ContentProvider {
      * {@inheritDoc}
      */
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+        int uriType = uriMatcher.match(uri);
+        SQLiteDatabase sqLiteDatabase = databse.getWritableDatabase();
+        int rowsDeleted = 0;
+        switch (uriType) {
+            case PLACES:
+                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TablePlaces.TABLE_PLACES, selection,
+                        selectionArgs);
+                break;
+            case DETAILS:
+                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TableDetails.TABLE_DETAILS, selection,
+                        selectionArgs);
+                break;
+            case REVIEWS:
+                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TableReviews.TABLE_REVIEWS, selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+        return rowsDeleted;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
 
