@@ -20,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializationOfSaveInstanceState(savedInstanceState);
+
     }
 
     @Override
@@ -27,8 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode == LoginScreenController.RC_SIGN_IN) {
             loginScreenFragment.sentLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override

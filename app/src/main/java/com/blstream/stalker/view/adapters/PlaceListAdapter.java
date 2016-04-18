@@ -50,9 +50,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         if (placeDataList.size() != 0) {
             holder.mPubName.setText(placeDataList.get(position).getName());
-//            imageController.getImage(placeDataList.get(position).getIconUrl(),holder.mPubPlaceImage);
 //            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
             holder.mTags.setText(placeDataList.get(position).getTypes());
             generateAndSetMutedColorToCardViewBackground(holder);

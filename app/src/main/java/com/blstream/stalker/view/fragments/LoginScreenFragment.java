@@ -74,8 +74,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
              */
             @Override
             public void onClick(View v) {
-                placeListController.doSomething();
-                db.addPlacesToDB(list);
+                loginScreenController.googlePlusLogin();
             }
         });
         noThanksButton.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +84,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
              */
             @Override
             public void onClick(View v) {
+                loginScreenController.runWithoutLogin();
                 hideError();
                 loginScreenController.runWithoutLogin();
             }

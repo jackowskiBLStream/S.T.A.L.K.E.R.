@@ -12,20 +12,8 @@ public class TableDetails {
     public static final String TABLE_DETAILS = "details";
     //Table columns
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_OPEN_MON = "open_mon";
-    public static final String COLUMN_CLOSE_MON = "close_mon";
-    public static final String COLUMN_OPEN_TUE = "open_tue";
-    public static final String COLUMN_CLOSE_TUE = "close_tue";
-    public static final String COLUMN_OPEN_WED = "open_wed";
-    public static final String COLUMN_CLOSE_WED = "close_wed";
-    public static final String COLUMN_OPEN_THU= "open_thu";
-    public static final String COLUMN_CLOSE_THU = "close_thu";
-    public static final String COLUMN_OPEN_FRI = "open_fri";
-    public static final String COLUMN_CLOSE_FRI = "close_fri";
-    public static final String COLUMN_OPEN_SAT = "open_sat";
-    public static final String COLUMN_CLOSE_SAT = "close_sat";
-    public static final String COLUMN_OPEN_SUN = "open_sun";
-    public static final String COLUMN_CLOSE_SUN = "close_sun";
+    public static final String[] COLUMN_OPEN_DAY = {"open_mon", "open_tue", "open_wed", "open_thu", "open_fri", "open_sat", "open_sun"};
+    public static final String[] COLUMN_CLOSE_DAY = {"close_mon", "close_tue", "close_wed", "close_thu", "close_fri", "close_sat", "close_sun"};
     public static final String COLUMN_RATING = "rating";
     public static final String COLUMN_PLACE_ID = "place_id";
 
@@ -35,22 +23,22 @@ public class TableDetails {
             + TABLE_DETAILS
             + "("
             + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_OPEN_MON + " real not null, "
-            + COLUMN_CLOSE_MON + " real not null, "
-            + COLUMN_OPEN_TUE + " real not null, "
-            + COLUMN_CLOSE_TUE + " real not null, "
-            + COLUMN_OPEN_WED + " real not null, "
-            + COLUMN_CLOSE_WED + " real not null, "
-            + COLUMN_OPEN_THU + " real not null, "
-            + COLUMN_CLOSE_THU + " real not null, "
-            + COLUMN_OPEN_FRI + " real not null, "
-            + COLUMN_CLOSE_FRI + " real not null, "
-            + COLUMN_OPEN_SAT + " real not null, "
-            + COLUMN_CLOSE_SAT + " real not null, "
-            + COLUMN_OPEN_SUN + " real not null, "
-            + COLUMN_CLOSE_SUN + " real not null, "
+            + COLUMN_OPEN_DAY[0] + " text not null, "
+            + COLUMN_CLOSE_DAY[0] + " text not null, "
+            + COLUMN_OPEN_DAY[1] + " text not null, "
+            + COLUMN_CLOSE_DAY[1] + " text not null, "
+            + COLUMN_OPEN_DAY[2] + " text not null, "
+            + COLUMN_CLOSE_DAY[2] + " text not null, "
+            + COLUMN_OPEN_DAY[3] + " text not null, "
+            + COLUMN_CLOSE_DAY[3] + " text not null, "
+            + COLUMN_OPEN_DAY[4] + " text not null, "
+            + COLUMN_CLOSE_DAY[4] + " text not null, "
+            + COLUMN_OPEN_DAY[5] + " text not null, "
+            + COLUMN_CLOSE_DAY[5] + " text not null, "
+            + COLUMN_OPEN_DAY[6] + " text not null, "
+            + COLUMN_CLOSE_DAY[6] + " text not null, "
             + COLUMN_RATING + " real not null, "
-            + COLUMN_PLACE_ID + "integer not null "
+            + COLUMN_PLACE_ID + " integer not null "
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {

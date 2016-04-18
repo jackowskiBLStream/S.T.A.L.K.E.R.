@@ -25,7 +25,7 @@ public interface IPlaceDataDetails {
      *
      * @return place rating
      */
-    int getRating();
+    double getRating();
 
     /**
      *
