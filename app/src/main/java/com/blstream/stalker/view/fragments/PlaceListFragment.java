@@ -12,8 +12,8 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.blstream.stalker.R;
+import com.blstream.stalker.controller.ImageController;
 import com.blstream.stalker.model.OpenHours;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
@@ -25,6 +25,14 @@ import java.util.List;
 
 public class PlaceListFragment extends AbstractErrorClass implements IPlaceListFragment {
 
+    private final static String ADAPTER_PLACE_LIST = "AdapterPlaceList";
+    private View view;
+    private ImageController imageController;
+    private PlaceListAdapter adapter;
+    private LocationController locationController;
+    private DetectActivityController detectActivityController;
+
+
     View view;
     PlaceListAdapter adapter = new PlaceListAdapter();
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
@@ -33,7 +41,13 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.place_list_layout, container, false);
+        return view = inflater.inflate(R.layout.place_list_layout, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adapter = new PlaceListAdapter(getContext());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.allTasks);
         mStaggeredLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mStaggeredLayoutManager);
@@ -41,15 +55,16 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
         uploadList(new ArrayList<PlaceData>());
         initialOnItemClickListener();
         initialScreenLayout();
-        return view;
     }
+
     @Override
-    public void uploadList(List<PlaceData> placeDataList){
+    public void uploadList(List<PlaceData> placeDataList) {
         placeDataList = new ArrayList<>();
         placeDataList.add(new PlaceData("", "BAR LENKA HEHESZKI", new OpenHours("11:00", "19:00"), "BarLenka", new Location("Tmp")));
         placeDataList.add(new PlaceData("", "BAR SRENKA HEHESZKI", new OpenHours("11:00", "19:00"), "BarSrenka", new Location("Tmp")));
-    adapter.setPlaceDataList(placeDataList);
+        adapter.setPlaceDataList(placeDataList);
     }
+
     @Override
     public void changeFragment(@FragmentType int fragmentType) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -70,9 +85,9 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
             @Override
             public void onItemClick(View v, int position) {
                 DetailItemFragment detailItemFragment = new DetailItemFragment();
-                createBundleForDetailsFragment(detailItemFragment,position);
+                createBundleForDetailsFragment(detailItemFragment, position);
                 createSharedElementTransaction(detailItemFragment);
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainContainer, detailItemFragment).addToBackStack("")
                         .commit();
             }
@@ -103,12 +118,11 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     }
 
     private void createBundleForDetailsFragment(DetailItemFragment detailItemFragment,int position){
-
         List<PlaceData> placeDataList = adapter.getPlaceDataList();
         Bundle bundle = new Bundle();
         bundle.putString(DetailItemFragment.NAME_BUNDLE_KEY,placeDataList.get(position).getName());
         bundle.putString(DetailItemFragment.TAGS_BUNDLE_KEY,placeDataList.get(position).getTypes());
-        bundle.putString(DetailItemFragment.OPEN_HOURS_KEY,placeDataList.get(position).getTodayOpenHours().getOpenTime());
+        bundle.putString(DetailItemFragment.OPEN_HOURS_KEY, placeDataList.get(position).getTodayOpenHours().getOpenTime());
         detailItemFragment.setArguments(bundle);
     }
 }

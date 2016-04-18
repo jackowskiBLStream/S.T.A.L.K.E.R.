@@ -19,7 +19,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loginScreenFragment = new LoginScreenFragment();
         initializationOfSaveInstanceState(savedInstanceState);
     }
 
@@ -41,17 +40,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, listFragment);
+//        getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, loginScreenFragment);
     }
     private void initializationOfSaveInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            listFragment = new PlaceListFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, listFragment).commit();
+            loginScreenFragment = new LoginScreenFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, loginScreenFragment).commit();
         } else {
-            listFragment = (PlaceListFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
+            loginScreenFragment = (LoginScreenFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
         }
     }
 

@@ -23,7 +23,6 @@ public class DetailItemFragment extends Fragment {
     public static final String IMAGE_TRANSACTION_NAME ="imageTransaction";
     public static final String OPEN_HOURS_TRANSACTION_NAME ="openHoursTransaction";
     public static final String TAGS_TRANSACTION_NAME ="tagsTransaction";
-    private View view;
     private TextView nameTextView;
     private TextView openHoursTextView;
     private TextView tagsTextView;
@@ -33,14 +32,17 @@ public class DetailItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.detail_item_layout, container, false);
-        initialViewItems();
-        return view;
+        return inflater.inflate(R.layout.detail_item_layout, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initialViewItems(view);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void initialViewItems(){
-
+    private void initialViewItems(View view){
         nameTextView = (TextView)view.findViewById(R.id.detailNameTextView);
         openHoursTextView = (TextView)view.findViewById(R.id.detailsOpenHoursTextView);
         tagsTextView = (TextView)view.findViewById(R.id.detailsTagsTextView);

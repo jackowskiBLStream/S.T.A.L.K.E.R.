@@ -41,7 +41,6 @@ public abstract class AbstractErrorClass extends Fragment implements IMainFragme
             }
         }
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.executePendingTransactions();
         if (!errorFragment.isAdded()) {
             fragmentManager.beginTransaction().add(R.id.mainContainer, errorFragment).commit();
         }

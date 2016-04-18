@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.blstream.stalker.R;
 import com.blstream.stalker.controller.interfaces.IImageController;
 import com.blstream.stalker.controller.volley.VolleySingleton;
 
@@ -29,6 +30,7 @@ public class ImageController implements IImageController {
     public void getImage(String url,ImageView image) {
         ImageLoader loader;
         loader = VolleySingleton.getInstance(context).getImageLoader();
-        loader.get(url, ImageLoader.getImageListener(image, placeHolder, errorImage));
+       loader.get(url, ImageLoader.getImageListener(image, placeHolder, R.drawable.background_image));
+
     }
 }
