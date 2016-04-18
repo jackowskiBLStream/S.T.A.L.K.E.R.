@@ -73,11 +73,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
 
     private void customizeButtons() {
         signInButton.setColorScheme(SignInButton.COLOR_AUTO);
-        PlaceData placeData = new PlaceData(null, "types", null, "jeden", new Location(""));
-        PlaceDataDetails placeDataDetails = new PlaceDataDetails(null, 5, null);
-        final PlaceDataWithDetails placeDataWithDetails = new PlaceDataWithDetails(placeData, placeDataDetails);
-        final ArrayList<PlaceDataWithDetails> list = new ArrayList<>();
-        list.add(placeDataWithDetails);
         signInButton.setOnClickListener(new View.OnClickListener() {
             /**
              *{@inheritDoc}
