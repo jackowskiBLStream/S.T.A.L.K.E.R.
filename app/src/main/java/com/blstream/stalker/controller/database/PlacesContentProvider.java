@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import static com.blstream.stalker.controller.database.DatabaseContract.*;
+
 /**
  * Content provider for database
  */
@@ -26,12 +28,12 @@ public class PlacesContentProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TablePlaces.TABLE_PLACES, PLACES);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TablePlaces.TABLE_PLACES + "/#", PLACES_ID);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_DETAILS, DETAILS);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableDetails.TABLE_DETAILS + "/#", DETAILS_ID);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableReviews.TABLE_REVIEWS, REVIEWS);
-        uriMatcher.addURI(DatabaseContract.AUTHORITY, DatabaseContract.TableReviews.TABLE_REVIEWS + "/#", REVIEWS_ID);
+        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_NAME, PLACES);
+        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_NAME + "/#", PLACES_ID);
+        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_NAME, DETAILS);
+        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_NAME + "/#", DETAILS_ID);
+        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_NAME, REVIEWS);
+        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_NAME + "/#", REVIEWS_ID);
 
     }
 
@@ -59,13 +61,13 @@ public class PlacesContentProvider extends ContentProvider {
 
         switch (uriType) {
             case PLACES:
-                queryBuilder.setTables(DatabaseContract.TablePlaces.TABLE_PLACES);
+                queryBuilder.setTables(TablePlaces.TABLE_NAME);
                 break;
             case DETAILS:
-                queryBuilder.setTables(DatabaseContract.TableDetails.TABLE_DETAILS);
+                queryBuilder.setTables(TableDetails.TABLE_NAME);
                 break;
             case REVIEWS:
-                queryBuilder.setTables(DatabaseContract.TableReviews.TABLE_REVIEWS);
+                queryBuilder.setTables(TableReviews.TABLE_NAME);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI");
@@ -101,16 +103,16 @@ public class PlacesContentProvider extends ContentProvider {
         String tableName;
         switch (uriType) {
             case PLACES:
-                id = sqLiteDatabase.insert(DatabaseContract.TablePlaces.TABLE_PLACES, null, values);
-                tableName = DatabaseContract.TablePlaces.TABLE_PLACES;
+                id = sqLiteDatabase.insert(TablePlaces.TABLE_NAME, null, values);
+                tableName = TablePlaces.TABLE_NAME;
                 break;
             case DETAILS:
-                id = sqLiteDatabase.insert(DatabaseContract.TableDetails.TABLE_DETAILS, null, values);
-                tableName = DatabaseContract.TableDetails.TABLE_DETAILS;
+                id = sqLiteDatabase.insert(TableDetails.TABLE_NAME, null, values);
+                tableName = TableDetails.TABLE_NAME;
                 break;
             case REVIEWS:
-                id = sqLiteDatabase.insert(DatabaseContract.TableReviews.TABLE_REVIEWS, null, values);
-                tableName = DatabaseContract.TableReviews.TABLE_REVIEWS;
+                id = sqLiteDatabase.insert(TableReviews.TABLE_NAME, null, values);
+                tableName = TableReviews.TABLE_NAME;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -128,15 +130,15 @@ public class PlacesContentProvider extends ContentProvider {
         int rowsDeleted = 0;
         switch (uriType) {
             case PLACES:
-                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TablePlaces.TABLE_PLACES, selection,
+                rowsDeleted = sqLiteDatabase.delete(TablePlaces.TABLE_NAME, selection,
                         selectionArgs);
                 break;
             case DETAILS:
-                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TableDetails.TABLE_DETAILS, selection,
+                rowsDeleted = sqLiteDatabase.delete(TableDetails.TABLE_NAME, selection,
                         selectionArgs);
                 break;
             case REVIEWS:
-                rowsDeleted = sqLiteDatabase.delete(DatabaseContract.TableReviews.TABLE_REVIEWS, selection,
+                rowsDeleted = sqLiteDatabase.delete(TableReviews.TABLE_NAME, selection,
                         selectionArgs);
                 break;
             default:

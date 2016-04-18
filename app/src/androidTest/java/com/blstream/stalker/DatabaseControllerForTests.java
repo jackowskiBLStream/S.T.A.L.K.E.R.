@@ -7,9 +7,9 @@ import com.blstream.stalker.controller.DatabaseController;
 /**
  * Class used in tests for access to protected methods
  */
-public class TestDatabaseController extends DatabaseController {
+public class DatabaseControllerForTests extends DatabaseController {
 
-    public TestDatabaseController(Context context) {
+    public DatabaseControllerForTests(Context context) {
         super(context);
     }
 

@@ -1,7 +1,5 @@
 package com.blstream.stalker;
 
-import android.graphics.Point;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.test.rule.ActivityTestRule;
 
@@ -20,7 +18,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Test ing Fundamentals</a>
  */
 public class DatabaseTest {
     private static final int DAYS_IN_WEEK = 7;
@@ -29,11 +27,11 @@ public class DatabaseTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
-    TestDatabaseController dbController;
+    DatabaseControllerForTests dbController;
 
     @Before
     public void before() {
-        dbController = new TestDatabaseController(mActivityRule.getActivity());
+        dbController = new DatabaseControllerForTests(mActivityRule.getActivity());
         dbController.clearDB();
     }
 
@@ -78,23 +76,6 @@ public class DatabaseTest {
         Assert.assertEquals("Should delete 5 places. 5 places where added", 5, deletedPlaces);
     }
 
-    /*
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowException(){
-        //Given
-        ArrayList<PlaceDataWithDetails> data = new ArrayList<>();
-        PlaceDataTest dataPlace = getPlaceData(1);
-        dataPlace.setName(null);
-        PlaceDataWithDetails placeDataWithDetails = new PlaceDataWithDetails(
-                dataPlace,
-                getPlaceDataDetails(0)
-        );
-        data.add(placeDataWithDetails);
-        //when
-        dbController.addPlacesToDB(data);
-        //then should throw IllegalArgumentException becouse Null name cant be added to Database
-    }*/
-
     /**
      * Returns array of PlaceDataWithDetails of given size, ready for adding to Database
      *
@@ -124,12 +105,12 @@ public class DatabaseTest {
         );
     }
 
-    private PlaceDataTest getPlaceData(int name) {
-        return new PlaceDataTest(
+    private PlaceData getPlaceData(int name) {
+        return new PlaceData(
                 "http:/icon",
                 "Store, Bank",
                 "Name " + name,
-                new PlaceLocation(0,0)
+                new PlaceLocation(0, 0)
         );
     }
 
