@@ -8,6 +8,7 @@ import com.blstream.stalker.model.OpenHours;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
+import com.blstream.stalker.model.PlaceLocation;
 import com.blstream.stalker.model.Review;
 
 import org.junit.Assert;
@@ -127,7 +128,7 @@ public class DatabaseTest {
                 "http:/icon",
                 "Store, Bank",
                 "Name " + name,
-                new Location("")
+                new PlaceLocation(0,0)
         );
     }
 

@@ -35,12 +35,12 @@ public class LocationController implements IOperationsController, OnConnectionFa
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
     private PlaceListFragment fragment;
-    private LocationChangeListener locationChangeListener;
 
     public LocationController(PlaceListFragment fragment) {
         this.fragment = fragment;
         createGoogleApiClientInstance();
         createLocationRequest();
+
     }
 
     /**
@@ -137,7 +137,6 @@ public class LocationController implements IOperationsController, OnConnectionFa
         Log.d(TAG, "onLocationChanged: ");
         new GetPlaces().execute(location.getLatitude(), location.getLongitude());
         PlaceLocation placeLocation = new PlaceLocation(location.getLatitude(), location.getLongitude());
-        locationChangeListener.onLocationChanged(placeLocation);
     }
 
     public void startLocationUpdates() {
