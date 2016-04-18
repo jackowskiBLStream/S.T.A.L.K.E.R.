@@ -158,7 +158,7 @@ public class LocationController implements IOperationsController, OnConnectionFa
         @Override
         protected void onPostExecute(List<PlaceData> placeDataList) {
             super.onPostExecute(placeDataList);
-            fragment.uploadList(placeDataList);
+            fragment.updateList(placeDataList);
         }
     }
 }

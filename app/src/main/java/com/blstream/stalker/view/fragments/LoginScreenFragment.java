@@ -2,7 +2,6 @@ package com.blstream.stalker.view.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,12 @@ import com.blstream.stalker.R;
 import com.blstream.stalker.controller.DatabaseController;
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.controller.PlaceListController;
-import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
+import com.blstream.stalker.view.abstractClass.AbstracFragmentClass;
 import com.blstream.stalker.view.interfaces.ILoginFragment;
 import com.google.android.gms.common.SignInButton;
 
 
-public class LoginScreenFragment extends AbstractErrorClass implements ILoginFragment {
+public class LoginScreenFragment extends AbstracFragmentClass implements ILoginFragment {
     SignInButton signInButton;
     Button noThanksButton;
     LoginScreenController loginScreenController;
@@ -45,27 +44,6 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         customizeButtons();
     }
 
-    /**
-     * Replace Fragments for a specified fragment in fragmentType;
-     *
-     * @param fragmentType type of Fragment {LIST_FRAGMENT,DETAIL_FRAGMENT,LOGIN_FRAGMENT}
-     */
-    @Override
-    public void changeFragment(@FragmentType int fragmentType) {
-        FragmentManager fragmentManager = getFragmentManager();
-        switch (fragmentType) {
-            case LIST_FRAGMENT:
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, new PlaceListFragment()).commit();
-                break;
-            case DETAIL_FRAGMENT:
-                break;
-            case LOGIN_FRAGMENT:
-                break;
-            default:
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, new PlaceListFragment()).commit();
-        }
-    }
-
     private void customizeButtons() {
         signInButton.setColorScheme(SignInButton.COLOR_AUTO);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +62,9 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
              */
             @Override
             public void onClick(View v) {
-                loginScreenController.runWithoutLogin();
                 hideError();
                 loginScreenController.runWithoutLogin();
+
             }
         });
     }

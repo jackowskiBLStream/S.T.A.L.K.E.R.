@@ -7,29 +7,38 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.blstream.stalker.controller.interfaces.ILoginScreenController;
+import com.blstream.stalker.controller.internetConnection.InternetConnectionListener;
+import com.blstream.stalker.controller.internetConnection.InternetConnectionObserver;
 import com.blstream.stalker.view.fragments.LoginScreenFragment;
+import com.blstream.stalker.view.interfaces.ILoginFragment;
 import com.blstream.stalker.view.interfaces.IMainFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
+import java.util.Observable;
+import java.util.Observer;
 
-public class LoginScreenController implements ILoginScreenController, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+public class LoginScreenController extends FragmentController<LoginScreenFragment> implements ILoginScreenController,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int RC_SIGN_IN = 0;
     LoginScreenFragment fragment;
     Context context;
 
     private GoogleApiClient googleApiClient;
-
     private boolean signedInUser;
     private boolean mIntentInProgress;
     private ConnectionResult mConnectionResult;
 
-    public LoginScreenController(Fragment fragment) {
-        this.fragment = (LoginScreenFragment) fragment;
+    public LoginScreenController(LoginScreenFragment fragment) {
+        super(fragment);
+        this.fragment = fragment;
         context = fragment.getContext();
+        InternetConnectionObserver internetConnectionObserver = InternetConnectionObserver.getInstance();
+        internetConnectionObserver.addObserver(this);
         initializeGPApiClient();
     }
 
