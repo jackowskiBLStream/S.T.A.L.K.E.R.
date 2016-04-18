@@ -23,9 +23,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        TableDetails.onCreate(db);
-        TablePlaces.onCreate(db);
-        TableReviews.onCreate(db);
+        DatabaseContract.TableDetails.onCreate(db);
+        DatabaseContract.TablePlaces.onCreate(db);
+        DatabaseContract.TableReviews.onCreate(db);
     }
 
     /**
@@ -33,8 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        TableDetails.onUpgrade(db, oldVersion, newVersion);
-        TablePlaces.onUpgrade(db, oldVersion, newVersion);
-        TableReviews.onUpgrade(db, oldVersion, newVersion);
+        DatabaseContract.TableDetails.onUpgrade(db, oldVersion, newVersion);
+        DatabaseContract.TablePlaces.onUpgrade(db, oldVersion, newVersion);
+        DatabaseContract.TableReviews.onUpgrade(db, oldVersion, newVersion);
     }
 }

@@ -5,13 +5,13 @@ import android.widget.ImageView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.blstream.stalker.R;
-import com.blstream.stalker.controller.interfaces.IImageController;
+
 import com.blstream.stalker.controller.volley.VolleySingleton;
 
 /**
  * Manages image downloading using Volley
  */
-public class ImageController implements IImageController {
+public class ImageController {
 
     Context context;
     private int placeHolder;
@@ -26,7 +26,6 @@ public class ImageController implements IImageController {
     /**
      * @param url image url
      */
-    @Override
     public void getImage(String url,ImageView image) {
         ImageLoader loader;
         loader = VolleySingleton.getInstance(context).getImageLoader();
