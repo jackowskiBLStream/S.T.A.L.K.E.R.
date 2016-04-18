@@ -23,8 +23,9 @@ public class PlaceData implements IPlaceData, Parcelable {
     private double longitude;
     private double latitude;
     private IOpenHours todayOpenHours;
+    private String placeID;
 
-    public PlaceData(){};
+    public PlaceData(){}
 
     protected PlaceData(Parcel in) {
         icon = in.readString();
@@ -34,6 +35,7 @@ public class PlaceData implements IPlaceData, Parcelable {
         longitude = in.readDouble();
         latitude = in.readDouble();
     }
+
 
     public static final Creator<PlaceData> CREATOR = new Creator<PlaceData>() {
         @Override
@@ -46,6 +48,14 @@ public class PlaceData implements IPlaceData, Parcelable {
             return new PlaceData[size];
         }
     };
+
+    public String getPlaceID() {
+        return placeID;
+    }
+
+    public void setPlaceID(String placeID) {
+        this.placeID = placeID;
+    }
 
     public double getLongitude() {
         return longitude;
@@ -141,12 +151,13 @@ public class PlaceData implements IPlaceData, Parcelable {
     public float getDistanceFromLocation(Location location) {
         return this.location.distanceTo(location);
     }
-
+//TODO: WHA THE FUCK IS PONTON?
     public static PlaceData jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
             PlaceData placeData = new PlaceData();
             JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
             JSONObject location = (JSONObject) geometry.get("location");
+            placeData.setPlaceID(pontoReferencia.getString("place_id"));
             placeData.setLatitude((Double) location.get("lat"));
             placeData.setLongitude((Double) location.get("lng"));
             placeData.setIcon(pontoReferencia.getString("icon"));
@@ -158,6 +169,7 @@ public class PlaceData implements IPlaceData, Parcelable {
         }
         return null;
     }
+
 
 
     @Override

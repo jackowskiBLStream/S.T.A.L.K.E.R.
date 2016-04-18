@@ -5,11 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
-import com.blstream.stalker.view.fragments.PlaceListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -25,17 +25,17 @@ import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFail
 /**
  *
  */
-public class LocationController implements IOperationsController, OnConnectionFailedListener,
+public class LocationController extends LocationFragmentController implements IOperationsController,
+        OnConnectionFailedListener,
         ConnectionCallbacks, LocationListener {
 
     private static final String TAG = "LocationController: ";
     private GoogleApiClient googleApiClientLocation;
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
-    private PlaceListFragment fragment;
 
-    public LocationController(PlaceListFragment fragment) {
-        this.fragment = fragment;
+    public LocationController(Fragment fragment) {
+        super(fragment);
         createGoogleApiClientInstance();
         createLocationRequest();
     }
@@ -158,7 +158,7 @@ public class LocationController implements IOperationsController, OnConnectionFa
         @Override
         protected void onPostExecute(List<PlaceData> placeDataList) {
             super.onPostExecute(placeDataList);
-            fragment.uploadList(placeDataList);
+            view.uploadList(placeDataList);
         }
     }
 }

@@ -19,7 +19,8 @@ import com.google.android.gms.location.ActivityRecognition;
 /**
  *
  */
-public class DetectActivityController implements IOperationsController, GoogleApiClient.OnConnectionFailedListener,
+public class DetectActivityController implements IOperationsController,
+        GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, ResultCallback<Status> {
 
     private static final String TAG = "DetectController: ";

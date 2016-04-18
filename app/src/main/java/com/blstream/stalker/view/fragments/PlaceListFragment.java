@@ -35,12 +35,14 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
     private LocationController locationController;
     private DetectActivityController detectActivityController;
 
+
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
         if(savedInstanceState!= null){
             ArrayList<PlaceData> placeDataList = savedInstanceState.getParcelableArrayList(ADAPTER_PLACE_LIST);
             adapter.setPlaceDataList(placeDataList);
@@ -55,6 +57,7 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
         recyclerView.setAdapter(adapter);
         locationController = new LocationController(this);
         detectActivityController = new DetectActivityController(this);
+        locationController.setView(this);
         uploadList(new ArrayList<PlaceData>());
         initialOnItemClickListener();
         initialScreenLayout();
@@ -63,8 +66,6 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
 
 
     public void uploadList(List<PlaceData> placeDataList){
-        placeDataList.add(new PlaceData("", "BAR LENKA HEHESZKI", new OpenHours("11:00", "19:00"), "BarLenka", new Location("Tmp")));
-        placeDataList.add(new PlaceData("", "BAR SRENKA HEHESZKI", new OpenHours("11:00", "19:00"), "BarSrenka", new Location("Tmp")));
         adapter.setPlaceDataList(placeDataList);
     }
 

@@ -4,6 +4,9 @@ import com.blstream.stalker.model.interfaces.IOpenHours;
 import com.blstream.stalker.model.interfaces.IPlaceDataDetails;
 import com.blstream.stalker.model.interfaces.IReviews;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,7 +19,7 @@ public class PlaceDataDetails implements IPlaceDataDetails {
     private double rating;
     private ArrayList<IReviews> reviews;
 
-
+    public PlaceDataDetails(){}
     public PlaceDataDetails(IOpenHours[] openHours, int rating, ArrayList<IReviews> reviews) {
         this.openHours = openHours;
         this.rating = rating;
@@ -54,5 +57,15 @@ public class PlaceDataDetails implements IPlaceDataDetails {
     @Override
     public Collection<IReviews> getReviews() {
         return reviews;
+    }
+
+    public static PlaceDataDetails jsonToPontoReferencia(JSONObject pontoReferencia) {
+        try {
+            JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
+
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
