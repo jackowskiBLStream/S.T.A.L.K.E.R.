@@ -23,7 +23,7 @@ public class PlaceListAdapterTest  {
     public void shouldReplaceListOfPlace(){
         //given
         ArrayList<PlaceData> dataPlaceList = new ArrayList<>();
-        dataPlaceList.add();
+        //dataPlaceList.add();
     }
 
 }

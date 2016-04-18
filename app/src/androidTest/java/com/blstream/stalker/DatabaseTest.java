@@ -18,7 +18,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 /**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Test ing Fundamentals</a>
  */
 public class DatabaseTest {
     private static final int DAYS_IN_WEEK = 7;

@@ -27,8 +27,8 @@ public class LoginScreenControllerTest {
     @Test
     public void testGooglePlusLoginWhenSuccess() throws Exception {
         // given
-        loginScreenFragment = new LoginScreenView();
-        loginScreenController = new LoginScreenController(loginScreenFragment);
+        loginScreenView = new LoginScreenView();
+        loginScreenController = new LoginScreenController(loginScreenView);
         // when
         loginScreenController.googlePlusLogin();
         boolean isConnected = loginScreenController.isLoggedIn();
@@ -39,8 +39,8 @@ public class LoginScreenControllerTest {
     @Test
     public void testRunWithoutLogin() throws Exception {
         // given
-        loginScreenFragment = new LoginScreenView();
-        loginScreenController = new LoginScreenController(loginScreenFragment);
+        loginScreenView = new LoginScreenView();
+        loginScreenController = new LoginScreenController(loginScreenView);
         // when
         loginScreenController.runWithoutLogin();
         boolean isConnected = loginScreenController.isLoggedIn();
