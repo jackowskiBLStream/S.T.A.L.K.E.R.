@@ -42,7 +42,9 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
      * {@inheritDoc}
      */
     public void runWithoutLogin() {
+
         view.changeFragment(IBasicView.LIST_FRAGMENT);
+
     }
 
     /**
@@ -112,3 +114,4 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
     public void onConnectionSuspended(int i) {
     }
 }
+
