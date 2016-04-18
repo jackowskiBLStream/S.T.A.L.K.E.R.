@@ -2,6 +2,8 @@ package com.blstream.stalker.model;
 
 import android.support.annotation.NonNull;
 
+import org.json.JSONObject;
+
 /**
  * Stores all data about particular place
  */
@@ -107,4 +109,7 @@ public class PlaceData {
     }
 
 
+    public static PlaceData jsonToPontoReferencia(JSONObject jsonObject) {
+        return null;
+    }
 }

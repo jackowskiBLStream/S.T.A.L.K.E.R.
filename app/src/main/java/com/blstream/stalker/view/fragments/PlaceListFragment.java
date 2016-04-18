@@ -130,10 +130,6 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<PlaceData> adapterPlaceDataList = new ArrayList();
-        List<PlaceData> adapterList = adapter.getPlaceDataList();
-        adapterPlaceDataList.addAll(adapterList);
-        outState.putParcelableArrayList(ADAPTER_PLACE_LIST,adapterPlaceDataList);
 
     }
 }

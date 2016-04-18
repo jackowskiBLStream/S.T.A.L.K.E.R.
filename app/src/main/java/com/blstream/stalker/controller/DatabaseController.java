@@ -8,10 +8,6 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.database.DatabaseContract;
 import com.blstream.stalker.controller.database.DatabaseHelper;
-import com.blstream.stalker.controller.database.PlacesContentProvider;
-import com.blstream.stalker.controller.database.TableDetails;
-import com.blstream.stalker.controller.database.TablePlaces;
-import com.blstream.stalker.controller.database.TableReviews;
 import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.Location;
 import com.blstream.stalker.model.OpenHours;
@@ -19,7 +15,6 @@ import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
 import com.blstream.stalker.model.Review;
-import com.blstream.stalker.model.interfaces.IReviews;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,14 +78,16 @@ public class DatabaseController implements IDatabaseController {
 
     /**
      * Clears TableReviews
+     *
      * @return number of rows deleted
      */
-    protected int clearReviewsTable(){
+    protected int clearReviewsTable() {
         return context.getContentResolver().delete(DatabaseContract.URI_REVIEWS, null, null);
     }
 
     /**
      * Clears TableDetails
+     *
      * @return number of rows deleted
      */
     protected int clearDetailsTable() {
@@ -99,9 +96,10 @@ public class DatabaseController implements IDatabaseController {
 
     /**
      * Clears TablePlaces
+     *
      * @return number of rows deleted
      */
-    protected int clearPlacesTable(){
+    protected int clearPlacesTable() {
         return context.getContentResolver().delete(DatabaseContract.URI_PLACES, null, null);
     }
 
@@ -184,7 +182,6 @@ public class DatabaseController implements IDatabaseController {
     }
 
     /**
-     *
      * @param placeData Data to add
      * @return row id
      */
