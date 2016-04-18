@@ -112,7 +112,7 @@ public class DatabaseController {
         Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_DETAILS, null, where, selection, null);
         assert cursor != null;
         cursor.moveToFirst();
-        OpenHours[] openHours = new OpenHours[7];
+        OpenHours[] openHours = new OpenHours[DAYS_IN_WEEK];
         for (int i = 0; i < DAYS_IN_WEEK; i++) {
             openHours[i] = new OpenHours(cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i])),
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TableDetails.COLUMN_CLOSE_DAY[i])));
@@ -201,7 +201,7 @@ public class DatabaseController {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.TableDetails.COLUMN_RATING, placeDataDetails.getRating());
         values.put(DatabaseContract.TableDetails.COLUMN_PLACE_ID, placeDataId);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < DAYS_IN_WEEK; i++) {
             values.put(DatabaseContract.TableDetails.COLUMN_OPEN_DAY[i], placeDataDetails.getOpeningHours(i).getOpenTime());
             values.put(DatabaseContract.TableDetails.COLUMN_CLOSE_DAY[i], placeDataDetails.getOpeningHours(i).getCloseTime());
         }
