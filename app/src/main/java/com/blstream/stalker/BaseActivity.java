@@ -18,7 +18,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loginScreenFragment = new LoginScreenFragment();
         initializationOfSaveInstanceState(savedInstanceState);
 
     }
@@ -43,10 +42,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, listFragment);
     }
     private void initializationOfSaveInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {

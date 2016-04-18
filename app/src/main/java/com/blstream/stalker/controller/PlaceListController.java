@@ -14,5 +14,4 @@ public class PlaceListController {
     public void doSomething(){
         fragment.showError(IMainFragment.NO_INTERNET_CONNECTION_ERROR);
     }
-
 }

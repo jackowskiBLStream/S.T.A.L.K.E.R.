@@ -129,7 +129,6 @@ public class PlaceData implements Parcelable {
         this.todayOpenHours = hours;
     }
 
-
     /**
      * Describe the kinds of special objects contained in this Parcelable's
      * marshalled representation.
@@ -156,7 +155,6 @@ public class PlaceData implements Parcelable {
         dest.writeString(types);
         dest.writeInt(id);
     }
-
     public static PlaceData jsonToPontoReferencia(JSONObject jsonObject) {
         return null;
     }
