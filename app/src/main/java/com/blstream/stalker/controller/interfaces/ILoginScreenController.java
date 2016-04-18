@@ -21,5 +21,5 @@ public interface ILoginScreenController {
      * @param responseCode int
      * @param RESULT_OK    int
      */
-    void sentLoginResultToController(int requestCode, int responseCode, final int RESULT_OK);
+    void sendLoginResultToController(int requestCode, int responseCode, final int RESULT_OK);
 }

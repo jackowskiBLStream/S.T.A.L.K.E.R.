@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.DatabaseController;
@@ -45,6 +44,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
         loginScreenController = new LoginScreenController(this);
         placeListController = new PlaceListController(this);
+        loginScreenController.setView(this);
         db = new DatabaseController(getContext());
         customizeButtons();
         return view;
@@ -100,7 +100,7 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
         });
     }
 
-    public void sentLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
-        loginScreenController.sentLoginResultToController(requestCode, responseCode, RESULT_OK);
+    public void sendLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
+        loginScreenController.sendLoginResultToController(requestCode, responseCode, RESULT_OK);
     }
 }
