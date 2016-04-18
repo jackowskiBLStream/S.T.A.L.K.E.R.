@@ -9,10 +9,12 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceLocation;
 import com.blstream.stalker.view.fragments.PlaceListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -33,6 +35,7 @@ public class LocationController implements IOperationsController, OnConnectionFa
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
     private PlaceListFragment fragment;
+    private LocationChangeListener locationChangeListener;
 
     public LocationController(PlaceListFragment fragment) {
         this.fragment = fragment;
@@ -133,6 +136,8 @@ public class LocationController implements IOperationsController, OnConnectionFa
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged: ");
         new GetPlaces().execute(location.getLatitude(), location.getLongitude());
+        PlaceLocation placeLocation = new PlaceLocation(location.getLatitude(), location.getLongitude());
+        locationChangeListener.onLocationChanged(placeLocation);
     }
 
     public void startLocationUpdates() {
