@@ -2,7 +2,7 @@ package com.blstream.stalker.controller;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
+import com.blstream.stalker.view.fragments.LoginScreenView;
 
 import junit.framework.TestCase;
 
@@ -14,13 +14,13 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class LoginScreenControllerTest extends TestCase {
     LoginScreenController loginScreenController;
-    LoginScreenFragment loginScreenFragment;
+    LoginScreenView loginScreenView;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        loginScreenFragment = new LoginScreenFragment();
-        loginScreenController = new LoginScreenController(loginScreenFragment);
+        loginScreenView = new LoginScreenView();
+        loginScreenController = new LoginScreenController(loginScreenView);
     }
 
     @After

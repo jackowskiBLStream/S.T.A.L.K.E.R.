@@ -12,13 +12,13 @@ import com.blstream.stalker.R;
 import com.blstream.stalker.controller.location.DetectActivityController;
 import com.blstream.stalker.controller.location.LocationController;
 import com.blstream.stalker.model.PlaceData;
-import com.blstream.stalker.view.abstractClass.AbstracFragmentClass;
+import com.blstream.stalker.view.abstractClass.BasicView;
 import com.blstream.stalker.view.adapters.PlaceListAdapter;
-import com.blstream.stalker.view.interfaces.IPlaceListFragment;
+import com.blstream.stalker.view.interfaces.IPlaceListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceListFragment extends AbstracFragmentClass implements IPlaceListFragment {
+public class PlaceListView extends BasicView implements IPlaceListView {
     private LocationController locationController;
     private DetectActivityController detectActivityController;
     PlaceListAdapter adapter;
@@ -77,10 +77,10 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
         PlaceListAdapter.OnItemClickListener onItemClickListener = new PlaceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                DetailItemFragment detailItemFragment = new DetailItemFragment();
-                createBundleForDetailsFragment(detailItemFragment, position);
+                DetailItemView detailItemView = new DetailItemView();
+                createBundleForDetailsFragment(detailItemView, position);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainContainer, detailItemFragment).addToBackStack("")
+                        .replace(R.id.mainContainer, detailItemView).addToBackStack("")
                         .commit();
             }
         };
@@ -96,13 +96,13 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
         }
     }
 
-    private void createBundleForDetailsFragment(DetailItemFragment detailItemFragment,int position){
+    private void createBundleForDetailsFragment(DetailItemView detailItemView,int position){
         List<PlaceData> placeDataList = adapter.getPlaceDataList();
         Bundle bundle = new Bundle();
-        bundle.putString(DetailItemFragment.NAME_BUNDLE_KEY,placeDataList.get(position).getName());
-        bundle.putString(DetailItemFragment.TAGS_BUNDLE_KEY,placeDataList.get(position).getTypes());
-        bundle.putString(DetailItemFragment.OPEN_HOURS_KEY, "11:00 - 22:00");
-        detailItemFragment.setArguments(bundle);
+        bundle.putString(DetailItemView.NAME_BUNDLE_KEY,placeDataList.get(position).getName());
+        bundle.putString(DetailItemView.TAGS_BUNDLE_KEY,placeDataList.get(position).getTypes());
+        bundle.putString(DetailItemView.OPEN_HOURS_KEY, "11:00 - 22:00");
+        detailItemView.setArguments(bundle);
     }
 
     @Override

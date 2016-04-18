@@ -1,19 +1,14 @@
 package com.blstream.stalker.controller;
 
-
-
-import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
-
 import com.blstream.stalker.controller.internetConnection.InternetConnectionListener;
 import com.blstream.stalker.controller.internetConnection.InternetConnectionObserver;
-import com.blstream.stalker.view.interfaces.IMainFragment;
+import com.blstream.stalker.view.interfaces.IBasicView;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class FragmentController<T extends IMainFragment> implements Observer{
+public abstract class FragmentController<T extends IBasicView> implements Observer{
 
     protected Fragment fragment;
     protected T view;
@@ -32,7 +27,7 @@ public abstract class FragmentController<T extends IMainFragment> implements Obs
         if(InternetConnectionListener.isOnline){
             view.hideError();
         }else{
-            view.showError(IMainFragment.NO_INTERNET_CONNECTION_ERROR);
+            view.showError(IBasicView.NO_INTERNET_CONNECTION_ERROR);
         }
     }
 }

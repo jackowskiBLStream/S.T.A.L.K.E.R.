@@ -1,17 +1,21 @@
 package com.blstream.stalker;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.blstream.stalker.controller.LoginScreenController;
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+
     }
 }
