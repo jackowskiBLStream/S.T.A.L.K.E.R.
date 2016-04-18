@@ -38,7 +38,7 @@
             android:name=".controller.database.PlacesContentProvider"
             android:authorities="com.blstream.stalker.controller.database.PlacesContentProvider" />
         <service
-            android:name=".controller.location.DetectActivitiesIntentService"
+            android:name=".controller.placeLocation.DetectActivitiesIntentService"
             android:exported="false" />
 
     </application>

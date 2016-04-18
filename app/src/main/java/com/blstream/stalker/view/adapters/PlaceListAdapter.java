@@ -52,7 +52,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         if (placeDataList.size() != 0){
-             imageController.getImage(placeDataList.get(position).getIconUrl(),holder.mPubPlaceImage);
+//             imageController.getImage(placeDataList.get(position).getIconUrl(),holder.mPubPlaceImage);
 //            holder.mPubName.setText(placeDataList.get(position).getName());
 //            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
 //            holder.mTags.setText(placeDataList.get(position).getTypes());

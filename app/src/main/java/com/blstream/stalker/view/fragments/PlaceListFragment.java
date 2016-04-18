@@ -15,12 +15,10 @@ import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.abstractClass.AbstracFragmentClass;
 import com.blstream.stalker.view.adapters.PlaceListAdapter;
 import com.blstream.stalker.view.interfaces.IPlaceListFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceListFragment extends AbstracFragmentClass implements IPlaceListFragment {
-    private final static String ADAPTER_PLACE_LIST = "AdapterPlaceList";
     private LocationController locationController;
     private DetectActivityController detectActivityController;
     PlaceListAdapter adapter;
@@ -46,12 +44,6 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
         updateList(new ArrayList<PlaceData>());
         initialOnItemClickListener();
         initialScreenLayout();
-    }
-
-
-    @Override
-    public void updateList(List<PlaceData> placeDataList) {
-        adapter.setPlaceDataList(placeDataList);
     }
 
     @Override
@@ -87,7 +79,6 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
             public void onItemClick(View v, int position) {
                 DetailItemFragment detailItemFragment = new DetailItemFragment();
                 createBundleForDetailsFragment(detailItemFragment, position);
-//                createSharedElementTransaction(detailItemFragment);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainContainer, detailItemFragment).addToBackStack("")
                         .commit();
@@ -104,19 +95,6 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
             mStaggeredLayoutManager.setSpanCount(1);
         }
     }
-    private void createSharedElementTransaction(DetailItemFragment fragment){
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            setSharedElementReturnTransition(TransitionInflater.from(
-//                    getActivity()).inflateTransition(R.transition.change_image_trans));
-//            setExitTransition(TransitionInflater.from(
-//                    getActivity()).inflateTransition(android.R.transition.fade));
-//
-//            fragment.setSharedElementEnterTransition(TransitionInflater.from(
-//                    getActivity()).inflateTransition(R.transition.change_image_trans));
-//            fragment.setEnterTransition(TransitionInflater.from(
-//                    getActivity()).inflateTransition(android.R.transition.fade));
-//        }
-    }
 
     private void createBundleForDetailsFragment(DetailItemFragment detailItemFragment,int position){
         List<PlaceData> placeDataList = adapter.getPlaceDataList();
@@ -131,5 +109,10 @@ public class PlaceListFragment extends AbstracFragmentClass implements IPlaceLis
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+    }
+
+    @Override
+    public void updateList(List<PlaceData> placeDataList) {
+        adapter.setPlaceDataList(placeDataList);
     }
 }
