@@ -33,7 +33,7 @@
         <uses-permission android:name="android.permission.GET_ACCOUNTS" />
         <uses-permission android:name="android.permission.USE_CREDENTIALS" />
         <service
-            android:name=".controller.location.DetectActivitiesIntentService"
+            android:name=".controller.placeLocation.DetectActivitiesIntentService"
             android:exported="false" />
 
     </application>

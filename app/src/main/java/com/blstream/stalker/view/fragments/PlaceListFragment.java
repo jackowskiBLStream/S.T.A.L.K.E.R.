@@ -63,8 +63,6 @@ public class PlaceListFragment extends AbstractErrorClass implements IPlaceListF
 
 
     public void uploadList(List<PlaceData> placeDataList){
-        placeDataList.add(new PlaceData("", "BAR LENKA HEHESZKI", new OpenHours("11:00", "19:00"), "BarLenka", new Location("Tmp")));
-        placeDataList.add(new PlaceData("", "BAR SRENKA HEHESZKI", new OpenHours("11:00", "19:00"), "BarSrenka", new Location("Tmp")));
         adapter.setPlaceDataList(placeDataList);
     }
 
