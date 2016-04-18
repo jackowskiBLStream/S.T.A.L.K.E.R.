@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:allowBackup="true"
@@ -33,12 +37,8 @@
         <provider
             android:name=".controller.database.PlacesContentProvider"
             android:authorities="com.blstream.stalker.controller.database.PlacesContentProvider" />
-
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
         <service
-            android:name=".controller.location.DetectActivitiesIntentService"
+            android:name=".controller.placeLocation.DetectActivitiesIntentService"
             android:exported="false" />
 
     </application>

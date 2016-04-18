@@ -3,9 +3,14 @@ package com.blstream.stalker.model;
 /**
  * Contains information about place location.
  */
-public class Location {
+public class PlaceLocation {
     private double longitude;
     private double latitude;
+
+    public PlaceLocation(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     public double getLatitude() {
         return latitude;
@@ -23,7 +28,7 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public double getDistance(Location loc) {
+    public double getDistance(PlaceLocation loc) {
         return Math.sqrt(((loc.getLatitude() - latitude) * (loc.getLatitude() - latitude)) +
                 ((loc.getLongitude() - longitude) * (loc.getLongitude() - longitude)));
     }

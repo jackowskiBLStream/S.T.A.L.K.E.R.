@@ -1,27 +1,50 @@
 package com.blstream.stalker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import org.json.JSONObject;
 
 /**
  * Stores all data about particular place
  */
-public class PlaceData {
+public class PlaceData implements Parcelable {
 
     private String name;
     private String icon;
     private String types;
-    private Location location;
+    private PlaceLocation placeLocation;
     private OpenHours todayOpenHours;
     private int id;
 
 
     public PlaceData(@NonNull String icon, @NonNull String types,
-                     @NonNull String name, @NonNull Location location) {
+                     @NonNull String name, @NonNull PlaceLocation placeLocation) {
         this.icon = icon;
         this.types = types;
         this.name = name;
-        this.location = location;
+        this.placeLocation = placeLocation;
     }
+
+    protected PlaceData(Parcel in) {
+        name = in.readString();
+        icon = in.readString();
+        types = in.readString();
+        id = in.readInt();
+    }
+
+    public static final Creator<PlaceData> CREATOR = new Creator<PlaceData>() {
+        @Override
+        public PlaceData createFromParcel(Parcel in) {
+            return new PlaceData(in);
+        }
+
+        @Override
+        public PlaceData[] newArray(int size) {
+            return new PlaceData[size];
+        }
+    };
 
     /**
      * @return place icon
@@ -52,18 +75,18 @@ public class PlaceData {
     }
 
     /**
-     * @return place location
+     * @return place placeLocation
      */
-    public Location getLocation() {
-        return location;
+    public PlaceLocation getPlaceLocation() {
+        return placeLocation;
     }
 
     /**
-     * @param location location to which distance will be calculated
-     * @return distance to location specified in param
+     * @param placeLocation placeLocation to which distance will be calculated
+     * @return distance to placeLocation specified in param
      */
-    public double getDistanceFromLocation(Location location) {
-        return this.location.getDistance(location);
+    public double getDistanceFromLocation(PlaceLocation placeLocation) {
+        return this.placeLocation.getDistance(placeLocation);
     }
 
     /**
@@ -76,7 +99,7 @@ public class PlaceData {
         return "PlaceData{" +
                 ", name='" + name + '\'' +
                 ", types='" + types + '\'' +
-                ", location=" + location +
+                ", placeLocation=" + placeLocation +
                 ", todayOpenHours=" + todayOpenHours +
                 ", id=" + id +
                 '}';
@@ -106,5 +129,33 @@ public class PlaceData {
         this.todayOpenHours = hours;
     }
 
+    /**
+     * Describe the kinds of special objects contained in this Parcelable's
+     * marshalled representation.
+     *
+     * @return a bitmask indicating the set of special object types marshalled
+     * by the Parcelable.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param dest  The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(icon);
+        dest.writeString(types);
+        dest.writeInt(id);
+    }
+    public static PlaceData jsonToPontoReferencia(JSONObject jsonObject) {
+        return null;
+    }
 }
