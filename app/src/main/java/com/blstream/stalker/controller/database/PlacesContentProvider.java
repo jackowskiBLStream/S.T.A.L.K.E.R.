@@ -1,10 +1,8 @@
 package com.blstream.stalker.controller.database;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -12,34 +10,24 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import static com.blstream.stalker.controller.database.DatabaseContract.*;
+
 /**
  * Content provider for database
  */
 public class PlacesContentProvider extends ContentProvider {
 
-    public static final String AUTHORITY = "com.blstream.stalker.controller.database.PlacesContentProvider";
-    public static final Uri URI_PLACES =
-            Uri.parse("content://" + AUTHORITY + "/" + TablePlaces.TABLE_PLACES);
-    public static final Uri URI_DETAILS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableDetails.TABLE_DETAILS);
-    public static final Uri URI_REVIEWS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableReviews.TABLE_REVIEWS);
+
     private static final int PLACES = 0;
-    private static final int PLACES_ID = 1;
     private static final int DETAILS = 2;
-    private static final int DETAILS_ID = 3;
     private static final int REVIEWS = 4;
-    private static final int REVIEWS_ID = 5;
     private static final UriMatcher uriMatcher;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_PLACES, PLACES);
-        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_PLACES + "/#", PLACES_ID);
-        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_DETAILS, DETAILS);
-        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_DETAILS + "/#", DETAILS_ID);
-        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_REVIEWS, REVIEWS);
-        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_REVIEWS + "/#", REVIEWS_ID);
+        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_NAME, PLACES);
+        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_NAME, DETAILS);
+        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_NAME, REVIEWS);
 
     }
 
@@ -67,13 +55,13 @@ public class PlacesContentProvider extends ContentProvider {
 
         switch (uriType) {
             case PLACES:
-                queryBuilder.setTables(TablePlaces.TABLE_PLACES);
+                queryBuilder.setTables(TablePlaces.TABLE_NAME);
                 break;
             case DETAILS:
-                queryBuilder.setTables(TableDetails.TABLE_DETAILS);
+                queryBuilder.setTables(TableDetails.TABLE_NAME);
                 break;
             case REVIEWS:
-                queryBuilder.setTables(TableReviews.TABLE_REVIEWS);
+                queryBuilder.setTables(TableReviews.TABLE_NAME);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI");
@@ -81,9 +69,7 @@ public class PlacesContentProvider extends ContentProvider {
 
         Cursor cursor = queryBuilder.query(databse.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);
-        if (getContext() != null) {
-            cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        }
+        notifyChange(uri);
         return cursor;
     }
 
@@ -109,20 +95,21 @@ public class PlacesContentProvider extends ContentProvider {
         String tableName;
         switch (uriType) {
             case PLACES:
-                id = sqLiteDatabase.insert(TablePlaces.TABLE_PLACES, null, values);
-                tableName = TablePlaces.TABLE_PLACES;
+                id = sqLiteDatabase.insert(TablePlaces.TABLE_NAME, null, values);
+                tableName = TablePlaces.TABLE_NAME;
                 break;
             case DETAILS:
-                id = sqLiteDatabase.insert(TableDetails.TABLE_DETAILS, null, values);
-                tableName = TableDetails.TABLE_DETAILS;
+                id = sqLiteDatabase.insert(TableDetails.TABLE_NAME, null, values);
+                tableName = TableDetails.TABLE_NAME;
                 break;
             case REVIEWS:
-                id = sqLiteDatabase.insert(TableReviews.TABLE_REVIEWS, null, values);
-                tableName = TableReviews.TABLE_REVIEWS;
+                id = sqLiteDatabase.insert(TableReviews.TABLE_NAME, null, values);
+                tableName = TableReviews.TABLE_NAME;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        notifyChange(uri);
         return Uri.parse(tableName + "/" + id);
     }
 
@@ -130,20 +117,42 @@ public class PlacesContentProvider extends ContentProvider {
      * {@inheritDoc}
      */
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+        int uriType = uriMatcher.match(uri);
+        SQLiteDatabase sqLiteDatabase = databse.getWritableDatabase();
+        int rowsDeleted = 0;
+        switch (uriType) {
+            case PLACES:
+                rowsDeleted = sqLiteDatabase.delete(TablePlaces.TABLE_NAME, selection,
+                        selectionArgs);
+                break;
+            case DETAILS:
+                rowsDeleted = sqLiteDatabase.delete(TableDetails.TABLE_NAME, selection,
+                        selectionArgs);
+                break;
+            case REVIEWS:
+                rowsDeleted = sqLiteDatabase.delete(TableReviews.TABLE_NAME, selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+        notifyChange(uri);
+        return rowsDeleted;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
 
-    private void checkColumns(String[] projection) {
-        //TODO implement this
+    private void notifyChange(@NonNull Uri uri) {
+        if( getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
     }
 
 }

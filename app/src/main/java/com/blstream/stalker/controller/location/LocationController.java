@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceLocation;
+import com.blstream.stalker.view.fragments.PlaceListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -36,8 +38,6 @@ public class LocationController extends LocationFragmentController implements IO
 
     public LocationController(Fragment fragment) {
         super(fragment);
-        createGoogleApiClientInstance();
-        createLocationRequest();
     }
 
     /**
@@ -133,6 +133,7 @@ public class LocationController extends LocationFragmentController implements IO
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged: ");
         new GetPlaces().execute(location.getLatitude(), location.getLongitude());
+        PlaceLocation placeLocation = new PlaceLocation(location.getLatitude(), location.getLongitude());
     }
 
     public void startLocationUpdates() {
@@ -158,7 +159,7 @@ public class LocationController extends LocationFragmentController implements IO
         @Override
         protected void onPostExecute(List<PlaceData> placeDataList) {
             super.onPostExecute(placeDataList);
-            view.uploadList(placeDataList);
+            view.updateList(placeDataList);
         }
     }
 }

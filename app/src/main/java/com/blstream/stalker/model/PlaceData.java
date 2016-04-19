@@ -1,12 +1,8 @@
 package com.blstream.stalker.model;
 
-import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.blstream.stalker.model.interfaces.IOpenHours;
-import com.blstream.stalker.model.interfaces.IPlaceData;
-
+import android.support.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,26 +10,29 @@ import org.json.JSONObject;
 /**
  * Stores all data about particular place
  */
-public class PlaceData implements IPlaceData, Parcelable {
+public class PlaceData implements Parcelable {
 
-    private String icon;
     private String name;
+    private String icon;
     private String types;
-    private Location location;
-    private double longitude;
-    private double latitude;
-    private IOpenHours todayOpenHours;
-    private String placeID;
+    private PlaceLocation placeLocation;
+    private OpenHours todayOpenHours;
+    private int id;
 
-    public PlaceData(){}
+
+    public PlaceData(@NonNull String icon, @NonNull String types,
+                     @NonNull String name, @NonNull PlaceLocation placeLocation) {
+        this.icon = icon;
+        this.types = types;
+        this.name = name;
+        this.placeLocation = placeLocation;
+    }
 
     protected PlaceData(Parcel in) {
-        icon = in.readString();
         name = in.readString();
+        icon = in.readString();
         types = in.readString();
-        location = in.readParcelable(Location.class.getClassLoader());
-        longitude = in.readDouble();
-        latitude = in.readDouble();
+        id = in.readInt();
     }
 
 
@@ -49,64 +48,9 @@ public class PlaceData implements IPlaceData, Parcelable {
         }
     };
 
-    public String getPlaceID() {
-        return placeID;
-    }
-
-    public void setPlaceID(String placeID) {
-        this.placeID = placeID;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTypes(String types) {
-        this.types = types;
-    }
-
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setTodayOpenHours(IOpenHours todayOpenHours) {
-        this.todayOpenHours = todayOpenHours;
-    }
-
-    public PlaceData(String icon, String types, IOpenHours todayOpenHours, String name, Location location) {
-        this.icon = icon;
-        this.types = types;
-        this.todayOpenHours = todayOpenHours;
-        this.name = name;
-        this.location = location;
-
-    }
-
     /**
      * @return place icon
      */
-    @Override
     public String getIconUrl() {
         return icon;
     }
@@ -114,7 +58,6 @@ public class PlaceData implements IPlaceData, Parcelable {
     /**
      * @return place name
      */
-    @Override
     public String getName() {
         return name;
     }
@@ -122,7 +65,6 @@ public class PlaceData implements IPlaceData, Parcelable {
     /**
      * @return list of place types
      */
-    @Override
     public String getTypes() {
         return types;
     }
@@ -130,30 +72,43 @@ public class PlaceData implements IPlaceData, Parcelable {
     /**
      * @return hours when place is opened at day specified
      */
-    @Override
-    public IOpenHours getTodayOpenHours() {
+    public OpenHours getTodayOpenHours() {
         return todayOpenHours;
     }
 
     /**
-     * @return place location
+     * @return place placeLocation
      */
-    @Override
-    public Location getLocation() {
-        return location;
+    public PlaceLocation getPlaceLocation() {
+        return placeLocation;
     }
 
     /**
-     * @param location location to which distance will be calculated
-     * @return distance to location specified in param
+     * @param placeLocation placeLocation to which distance will be calculated
+     * @return distance to placeLocation specified in param
+     */
+    public double getDistanceFromLocation(PlaceLocation placeLocation) {
+        return this.placeLocation.getDistance(placeLocation);
+    }
+
+    /**
+     * Overrided toString() method
+     *
+     * @return String that contains some basic information about Place
      */
     @Override
-    public float getDistanceFromLocation(Location location) {
-        return this.location.distanceTo(location);
+    public String toString() {
+        return "PlaceData{" +
+                ", name='" + name + '\'' +
+                ", types='" + types + '\'' +
+                ", placeLocation=" + placeLocation +
+                ", todayOpenHours=" + todayOpenHours +
+                ", id=" + id +
+                '}';
     }
 //TODO: WHA THE FUCK IS PONTON?
     public static PlaceData jsonToPontoReferencia(JSONObject pontoReferencia) {
-        try {
+       /* try {
             PlaceData placeData = new PlaceData();
             JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
             JSONObject location = (JSONObject) geometry.get("location");
@@ -166,24 +121,57 @@ public class PlaceData implements IPlaceData, Parcelable {
             return placeData;
         } catch (JSONException ex) {
             ex.printStackTrace();
-        }
+        }*/
         return null;
     }
+    /**
+     * @return Place Id in database
+     */
+    public int getId() {
+        return id;
+    }
 
+    /**
+     * @param id Sets Place id to
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    /**
+     * Sets Today Opening hours to given in parameter. Used in Database Controller to retrieve and set
+     * hours for current day of week
+     *
+     * @param hours to be set as today open hours
+     */
+    public void setTodayOpeningHours(OpenHours hours) {
+        this.todayOpenHours = hours;
+    }
 
+    /**
+     * Describe the kinds of special objects contained in this Parcelable's
+     * marshalled representation.
+     *
+     * @return a bitmask indicating the set of special object types marshalled
+     * by the Parcelable.
+     */
     @Override
     public int describeContents() {
         return 0;
     }
 
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param dest  The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(icon);
         dest.writeString(name);
+        dest.writeString(icon);
         dest.writeString(types);
-        dest.writeParcelable(location, flags);
-        dest.writeDouble(longitude);
-        dest.writeDouble(latitude);
+        dest.writeInt(id);
     }
 }

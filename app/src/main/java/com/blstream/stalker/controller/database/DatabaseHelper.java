@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static com.blstream.stalker.controller.database.DatabaseContract.*;
+
 /**
  * A helper class to manage database creation and version management.
  */

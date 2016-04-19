@@ -1,30 +1,52 @@
 package com.blstream.stalker.view.interfaces;
 
 import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
 
 import com.blstream.stalker.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-public interface IMainFragment {
+public interface IBasicView {
+
+
+    /**
+     * Specifies three kinds of errors
+     */
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NO_INTERNET_CONNECTION_ERROR, NO_GPS_CONNECTION_ERROR, NO_INTERNET_AND_GPS_CONNECTION_ERROR})
-    public @interface ErrorMode {}
+    @interface ErrorMode {}
     int NO_INTERNET_CONNECTION_ERROR = R.string.no_internet_connection;
     int NO_GPS_CONNECTION_ERROR = R.string.no_gps_connection;
     int NO_INTERNET_AND_GPS_CONNECTION_ERROR = R.string.no_gps_and_internet_connection_error;
 
+    /**
+     * Specifies three kinds of fragments
+     */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LOGIN_FRAGMENT, DETAIL_FRAGMENT, LIST_FRAGMENT})
-    public @interface FragmentType {}
+    @interface FragmentType {}
     int LOGIN_FRAGMENT = 1;
     int DETAIL_FRAGMENT = 2;
     int LIST_FRAGMENT = 3;
 
+    /**
+     *  Shows error selecgted in the argument
+     * @param errorMode {@link IBasicView.ErrorMode}
+     */
     void showError(@ErrorMode int errorMode);
+
+    /**
+     * hide shown error
+     */
     void hideError();
+
+    /**
+     *  Changs fragment to a selected fragment in the argument
+     * @param fragmentType {@link IBasicView.FragmentType}
+     */
     void changeFragment(@FragmentType int fragmentType);
+
+
 }

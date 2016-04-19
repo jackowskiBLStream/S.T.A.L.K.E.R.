@@ -4,13 +4,13 @@ public interface ILoginScreenController {
 
     /**
      * Method signs in user with google plus account.
-     * Called after click on button "Login" from LoginScreenFragment.
+     * Called after click on button "Login" from LoginScreenView.
      */
     void googlePlusLogin();
 
     /**
      * Method changes fragment to fragment with lists of places.
-     * Called when button "No Thanks" clicked from LoginScreenFragment.
+     * Called when button "No Thanks" clicked from LoginScreenView.
      */
     void runWithoutLogin();
 
@@ -21,5 +21,5 @@ public interface ILoginScreenController {
      * @param responseCode int
      * @param RESULT_OK    int
      */
-    void sentLoginResultToController(int requestCode, int responseCode, final int RESULT_OK);
+    void sendLoginResultToController(int requestCode, int responseCode, final int RESULT_OK);
 }

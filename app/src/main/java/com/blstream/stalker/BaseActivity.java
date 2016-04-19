@@ -2,37 +2,50 @@ package com.blstream.stalker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.blstream.stalker.controller.LoginScreenController;
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
-import com.blstream.stalker.view.fragments.PlaceListFragment;
+import com.blstream.stalker.controller.interfaces.ILoginScreenController;
+import com.blstream.stalker.view.fragments.LoginScreenView;
+import com.blstream.stalker.view.fragments.PlaceListView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+
 
 
 public abstract class BaseActivity extends AppCompatActivity {
-    private static final String FRAGMENT_KEY = "ListFragment";
-    LoginScreenFragment loginScreenFragment;
-    private PlaceListFragment listFragment;
+    private static final String FRAGMENT_KEY = "LoginScreenView";
+    LoginScreenView loginScreenView;
+    private PlaceListView listFragment;
+    protected GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loginScreenFragment = new LoginScreenFragment();
         initializationOfSaveInstanceState(savedInstanceState);
-
+        initializeGPApiClient();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == LoginScreenController.RC_SIGN_IN) {
-            loginScreenFragment.sentLoginResultToFragment(requestCode, resultCode, RESULT_OK);
-        } else {
+        if (requestCode == Constants.RC_SIGN_IN) {
+            loginScreenView.sendLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         }
-
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    /**
+     * Method initializes google plus api client
+     */
+    private void initializeGPApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(loginScreenView)
+                .addOnConnectionFailedListener(loginScreenView).addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
     }
 
     @Override
@@ -44,18 +57,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, FRAGMENT_KEY, listFragment);
     }
+
     private void initializationOfSaveInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            listFragment = new PlaceListFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, listFragment).commit();
+            loginScreenView = new LoginScreenView();
+            getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, loginScreenView).commit();
         } else {
-            listFragment = (PlaceListFragment) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
+            loginScreenView = (LoginScreenView) getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_KEY);
         }
     }
 
+    public GoogleApiClient getGoogleApiClient(){
+        return googleApiClient;
+    }
 }

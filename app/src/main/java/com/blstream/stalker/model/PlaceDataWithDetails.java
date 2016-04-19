@@ -1,7 +1,10 @@
 package com.blstream.stalker.model;
 
+import android.support.annotation.NonNull;
+
 /**
  * Used for storing PlaceData and PlaceDataDetails
+ * List of those is added to Database
  */
 public class PlaceDataWithDetails {
     private PlaceData placeData;
@@ -9,15 +12,15 @@ public class PlaceDataWithDetails {
 
     /**
      * Creates class instance with given parameters
-     * @params  to be stored in class instance
+     *
+     * @params to be stored in class instance
      */
-    public PlaceDataWithDetails(PlaceData placeData, PlaceDataDetails placeDataDetails) {
+    public PlaceDataWithDetails(@NonNull PlaceData placeData, @NonNull PlaceDataDetails placeDataDetails) {
         this.placeData = placeData;
         this.placeDataDetails = placeDataDetails;
     }
 
     /**
-     *
      * @return PlaceData
      */
     public PlaceData getPlaceData() {
@@ -25,7 +28,6 @@ public class PlaceDataWithDetails {
     }
 
     /**
-     *
      * @return PlaceDataDetails
      */
     public PlaceDataDetails getPlaceDataDetails() {

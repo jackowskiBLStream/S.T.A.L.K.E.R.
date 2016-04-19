@@ -1,18 +1,17 @@
 package com.blstream.stalker.controller;
 
-import com.blstream.stalker.view.fragments.LoginScreenFragment;
-import com.blstream.stalker.view.interfaces.IMainFragment;
+import com.blstream.stalker.view.fragments.LoginScreenView;
+import com.blstream.stalker.view.interfaces.IBasicView;
 
 public class PlaceListController {
 
-    private final LoginScreenFragment fragment;
+    private final LoginScreenView fragment;
 
-    public PlaceListController(LoginScreenFragment fragmet){
+    public PlaceListController(LoginScreenView fragmet){
         this.fragment = fragmet;
     }
 
     public void doSomething(){
-        fragment.showError(IMainFragment.NO_INTERNET_CONNECTION_ERROR);
+        fragment.showError(IBasicView.NO_INTERNET_CONNECTION_ERROR);
     }
-
 }
