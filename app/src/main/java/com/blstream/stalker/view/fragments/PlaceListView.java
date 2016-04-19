@@ -29,6 +29,7 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
     private MyContentObserver myContentObserver;
     private DatabaseController databaseController;
+    private DetailItemView detailItemView;
 
     @Nullable
     @Override
@@ -130,7 +131,7 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         PlaceListAdapter.OnItemClickListener onItemClickListener = new PlaceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                DetailItemView detailItemView = new DetailItemView();
+                detailItemView = new DetailItemView();
                 createBundleForDetailsFragment(detailItemView, position);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainContainer, detailItemView).addToBackStack("")
@@ -159,4 +160,14 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         detailItemView.setArguments(bundle);
     }
 }
+
+//    public void sendCameraResultToFragmentList(int requestCode, int responseCode, final int RESULT_OK) {
+//        detailItemView.sendCameraResultToFragmentDetailFragment(requestCode, responseCode, RESULT_OK);
+//    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
 
