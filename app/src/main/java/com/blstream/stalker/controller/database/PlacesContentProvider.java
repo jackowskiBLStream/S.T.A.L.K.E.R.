@@ -10,7 +10,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import static com.blstream.stalker.controller.database.DatabaseContract.*;
+import static com.blstream.stalker.controller.database.DatabaseContract.AUTHORITY;
+import static com.blstream.stalker.controller.database.DatabaseContract.TableDetails;
+import static com.blstream.stalker.controller.database.DatabaseContract.TablePlaces;
+import static com.blstream.stalker.controller.database.DatabaseContract.TableReviews;
 
 /**
  * Content provider for database
@@ -69,7 +72,6 @@ public class PlacesContentProvider extends ContentProvider {
 
         Cursor cursor = queryBuilder.query(database.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);
-        notifyChange(uri);
         return cursor;
     }
 
@@ -109,7 +111,6 @@ public class PlacesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
-        notifyChange(uri);
         return Uri.parse(tableName + "/" + id);
     }
 
@@ -150,7 +151,7 @@ public class PlacesContentProvider extends ContentProvider {
     }
 
     private void notifyChange(@NonNull Uri uri) {
-        if( getContext() != null) {
+        if (getContext() != null) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
     }

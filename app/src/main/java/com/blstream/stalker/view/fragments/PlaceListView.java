@@ -3,6 +3,7 @@ package com.blstream.stalker.view.fragments;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
     private MyContentObserver myContentObserver;
     private DatabaseController databaseController;
     private DetailItemView detailItemView;
+    private FloatingActionButton buttonNewPhoto;
 
     @Nullable
     @Override
