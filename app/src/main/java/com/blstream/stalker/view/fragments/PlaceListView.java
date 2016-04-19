@@ -22,6 +22,11 @@ import com.blstream.stalker.view.interfaces.IPlaceListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.blstream.stalker.view.fragments.DetailItemView.*;
+
+/**
+ * Class defines list of place view.
+ */
 public class PlaceListView extends BasicView implements IPlaceListView, ContentObserverCallback {
     private LocationController locationController;
     private DetectActivityController detectActivityController;
@@ -30,14 +35,20 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
     private MyContentObserver myContentObserver;
     private DatabaseController databaseController;
     private DetailItemView detailItemView;
-
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.place_list_layout, container, false);
     }
-
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -49,21 +60,30 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         initialScreenLayout();
     }
 
-
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Override
     public void onStart() {
         locationController.onStart();
         detectActivityController.onStart();
         super.onStart();
     }
-
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Override
     public void onStop() {
         locationController.onStop();
         detectActivityController.onStop();
         super.onStop();
     }
-
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -78,7 +98,10 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
                         true,
                         myContentObserver);
     }
-
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -87,9 +110,28 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         getActivity().getContentResolver().unregisterContentObserver(myContentObserver);
     }
 
+    /**
+     * Method seting span count to StaggeredGridLayoutManager as 2 if height is bigger than width,
+     * 1 if width is bigger than height.
+     */
+    public void initialScreenLayout() {
+        Point size = new Point();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+        if (size.x > size.y) {
+            mStaggeredLayoutManager.setSpanCount(2);
+        } else {
+            mStaggeredLayoutManager.setSpanCount(1);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     */
     @Override
     public void updateList(List<PlaceData> placeDataList) {
         adapter.setPlaceDataList(placeDataList);
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -134,22 +176,13 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         adapter.setOnItemClickListener(onItemClickListener);
     }
 
-    private void initialScreenLayout() {
-        Point size = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-        if (size.x > size.y) {
-            mStaggeredLayoutManager.setSpanCount(2);
-        } else {
-            mStaggeredLayoutManager.setSpanCount(1);
-        }
-    }
-
     private void createBundleForDetailsFragment(DetailItemView detailItemView, int position) {
         List<PlaceData> placeDataList = adapter.getPlaceDataList();
         Bundle bundle = new Bundle();
-        bundle.putString(DetailItemView.NAME_BUNDLE_KEY, placeDataList.get(position).getName());
-        bundle.putString(DetailItemView.TAGS_BUNDLE_KEY, placeDataList.get(position).getTypes());
-        bundle.putString(DetailItemView.OPEN_HOURS_KEY, "11:00 - 22:00");
+        bundle.putString(NAME_BUNDLE_KEY, placeDataList.get(position).getName());
+        bundle.putString(TAGS_BUNDLE_KEY, placeDataList.get(position).getTypes());
+        bundle.putString(OPEN_HOURS_KEY, "11:00 - 22:00");
+        bundle.putParcelable(PLACE_DATA_KEY,placeDataList.get(position));
         detailItemView.setArguments(bundle);
     }
 
@@ -160,7 +193,6 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
     }
 }
 

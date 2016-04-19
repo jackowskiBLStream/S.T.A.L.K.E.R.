@@ -36,7 +36,6 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
 
     public void setPlaceDataList(List<PlaceData> placeDataList) {
         this.placeDataList = placeDataList;
-        notifyDataSetChanged();
     }
 
     public List<PlaceData> getPlaceDataList(){

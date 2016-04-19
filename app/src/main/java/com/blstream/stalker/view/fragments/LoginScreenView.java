@@ -1,5 +1,7 @@
 package com.blstream.stalker.view.fragments;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,6 @@ import com.blstream.stalker.R;
 import com.blstream.stalker.controller.DatabaseController;
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.controller.PlaceListController;
-import com.blstream.stalker.controller.internetConnection.InternetConnectionListener;
 import com.blstream.stalker.view.abstractClass.BasicView;
 import com.blstream.stalker.view.interfaces.IBasicView;
 import com.blstream.stalker.view.interfaces.ILoginView;
@@ -36,6 +37,9 @@ public class LoginScreenView extends BasicView implements ILoginView, GoogleApiC
         return inflater.inflate(R.layout.login_screen_layout, container, false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -53,6 +57,35 @@ public class LoginScreenView extends BasicView implements ILoginView, GoogleApiC
             showError(IBasicView.NO_INTERNET_CONNECTION_ERROR);
         }
     }
+
+    /**
+     * Sending result from activity to Fragment and then to controller
+     * {@link #onActivityResult(int, int, Intent)}
+     */
+    public void sendLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
+        loginScreenController.sendLoginResultToController(requestCode, responseCode, RESULT_OK);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        loginScreenController.connectionSuccessHandling();
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        loginScreenController.connectionFailedHandling(connectionResult);
+    }
+
     private void customizeButtons() {
         signInButton.setColorScheme(SignInButton.COLOR_AUTO);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -75,23 +108,5 @@ public class LoginScreenView extends BasicView implements ILoginView, GoogleApiC
                 loginScreenController.runWithoutLogin();
             }
         });
-    }
-    public void sendLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
-        loginScreenController.sendLoginResultToController(requestCode, responseCode, RESULT_OK);
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        loginScreenController.connectionSuccessHandling();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        loginScreenController.connectionFailedHandling(connectionResult);
     }
 }
