@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
  */
 public class InternetConnectionListener extends BroadcastReceiver{
     public static boolean isOnline;
-    public static InternetConnectionListener instance = null;
     private InternetConnectionObserver observer;
     public InternetConnectionListener() {
         observer = InternetConnectionObserver.getInstance();

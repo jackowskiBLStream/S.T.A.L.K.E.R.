@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CameraController {
-    private final GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClient;
     Intent cameraIntent;
     Fragment fragment;
     private Uri fileUri;
@@ -57,7 +57,6 @@ public class CameraController {
         if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && responseCode == RESULT_OK) {
             // Image captured and saved to fileUri specified in the Intent
             Toast.makeText(fragment.getContext(), "Photo taken", Toast.LENGTH_LONG).show();
-
         }
     }
 }

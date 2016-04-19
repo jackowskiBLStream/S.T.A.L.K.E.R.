@@ -1,5 +1,8 @@
 package com.blstream.stalker.view.abstractClass;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,12 +46,10 @@ public abstract class BasicView extends Fragment implements IBasicView {
 
     @Override
     public void hideError() {
-
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                 .remove(errorFragment).commit();
-        getFragmentManager().executePendingTransactions();
     }
 
 
@@ -77,5 +78,11 @@ public abstract class BasicView extends Fragment implements IBasicView {
             default:
                 break;
         }
+    }
+    public boolean isInternetConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

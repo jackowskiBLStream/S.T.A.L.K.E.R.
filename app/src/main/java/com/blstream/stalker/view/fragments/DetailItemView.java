@@ -33,7 +33,7 @@ public class DetailItemView extends Fragment {
     private TextView nameTextView;
     private TextView openHoursTextView;
     private TextView tagsTextView;
-    CameraController cameraController;
+    private CameraController cameraController;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -42,6 +42,7 @@ public class DetailItemView extends Fragment {
     };
     private ImageButton cameraButton;
     private GoogleApiClient googleApiClient;
+
 
 
     @Nullable
@@ -71,7 +72,6 @@ public class DetailItemView extends Fragment {
             openHoursTextView.setTransitionName(OPEN_HOURS_TRANSACTION_NAME);
             tagsTextView.setTransitionName(TAGS_TRANSACTION_NAME);
         }
-
 //        setTextToViewsFromBundle();
     }
 
@@ -90,4 +90,8 @@ public class DetailItemView extends Fragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+//    public void sendCameraResultToFragmentDetailFragment(int requestCode, int responseCode, final int RESULT_OK) {
+//        cameraController.sendCameraResultToController(requestCode, responseCode, RESULT_OK);
+//    }
 }

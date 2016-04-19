@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.blstream.stalker.Constants;
 import com.blstream.stalker.controller.interfaces.ILoginScreenController;
+import com.blstream.stalker.controller.internetConnection.InternetConnectionListener;
 import com.blstream.stalker.view.fragments.LoginScreenView;
 import com.blstream.stalker.view.interfaces.IBasicView;
 import com.google.android.gms.common.ConnectionResult;
@@ -50,14 +51,6 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
         }
     }
 
-    /**
-     * Method created for tests.
-     *
-     * @return boolean which defines if the user is loggedIn
-     */
-    public boolean isLoggedIn() {
-        return googleApiClient.isConnected();
-    }
 
     public void connectionFailedHandling(ConnectionResult result) {
         if (result != null && !result.hasResolution()) {
