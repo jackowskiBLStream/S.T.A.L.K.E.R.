@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -34,11 +35,13 @@ public class LocationController extends LocationFragmentController implements IO
     private GoogleApiClient googleApiClientLocation;
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
+    private List<PlaceDataWithDetails> placeDataWithDetails;
 
     public LocationController(Fragment fragment) {
         super(fragment);
         createGoogleApiClientInstance();
         createLocationRequest();
+        placeDataWithDetails = new ArrayList<>();
     }
 
     /**
@@ -151,8 +154,13 @@ public class LocationController extends LocationFragmentController implements IO
 
         @Override
         protected List<PlaceData> doInBackground(Object... params) {
+            /*placeDataWithDetails = new ArrayList<>(googlePlacesController
+                    .findPlacesWithDetails((Double) params[0],
+                            (Double) params[1],
+                            ""));*/
             return googlePlacesController.findPlaces((Double) params[0],
-                    (Double) params[1], "");
+                    (Double) params[1],
+                    "");
         }
 
         @Override

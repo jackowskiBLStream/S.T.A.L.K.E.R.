@@ -1,5 +1,6 @@
 package com.blstream.stalker.controller.places;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.blstream.stalker.model.PlaceData;
@@ -53,7 +54,7 @@ public class GooglePlacesController {
         }
         return null;
     }
-  /* public List<PlaceDataWithDetails> findPlaces(double latitude, double longitude,
+   public List<PlaceDataWithDetails> findPlacesWithDetails(double latitude, double longitude,
                                                 String placeSpecification) {
 
        String urlPlaceString = makeUrl(latitude, longitude, placeSpecification);
@@ -61,7 +62,6 @@ public class GooglePlacesController {
        try {
            String json = getJSON(urlPlaceString);
 
-           System.out.println(json);
            JSONObject object = new JSONObject(json);
            JSONArray array = object.getJSONArray("results");
 
@@ -84,20 +84,20 @@ public class GooglePlacesController {
            ex.printStackTrace();
        }
        return null;
-   }*/
+   }
 
     public PlaceDataDetails findPlaceDetails(String place_id) throws JSONException {
         String urlString = makeUrl(place_id);
         String json = getJSON(urlString);
         JSONObject object = new JSONObject(json);
-
+        JSONObject result = (JSONObject) object.get("result");
         PlaceDataDetails placeDetails = PlaceDataDetails
-                .parseJsonObject(object);
-        Log.v("Places Services ", "" + placeDetails);
+                .parseJsonObject(result);
         return placeDetails;
     }
 
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
+    @NonNull
     private String makeUrl(double latitude, double longitude, String place) {
         StringBuilder searchPlaceUrl = new StringBuilder(
                 "https://maps.googleapis.com/maps/api/place/search/json?");
@@ -120,11 +120,11 @@ public class GooglePlacesController {
         return searchPlaceUrl.toString();
     }
 
-    // https://maps.googleapis.com/maps/api/place/search/json?place_id=dasdasgwe&key=apikey
+    // https://maps.googleapis.com/maps/api/place/search/json?placeid=dasdasgwe&key=apikey
     private String makeUrl(String place_id) {
         StringBuilder detailsPlaceUrl = new StringBuilder(
                 "https://maps.googleapis.com/maps/api/place/details/json?");
-        detailsPlaceUrl.append("place_id=");
+        detailsPlaceUrl.append("placeid=");
         detailsPlaceUrl.append(place_id);
         detailsPlaceUrl.append("&key=" + API_KEY);
 

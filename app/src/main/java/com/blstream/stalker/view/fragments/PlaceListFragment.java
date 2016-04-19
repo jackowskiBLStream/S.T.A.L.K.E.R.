@@ -1,7 +1,6 @@
 package com.blstream.stalker.view.fragments;
 
 import android.graphics.Point;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,12 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blstream.stalker.R;
-
 import com.blstream.stalker.controller.location.DetectActivityController;
 import com.blstream.stalker.controller.location.LocationController;
-
-import com.blstream.stalker.model.OpenHours;
-
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
 import com.blstream.stalker.view.adapters.PlaceListAdapter;

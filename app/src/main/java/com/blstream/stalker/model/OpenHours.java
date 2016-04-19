@@ -11,6 +11,16 @@ public class OpenHours {
     private String timeOpened;
     private String timeClosed;
 
+
+
+    public void setTimeOpened(String timeOpened) {
+        this.timeOpened = timeOpened;
+    }
+
+    public void setTimeClosed(String timeClosed) {
+        this.timeClosed = timeClosed;
+    }
+
     /**
      * Constructor that sets hours to specified
      *
@@ -20,6 +30,13 @@ public class OpenHours {
     public OpenHours(@NonNull String timeOpened, @NonNull String timeClosed) {
         this.timeClosed = timeClosed;
         this.timeOpened = timeOpened;
+
+    }
+    public static OpenHours[] fillWithNoInfo(OpenHours[] openHours){
+        for(int i = 0; i < openHours.length; i++){
+            openHours[i] = new OpenHours("no info", "no info");
+        }
+        return openHours;
     }
 
     /**
