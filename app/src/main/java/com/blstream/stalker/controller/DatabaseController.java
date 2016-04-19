@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.database.DatabaseContract;
 import com.blstream.stalker.controller.database.DatabaseHelper;
-import com.blstream.stalker.controller.interfaces.IDatabaseController;
 import com.blstream.stalker.model.OpenHours;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
@@ -21,11 +20,9 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Patryk Gwiazdowski on 13.04.2016.
- * // Good Job Patryk
+ * Manages Database. Adds place to db, clears it and retrieves data from it
  */
-public class DatabaseController implements IDatabaseController {
-
+public class DatabaseController {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private static final int DAYS_IN_WEEK = 7;
     private Context context;
@@ -37,7 +34,6 @@ public class DatabaseController implements IDatabaseController {
     /**
      * clears all rows in all tables of Database
      */
-    @Override
     public void clearDB() {
         Log.d(TAG, "clearDB: rows Deleted from Places:" + clearPlacesTable());
         Log.d(TAG, "clearDB: rows Deleted from Details:" + clearDetailsTable());
@@ -47,7 +43,6 @@ public class DatabaseController implements IDatabaseController {
     /**
      * @return all stroed places data
      */
-    @Override
     public List<PlaceData> getAllPlacesData() {
         ArrayList<PlaceData> list = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_PLACES, null, null, null, null);
@@ -109,7 +104,6 @@ public class DatabaseController implements IDatabaseController {
      * @param place for which data will be returned
      * @return details for place given in parameter
      */
-    @Override
     public PlaceDataDetails getPlaceDetails(PlaceData place) {
         PlaceDataDetails details;
         String where = DatabaseContract.TableDetails.COLUMN_PLACE_ID + " = ?";
@@ -137,7 +131,6 @@ public class DatabaseController implements IDatabaseController {
      * @param data to be set
      * @return true when successfully added, false when error occurred during adding
      */
-    @Override
     public boolean addPlacesToDB(List<PlaceDataWithDetails> data) {
         for (PlaceDataWithDetails place : data) {
             addPlace(place);

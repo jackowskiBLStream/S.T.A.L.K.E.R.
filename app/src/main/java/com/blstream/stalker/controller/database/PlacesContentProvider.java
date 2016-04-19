@@ -19,21 +19,15 @@ public class PlacesContentProvider extends ContentProvider {
 
 
     private static final int PLACES = 0;
-    private static final int PLACES_ID = 1;
     private static final int DETAILS = 2;
-    private static final int DETAILS_ID = 3;
     private static final int REVIEWS = 4;
-    private static final int REVIEWS_ID = 5;
     private static final UriMatcher uriMatcher;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_NAME, PLACES);
-        uriMatcher.addURI(AUTHORITY, TablePlaces.TABLE_NAME + "/#", PLACES_ID);
         uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_NAME, DETAILS);
-        uriMatcher.addURI(AUTHORITY, TableDetails.TABLE_NAME + "/#", DETAILS_ID);
         uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_NAME, REVIEWS);
-        uriMatcher.addURI(AUTHORITY, TableReviews.TABLE_NAME + "/#", REVIEWS_ID);
 
     }
 
@@ -75,9 +69,7 @@ public class PlacesContentProvider extends ContentProvider {
 
         Cursor cursor = queryBuilder.query(databse.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);
-        if (getContext() != null) {
-            cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        }
+        notifyChange(uri);
         return cursor;
     }
 
@@ -117,6 +109,7 @@ public class PlacesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        notifyChange(uri);
         return Uri.parse(tableName + "/" + id);
     }
 
@@ -144,6 +137,7 @@ public class PlacesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        notifyChange(uri);
         return rowsDeleted;
     }
 
@@ -155,8 +149,10 @@ public class PlacesContentProvider extends ContentProvider {
         return 0;
     }
 
-    private void checkColumns(String[] projection) {
-        //TODO implement this
+    private void notifyChange(@NonNull Uri uri) {
+        if( getContext() != null) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
     }
 
 }

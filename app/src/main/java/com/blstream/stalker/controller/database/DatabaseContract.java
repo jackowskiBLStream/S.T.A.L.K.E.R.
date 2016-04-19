@@ -6,8 +6,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
- * Created by Patryk Gwiazdowski on 18.04.2016.
- * // Good Job Patryk
+ *  Container for constants that define names for URIs, tables, and columns.
  */
 public class DatabaseContract {
 
@@ -24,8 +23,8 @@ public class DatabaseContract {
         //Table name
         public static final String TABLE_NAME = "details";
         //Table columns
-        public static final String[] COLUMN_OPEN_DAY = {"open_mon", "open_tue", "open_wed", "open_thu", "open_fri", "open_sat", "open_sun"};
-        public static final String[] COLUMN_CLOSE_DAY = {"close_mon", "close_tue", "close_wed", "close_thu", "close_fri", "close_sat", "close_sun"};
+        public static final String[] COLUMN_OPEN_DAY = {"open_sun", "open_mon", "open_tue", "open_wed", "open_thu", "open_fri", "open_sat"};
+        public static final String[] COLUMN_CLOSE_DAY = {"close_sun", "close_mon", "close_tue", "close_wed", "close_thu", "close_fri", "close_sat"};
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_PLACE_ID = "place_id";
         public static final String TEXT_NOT_NULL = " text not null, ";
@@ -70,7 +69,6 @@ public class DatabaseContract {
      * SQlite table that contains places data
      */
     public static class TablePlaces implements BaseColumns {
-
         //table name
         public static final String TABLE_NAME = "places";
         //Table columns
