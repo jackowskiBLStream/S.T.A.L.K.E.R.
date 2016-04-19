@@ -1,19 +1,28 @@
 package com.blstream.stalker;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+
+import com.blstream.stalker.controller.LoginScreenController;
+import com.blstream.stalker.controller.interfaces.ILoginScreenController;
 import com.blstream.stalker.view.fragments.LoginScreenView;
 import com.blstream.stalker.view.fragments.PlaceListView;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
 
+
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String FRAGMENT_KEY = "LoginScreenView";
-    protected GoogleApiClient googleApiClient;
     LoginScreenView loginScreenView;
     private PlaceListView listFragment;
+    protected GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode == Constants.RC_SIGN_IN) {
             loginScreenView.sendLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         }
-//        } else if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            listFragment.sendCameraResultToFragmentList(requestCode, resultCode, RESULT_OK);
-//        }
         super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     /**

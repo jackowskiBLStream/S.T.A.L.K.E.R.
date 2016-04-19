@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.blstream.stalker.Constants;
 import com.blstream.stalker.controller.interfaces.ILoginScreenController;
+import com.blstream.stalker.controller.internetConnection.InternetConnectionListener;
 import com.blstream.stalker.view.fragments.LoginScreenView;
 import com.blstream.stalker.view.interfaces.IBasicView;
 import com.google.android.gms.common.ConnectionResult;
@@ -16,6 +17,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class LoginScreenController extends FragmentController<LoginScreenView> implements ILoginScreenController {
 
     protected GoogleApiClient googleApiClient;
+
 
     public LoginScreenController(Fragment fragment, GoogleApiClient googleApiClient) {
         super(fragment);
@@ -47,6 +49,7 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
             googleApiClient.connect();
         }
     }
+
 
     public void connectionFailedHandling(ConnectionResult result) {
         if (result != null && !result.hasResolution()) {

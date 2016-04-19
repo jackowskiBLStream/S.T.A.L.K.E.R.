@@ -46,6 +46,7 @@ public class DetailItemView extends Fragment {
     private GoogleApiClient googleApiClient;
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +75,6 @@ public class DetailItemView extends Fragment {
             openHoursTextView.setTransitionName(OPEN_HOURS_TRANSACTION_NAME);
             tagsTextView.setTransitionName(TAGS_TRANSACTION_NAME);
         }
-
 //        setTextToViewsFromBundle();
     }
 
