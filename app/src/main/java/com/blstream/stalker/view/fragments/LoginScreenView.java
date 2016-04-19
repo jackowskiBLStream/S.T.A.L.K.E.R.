@@ -1,74 +1,55 @@
 package com.blstream.stalker.view.fragments;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
+import com.blstream.stalker.BaseActivity;
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.DatabaseController;
 import com.blstream.stalker.controller.LoginScreenController;
 import com.blstream.stalker.controller.PlaceListController;
-import com.blstream.stalker.model.PlaceData;
-import com.blstream.stalker.model.PlaceDataDetails;
-import com.blstream.stalker.model.PlaceDataWithDetails;
-import com.blstream.stalker.view.abstractClass.AbstractErrorClass;
-import com.blstream.stalker.view.interfaces.ILoginFragment;
+import com.blstream.stalker.view.abstractClass.BasicView;
+import com.blstream.stalker.view.interfaces.ILoginView;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.util.ArrayList;
 
-
-public class LoginScreenFragment extends AbstractErrorClass implements ILoginFragment {
+public class LoginScreenView extends BasicView implements ILoginView, GoogleApiClient.ConnectionCallbacks,  GoogleApiClient.OnConnectionFailedListener{
     SignInButton signInButton;
     Button noThanksButton;
     LoginScreenController loginScreenController;
-
-    ErrorMessageFragment errorFragment = new ErrorMessageFragment();
     PlaceListController placeListController;
     DatabaseController db;
-
+    GoogleApiClient googleApiClient;
     /**
      * {@inheritDoc}
      */
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.login_screen_layout, container, false);
-        signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
-        noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
-        loginScreenController = new LoginScreenController(this);
-        placeListController = new PlaceListController(this);
-        db = new DatabaseController(getContext());
-        customizeButtons();
-        return view;
+        googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
+        return inflater.inflate(R.layout.login_screen_layout, container, false);
     }
 
-    /**
-     * Replace Fragments for a specified fragment in fragmentType;
-     *
-     * @param fragmentType type of Fragment {LIST_FRAGMENT,DETAIL_FRAGMENT,LOGIN_FRAGMENT}
-     */
     @Override
-    public void changeFragment(@FragmentType int fragmentType) {
-        FragmentManager fragmentManager = getFragmentManager();
-        switch (fragmentType) {
-            case LIST_FRAGMENT:
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, new PlaceListFragment()).commit();
-                break;
-            case DETAIL_FRAGMENT:
-                break;
-            case LOGIN_FRAGMENT:
-                break;
-            default:
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, new PlaceListFragment()).commit();
-        }
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
+        noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
+
+        loginScreenController = new LoginScreenController(this, googleApiClient);
+        placeListController = new PlaceListController(this);
+        loginScreenController.setView(this);
+        db = new DatabaseController(getContext());
+        customizeButtons();
     }
 
     private void customizeButtons() {
@@ -89,13 +70,29 @@ public class LoginScreenFragment extends AbstractErrorClass implements ILoginFra
              */
             @Override
             public void onClick(View v) {
-                loginScreenController.runWithoutLogin();
                 hideError();
+                loginScreenController.runWithoutLogin();
+
             }
         });
     }
 
-    public void sentLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
-        loginScreenController.sentLoginResultToController(requestCode, responseCode, RESULT_OK);
+    public void sendLoginResultToFragment(int requestCode, int responseCode, final int RESULT_OK) {
+        loginScreenController.sendLoginResultToController(requestCode, responseCode, RESULT_OK);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        loginScreenController.connectionSuccessHandling();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        loginScreenController.connectionFailedHandling(connectionResult);
     }
 }

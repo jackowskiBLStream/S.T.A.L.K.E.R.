@@ -1,5 +1,7 @@
 package com.blstream.stalker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import org.json.JSONException;
@@ -8,41 +10,46 @@ import org.json.JSONObject;
 /**
  * Stores all data about particular place
  */
-public class PlaceData {
+public class PlaceData implements Parcelable {
+
 
     private String name;
     private String icon;
     private String types;
-    private Location location;
+    private String place_id;
+    private PlaceLocation placeLocation;
     private OpenHours todayOpenHours;
     private int id;
-    private String place_id;
-
-    public String getPlace_id() {
-        return place_id;
-    }
-
-    public void setPlace_id(String place_id) {
-        this.place_id = place_id;
-    }
 
     public PlaceData(@NonNull String icon, @NonNull String types,
-                     @NonNull String name, @NonNull Location location, String place_id) {
+                     @NonNull String name, @NonNull PlaceLocation placeLocation, String place_id) {
         this.icon = icon;
         this.types = types;
         this.name = name;
-        this.location = location;
+        this.placeLocation = placeLocation;
         this.place_id = place_id;
     }
 
-    public PlaceData(@NonNull String icon, @NonNull String types,
-                     @NonNull String name, @NonNull Location location) {
-        this.icon = icon;
-        this.types = types;
-        this.name = name;
-        this.location = location;
+
+    protected PlaceData(Parcel in) {
+        name = in.readString();
+        icon = in.readString();
+        types = in.readString();
+        place_id = in.readString();
+        id = in.readInt();
     }
 
+    public static final Creator<PlaceData> CREATOR = new Creator<PlaceData>() {
+        @Override
+        public PlaceData createFromParcel(Parcel in) {
+            return new PlaceData(in);
+        }
+
+        @Override
+        public PlaceData[] newArray(int size) {
+            return new PlaceData[size];
+        }
+    };
 
     public static PlaceData parseJsonObjects(JSONObject jsonObject) {
         try {
@@ -51,7 +58,7 @@ public class PlaceData {
             return new PlaceData(jsonObject.getString("icon"),
                     jsonObject.getString("types"),
                     jsonObject.getString("name"),
-                    new Location((Double) location.get("lng"),
+                    new PlaceLocation((Double) location.get("lng"),
                             (Double) location.get("lng")),
                     jsonObject.getString("place_id"));
         } catch (JSONException ex) {
@@ -59,6 +66,15 @@ public class PlaceData {
         }
         return null;
 
+    }
+
+
+    public String getPlace_id() {
+        return place_id;
+    }
+
+    public void setPlace_id(String place_id) {
+        this.place_id = place_id;
     }
 
     /**
@@ -90,18 +106,35 @@ public class PlaceData {
     }
 
     /**
-     * @return place location
+     * @return place placeLocation
      */
-    public Location getLocation() {
-        return location;
+    public PlaceLocation getPlaceLocation() {
+        return placeLocation;
+    }
+
+
+    /**
+     * @param placeLocation placeLocation to which distance will be calculated
+     * @return distance to placeLocation specified in param
+     */
+    public double getDistanceFromLocation(PlaceLocation placeLocation) {
+        return this.placeLocation.getDistance(placeLocation);
     }
 
     /**
-     * @param location location to which distance will be calculated
-     * @return distance to location specified in param
+     * Overrided toString() method
+     *
+     * @return String that contains some basic information about Place
      */
-    public double getDistanceFromLocation(Location location) {
-        return this.location.getDistance(location);
+    @Override
+    public String toString() {
+        return "PlaceData{" +
+                ", name='" + name + '\'' +
+                ", types='" + types + '\'' +
+                ", placeLocation=" + placeLocation +
+                ", todayOpenHours=" + todayOpenHours +
+                ", id=" + id +
+                '}';
     }
 
     /**
@@ -110,7 +143,6 @@ public class PlaceData {
     public int getId() {
         return id;
     }
-
 
     /**
      * @param id Sets Place id to
@@ -130,4 +162,17 @@ public class PlaceData {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(icon);
+        dest.writeString(types);
+        dest.writeString(place_id);
+        dest.writeInt(id);
+    }
 }

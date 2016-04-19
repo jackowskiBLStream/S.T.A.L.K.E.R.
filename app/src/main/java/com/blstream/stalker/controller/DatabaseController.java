@@ -8,13 +8,11 @@ import android.util.Log;
 
 import com.blstream.stalker.controller.database.DatabaseContract;
 import com.blstream.stalker.controller.database.DatabaseHelper;
-
-import com.blstream.stalker.controller.interfaces.IDatabaseController;
-import com.blstream.stalker.model.Location;
 import com.blstream.stalker.model.OpenHours;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
+import com.blstream.stalker.model.PlaceLocation;
 import com.blstream.stalker.model.Review;
 
 import java.util.ArrayList;
@@ -22,11 +20,9 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Patryk Gwiazdowski on 13.04.2016.
- * // Good Job Patryk
+ * Manages Database. Adds place to db, clears it and retrieves data from it
  */
-public class DatabaseController implements IDatabaseController {
-
+public class DatabaseController {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private static final int DAYS_IN_WEEK = 7;
     private Context context;
@@ -38,7 +34,6 @@ public class DatabaseController implements IDatabaseController {
     /**
      * clears all rows in all tables of Database
      */
-    @Override
     public void clearDB() {
         Log.d(TAG, "clearDB: rows Deleted from Places:" + clearPlacesTable());
         Log.d(TAG, "clearDB: rows Deleted from Details:" + clearDetailsTable());
@@ -48,7 +43,6 @@ public class DatabaseController implements IDatabaseController {
     /**
      * @return all stroed places data
      */
-    @Override
     public List<PlaceData> getAllPlacesData() {
         ArrayList<PlaceData> list = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(DatabaseContract.URI_PLACES, null, null, null, null);
@@ -56,19 +50,20 @@ public class DatabaseController implements IDatabaseController {
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             Log.d(TAG, "getAllPlacesData: " + i);
-            Location location = new Location(30.0,30.0 );  //Creates new Location for current PlaceData class instance
-            location.setLatitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LATITUDE))); //Sets location parameters
-            location.setLongitude(cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LONGITUDE)));
-            PlaceData data = new PlaceData(  //Creates new PlaceData instance, and fills it fields by Ones Retrieved from Cursor
+            PlaceLocation placeLocation =
+                    new PlaceLocation(//Creates new PlaceLocation for current PlaceData class instance
+                    cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LATITUDE)),
+                    cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LONGITUDE)));
+            PlaceData data =
+                    new PlaceData(  //Creates new PlaceData instance, and fills it fields by Ones Retrieved from Cursor
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_IMG_URL)),
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_TYPES)),
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_NAME)),
-                    location);
-            data.setId(cursor.getInt(cursor.getColumnIndex(DatabaseContract.TablePlaces._ID)));    //Sets PlaceData id to one Row id fromd atabase
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
-            if (day == -1) {
-                day = 6;
-            }
+                    placeLocation,
+                    null);
+            //Sets PlaceData id to one Row id from database
+            data.setId(cursor.getInt(cursor.getColumnIndex(DatabaseContract.TablePlaces._ID)));
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
             data.setTodayOpeningHours(getPlaceDetails(data).getOpeningHours(day));
             list.add(data);
             cursor.moveToNext();
@@ -79,14 +74,16 @@ public class DatabaseController implements IDatabaseController {
 
     /**
      * Clears TableReviews
+     *
      * @return number of rows deleted
      */
-    protected int clearReviewsTable(){
+    protected int clearReviewsTable() {
         return context.getContentResolver().delete(DatabaseContract.URI_REVIEWS, null, null);
     }
 
     /**
      * Clears TableDetails
+     *
      * @return number of rows deleted
      */
     protected int clearDetailsTable() {
@@ -95,9 +92,10 @@ public class DatabaseController implements IDatabaseController {
 
     /**
      * Clears TablePlaces
+     *
      * @return number of rows deleted
      */
-    protected int clearPlacesTable(){
+    protected int clearPlacesTable() {
         return context.getContentResolver().delete(DatabaseContract.URI_PLACES, null, null);
     }
 
@@ -107,7 +105,6 @@ public class DatabaseController implements IDatabaseController {
      * @param place for which data will be returned
      * @return details for place given in parameter
      */
-    @Override
     public PlaceDataDetails getPlaceDetails(PlaceData place) {
         PlaceDataDetails details;
         String where = DatabaseContract.TableDetails.COLUMN_PLACE_ID + " = ?";
@@ -135,7 +132,6 @@ public class DatabaseController implements IDatabaseController {
      * @param data to be set
      * @return true when successfully added, false when error occurred during adding
      */
-    @Override
     public boolean addPlacesToDB(List<PlaceDataWithDetails> data) {
         for (PlaceDataWithDetails place : data) {
             addPlace(place);
@@ -180,7 +176,6 @@ public class DatabaseController implements IDatabaseController {
     }
 
     /**
-     *
      * @param placeData Data to add
      * @return row id
      */
@@ -189,8 +184,8 @@ public class DatabaseController implements IDatabaseController {
         valuesData.put(DatabaseContract.TablePlaces.COLUMN_NAME, placeData.getName());
         valuesData.put(DatabaseContract.TablePlaces.COLUMN_IMG_URL, placeData.getIconUrl());
         valuesData.put(DatabaseContract.TablePlaces.COLUMN_TYPES, placeData.getTypes());
-        valuesData.put(DatabaseContract.TablePlaces.COLUMN_LATITUDE, placeData.getLocation().getLatitude());
-        valuesData.put(DatabaseContract.TablePlaces.COLUMN_LONGITUDE, placeData.getLocation().getLongitude());
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_LATITUDE, placeData.getPlaceLocation().getLatitude());
+        valuesData.put(DatabaseContract.TablePlaces.COLUMN_LONGITUDE, placeData.getPlaceLocation().getLongitude());
         Uri uri = context.getContentResolver().insert(DatabaseContract.URI_PLACES, valuesData);
         String rowNumber;
         if (uri != null) {

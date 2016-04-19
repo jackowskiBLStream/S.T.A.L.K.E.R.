@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static com.blstream.stalker.controller.database.DatabaseContract.*;
+
 /**
  * A helper class to manage database creation and version management.
  */
@@ -23,9 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        DatabaseContract.TableDetails.onCreate(db);
-        DatabaseContract.TablePlaces.onCreate(db);
-        DatabaseContract.TableReviews.onCreate(db);
+        TableDetails.onCreate(db);
+        TablePlaces.onCreate(db);
+        TableReviews.onCreate(db);
     }
 
     /**
@@ -33,8 +35,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        DatabaseContract.TableDetails.onUpgrade(db, oldVersion, newVersion);
-        DatabaseContract.TablePlaces.onUpgrade(db, oldVersion, newVersion);
-        DatabaseContract.TableReviews.onUpgrade(db, oldVersion, newVersion);
+        TableDetails.onUpgrade(db, oldVersion, newVersion);
+        TablePlaces.onUpgrade(db, oldVersion, newVersion);
+        TableReviews.onUpgrade(db, oldVersion, newVersion);
     }
 }

@@ -6,58 +6,47 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
- * Created by Patryk Gwiazdowski on 18.04.2016.
- * // Good Job Patryk
+ *  Container for constants that define names for URIs, tables, and columns.
  */
 public class DatabaseContract {
 
     public static final String AUTHORITY = "com.blstream.stalker.controller.database.PlacesContentProvider";
-    public static final Uri URI_PLACES =
-            Uri.parse("content://" + AUTHORITY + "/" + TablePlaces.TABLE_PLACES);
-    public static final Uri URI_DETAILS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableDetails.TABLE_DETAILS);
-    public static final Uri URI_REVIEWS =
-            Uri.parse("content://" + AUTHORITY + "/" + TableReviews.TABLE_REVIEWS);
-
-
-    public DatabaseContract(){
-
-    }
-
+    public static final String URI_PREFIX = "content://" + AUTHORITY + "/";
+    public static final Uri URI_PLACES = Uri.parse(URI_PREFIX + TablePlaces.TABLE_NAME);
+    public static final Uri URI_DETAILS = Uri.parse(URI_PREFIX + TableDetails.TABLE_NAME);
+    public static final Uri URI_REVIEWS = Uri.parse(URI_PREFIX + TableReviews.TABLE_NAME);
 
     /**
      * SQLite table that contains detailed data about places
      */
     public static class TableDetails implements BaseColumns {
-
         //Table name
-        public static final String TABLE_DETAILS = "details";
+        public static final String TABLE_NAME = "details";
         //Table columns
-        public static final String[] COLUMN_OPEN_DAY = {"open_mon", "open_tue", "open_wed", "open_thu", "open_fri", "open_sat", "open_sun"};
-        public static final String[] COLUMN_CLOSE_DAY = {"close_mon", "close_tue", "close_wed", "close_thu", "close_fri", "close_sat", "close_sun"};
+        public static final String[] COLUMN_OPEN_DAY = {"open_sun", "open_mon", "open_tue", "open_wed", "open_thu", "open_fri", "open_sat"};
+        public static final String[] COLUMN_CLOSE_DAY = {"close_sun", "close_mon", "close_tue", "close_wed", "close_thu", "close_fri", "close_sat"};
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_PLACE_ID = "place_id";
-
-
+        public static final String TEXT_NOT_NULL = " text not null, ";
         // creation SQL statement
         private static final String TABLE_CREATE = "create table "
-                + TABLE_DETAILS
+                + TABLE_NAME
                 + "("
                 + _ID + " integer primary key autoincrement, "
-                + COLUMN_OPEN_DAY[0] + " text not null, "
-                + COLUMN_CLOSE_DAY[0] + " text not null, "
-                + COLUMN_OPEN_DAY[1] + " text not null, "
-                + COLUMN_CLOSE_DAY[1] + " text not null, "
-                + COLUMN_OPEN_DAY[2] + " text not null, "
-                + COLUMN_CLOSE_DAY[2] + " text not null, "
-                + COLUMN_OPEN_DAY[3] + " text not null, "
-                + COLUMN_CLOSE_DAY[3] + " text not null, "
-                + COLUMN_OPEN_DAY[4] + " text not null, "
-                + COLUMN_CLOSE_DAY[4] + " text not null, "
-                + COLUMN_OPEN_DAY[5] + " text not null, "
-                + COLUMN_CLOSE_DAY[5] + " text not null, "
-                + COLUMN_OPEN_DAY[6] + " text not null, "
-                + COLUMN_CLOSE_DAY[6] + " text not null, "
+                + COLUMN_OPEN_DAY[0] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[0] + TEXT_NOT_NULL
+                + COLUMN_OPEN_DAY[1] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[1] + TEXT_NOT_NULL
+                + COLUMN_OPEN_DAY[2] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[2] + TEXT_NOT_NULL
+                + COLUMN_OPEN_DAY[3] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[3] + TEXT_NOT_NULL
+                + COLUMN_OPEN_DAY[4] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[4] + TEXT_NOT_NULL
+                + COLUMN_OPEN_DAY[5] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[5] + TEXT_NOT_NULL
+                + COLUMN_OPEN_DAY[6] + TEXT_NOT_NULL
+                + COLUMN_CLOSE_DAY[6] + TEXT_NOT_NULL
                 + COLUMN_RATING + " real not null, "
                 + COLUMN_PLACE_ID + " integer not null "
                 + ");";
@@ -71,18 +60,17 @@ public class DatabaseContract {
             Log.w(TablePlaces.class.getName(), "Upgrading database from version "
                     + oldVersion + " to " + newVersion
                     + ", which will destroy all old data");
-            database.execSQL("DROP TABLE IF EXISTS " + TABLE_DETAILS);
+            database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(database);
         }
     }
 
     /**
-     * SQlite table that contains places data data
+     * SQlite table that contains places data
      */
     public static class TablePlaces implements BaseColumns {
-
         //table name
-        public static final String TABLE_PLACES = "places";
+        public static final String TABLE_NAME = "places";
         //Table columns
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_TYPES = "types";
@@ -92,7 +80,7 @@ public class DatabaseContract {
 
         // creation SQL statement
         private static final String TABLE_CREATE = "create table "
-                + TABLE_PLACES
+                + TABLE_NAME
                 + "("
                 + _ID + " integer primary key autoincrement, "
                 + COLUMN_NAME + " text not null, "
@@ -111,19 +99,18 @@ public class DatabaseContract {
             Log.w(TablePlaces.class.getName(), "Upgrading database from version "
                     + oldVersion + " to " + newVersion
                     + ", which will destroy all old data");
-            database.execSQL("DROP TABLE IF EXISTS " + TABLE_PLACES);
+            database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(database);
         }
     }
 
     /**
-     * Created by Patryk Gwiazdowski on 14.04.2016.
-     * // Good Job Patryk
+     * SQlite table that contains places Reviews
      */
-    public static class TableReviews implements BaseColumns{
+    public static class TableReviews implements BaseColumns {
 
         //table name
-        public static final String TABLE_REVIEWS = "reviews";
+        public static final String TABLE_NAME = "reviews";
         //Table columns
         public static final String COLUMN_REVIEW = "review";
         public static final String COLUMN_AUTHOR = "author";
@@ -132,7 +119,7 @@ public class DatabaseContract {
 
         // creation SQL statement
         private static final String TABLE_CREATE = "create table "
-                + TABLE_REVIEWS
+                + TABLE_NAME
                 + "("
                 + _ID + " integer primary key autoincrement, "
                 + COLUMN_REVIEW + " text not null, "
@@ -150,7 +137,7 @@ public class DatabaseContract {
             Log.w(TableReviews.class.getName(), "Upgrading database from version "
                     + oldVersion + " to " + newVersion
                     + ", which will destroy all old data");
-            database.execSQL("DROP TABLE IF EXISTS " + TABLE_REVIEWS);
+            database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(database);
         }
     }
