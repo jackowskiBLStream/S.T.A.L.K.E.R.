@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.ImageController;
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceLocation;
 import com.blstream.stalker.view.fragments.DetailItemView;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
 
     public PlaceListAdapter(Context context) {
         this.imageController = new ImageController(context,R.id.pubPlaceImageView,R.drawable.icon_camera);
+//        placeDataList.add(1, new PlaceData("sdvsdv", "sdsdgdfg", "rthsdh", new PlaceLocation(23,67)));
     }
 
     public void setPlaceDataList(List<PlaceData> placeDataList) {
@@ -51,7 +53,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        if (placeDataList.size() != 0){
+        if (getItemCount() != 0){
 //             imageController.getImage(placeDataList.get(position).getIconUrl(),holder.mPubPlaceImage);
 //            holder.mPubName.setText(placeDataList.get(position).getName());
 //            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
@@ -76,7 +78,11 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return placeDataList.size();
+        int itemsCount = 0;
+        if(placeDataList != null) {
+            itemsCount = placeDataList.size();
+        }
+        return itemsCount;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

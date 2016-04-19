@@ -1,6 +1,8 @@
 package com.blstream.stalker.view.fragments;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,9 +10,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.blstream.stalker.BaseActivity;
+import com.blstream.stalker.Constants;
 import com.blstream.stalker.R;
+import com.blstream.stalker.controller.CameraController;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class DetailItemView extends Fragment {
 
@@ -26,12 +33,23 @@ public class DetailItemView extends Fragment {
     private TextView nameTextView;
     private TextView openHoursTextView;
     private TextView tagsTextView;
+    CameraController cameraController;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            cameraController.onCameraClick();
+        }
+    };
+    private ImageButton cameraButton;
+    private GoogleApiClient googleApiClient;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
+        cameraController = new CameraController(this, googleApiClient);
         return inflater.inflate(R.layout.detail_item_layout, container, false);
     }
 
@@ -39,6 +57,8 @@ public class DetailItemView extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initialViewItems(view);
+        cameraButton = (ImageButton) view.findViewById(R.id.imageButton);
+        cameraButton.setOnClickListener(onClickListener);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -52,7 +72,7 @@ public class DetailItemView extends Fragment {
             tagsTextView.setTransitionName(TAGS_TRANSACTION_NAME);
         }
 
-        setTextToViewsFromBundle();
+//        setTextToViewsFromBundle();
     }
 
     private void setTextToViewsFromBundle(){
@@ -60,5 +80,14 @@ public class DetailItemView extends Fragment {
         nameTextView.setText(bundle.getString(NAME_BUNDLE_KEY));
         openHoursTextView.setText(bundle.getString(OPEN_HOURS_KEY));
         tagsTextView.setText(bundle.getString(TAGS_BUNDLE_KEY));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            cameraController.sendCameraResultToController(requestCode, resultCode, getActivity().RESULT_OK);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
