@@ -40,4 +40,6 @@
     <string name="tilting">Tilting</string>
     <string name="unknown">Unknown activity</string>
     <string name="unidentifiable_activity">Unidentifiable activity: %1$d</string>
+
+
 </resources>

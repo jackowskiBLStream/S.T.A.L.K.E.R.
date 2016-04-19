@@ -37,7 +37,7 @@ public class LocationController extends LocationFragmentController implements IO
     private static final String TAG = "LocationController: ";
     private GoogleApiClient googleApiClientLocation;
     private LocationRequest locationRequest;
-    private GooglePlacesController googlePlacesController = new GooglePlacesController();
+    private GooglePlacesController googlePlacesController = new GooglePlacesController(fragment.getContext());
     private List<PlaceDataWithDetails> placeDataWithDetails;
     private DatabaseController databaseController = new DatabaseController(fragment.getContext());
 
@@ -155,24 +155,25 @@ public class LocationController extends LocationFragmentController implements IO
     }
 
 
-    private class GetPlaces extends AsyncTask<Object, Object, List<PlaceData>> {
+    private class GetPlaces extends AsyncTask<Object, Object, List<PlaceDataWithDetails>> {
 
         @Override
-        protected List<PlaceData> doInBackground(Object... params) {
+        protected List<PlaceDataWithDetails> doInBackground(Object... params) {
             /*placeDataWithDetails = new ArrayList<>(googlePlacesController
                     .findPlacesWithDetails((Double) params[0],
                             (Double) params[1],
                             ""));*/
+
             return googlePlacesController.findPlaces((Double) params[0],
                     (Double) params[1],
                     "");
         }
 
         @Override
-        protected void onPostExecute(List<PlaceData> placeDataList) {
+        protected void onPostExecute(List<PlaceDataWithDetails> placeDataList) {
             super.onPostExecute(placeDataList);
-           // databaseController.addPlacesToDB()
-            view.updateList(placeDataList);
+            databaseController.addPlacesToDB(placeDataList);
+           // view.updateList(placeDataList);
         }
     }
 }

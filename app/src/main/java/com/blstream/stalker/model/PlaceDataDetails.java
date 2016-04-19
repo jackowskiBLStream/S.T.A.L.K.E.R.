@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used for storing Details about each place
@@ -30,20 +31,28 @@ public class PlaceDataDetails {
     }
 
     public static PlaceDataDetails parseJsonObject(JSONObject jsonObject) throws JSONException {
+        List<OpenHours[]> openHoursList = new ArrayList<>();
         OpenHours[] openHours = new OpenHours[7];
-        OpenHours.fillWithNoInfo(openHours);
-        //TODO: if not found(e.x. rating, do sth but NOT NULL
-        JSONObject openingHours = (JSONObject) jsonObject.get("opening_hours");
-        JSONArray periods = openingHours.getJSONArray("periods");
-        for (int i = 0; i < periods.length(); i++) {
-            JSONObject close = (JSONObject) ((JSONObject) periods.get(i)).get("close");
-            openHours[i].setTimeClosed(String.valueOf(close.get("time")));
-            JSONObject open = (JSONObject) ((JSONObject) periods.get(i)).get("open");
-            openHours[i].setTimeOpened(String.valueOf(open.get("time")));
-
+        JSONArray periods;
+        JSONObject open, close, openingHours;
+        if(jsonObject.has("opening_hours")){
+            openingHours = (JSONObject) jsonObject.get("opening_hours");
+            if(openingHours.has("periods")){
+                periods = openingHours.getJSONArray("periods");
+                for (int i = 0; i < periods.length(); i++) {
+                    if(((JSONObject) periods.get(i)).has("close")){
+                        close = (JSONObject) ((JSONObject) periods.get(i)).get("close");
+                        openHours[i].setTimeClosed(String.valueOf(close.get("time")));
+                    }
+                    if(((JSONObject) periods.get(i)).has("open")){
+                        open = (JSONObject) ((JSONObject) periods.get(i)).get("open");
+                        openHours[i].setTimeOpened(String.valueOf(open.get("time")));
+                    }
+                }
+            }
         }
         return new PlaceDataDetails(openHours,
-                jsonObject.getDouble("rating"),
+                jsonObject.has("rating") ? jsonObject.getDouble("rating") : 0.0,
                 new ArrayList<Review>());
     }
 

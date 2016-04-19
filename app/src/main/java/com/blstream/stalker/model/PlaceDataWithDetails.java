@@ -2,6 +2,8 @@ package com.blstream.stalker.model;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 
 /**
  * Used for storing PlaceData and PlaceDataDetails

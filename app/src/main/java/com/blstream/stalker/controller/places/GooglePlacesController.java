@@ -1,11 +1,16 @@
 package com.blstream.stalker.controller.places;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.blstream.stalker.R;
+import com.blstream.stalker.model.OpenHours;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataDetails;
 import com.blstream.stalker.model.PlaceDataWithDetails;
+import com.blstream.stalker.model.PlaceLocation;
+import com.blstream.stalker.model.Review;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,24 +31,106 @@ public class GooglePlacesController {
     // Google API Key
     private static final String API_KEY = "AIzaSyBsvTBbnekAk_vhVm9hcZR8xy3HRo4KbRo";
 
-    public List<PlaceData> findPlaces(double latitude, double longitude,
-                                      String placeSpecification) {
+    private Context context;
 
-        String urlString = makeUrl(latitude, longitude, placeSpecification);
+    public GooglePlacesController(Context context) {
+        this.context = context;
+    }
 
+    /* public List<PlaceData> findPlaces(double latitude, double longitude,
+                                           String placeSpecification) {
+
+             String urlString = makeUrl(latitude, longitude, placeSpecification);
+
+             try {
+                 String json = getJSON(urlString);
+
+                 JSONObject object = new JSONObject(json);
+                 JSONArray array = object.getJSONArray("results");
+
+                 List<PlaceData> arrayList = new ArrayList<>();
+                 for (int i = 0; i < array.length(); i++) {
+                     try {
+                         PlaceData place = PlaceData
+                                 .parseJsonObjects((JSONObject) array.get(i));
+                         Log.v("Places Services ", "" + place);
+                         arrayList.add(place);
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                 }
+                 return arrayList;
+             } catch (JSONException ex) {
+                 ex.printStackTrace();
+             }
+             return null;
+         }*/
+    public List<PlaceDataWithDetails> findPlaces(double latitude, double longitude,
+                                                 String placeSpecification) {
+
+        /*tring urlString = makeUrl(latitude, longitude, placeSpecification);
         try {
             String json = getJSON(urlString);
 
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
-            List<PlaceData> arrayList = new ArrayList<>();
+            List<PlaceDataWithDetails> arrayList = new ArrayList<>();
             for (int i = 0; i < array.length(); i++) {
                 try {
                     PlaceData place = PlaceData
                             .parseJsonObjects((JSONObject) array.get(i));
                     Log.v("Places Services ", "" + place);
-                    arrayList.add(place);
+                    if(place != null) {
+                        arrayList.add(new PlaceDataWithDetails(place,
+                                new PlaceDataDetails(new OpenHours[7],
+                                        0.0,
+                                        new ArrayList<Review>())));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return arrayList;
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return null;*/
+        return filledDataForTestOnly();
+    }
+
+    public List<PlaceDataWithDetails> filledDataForTestOnly(){
+        OpenHours[] hours = new OpenHours[7];
+        OpenHours.fillWithNoInfo(hours);
+        List<PlaceDataWithDetails> placeDataWithDetails = new ArrayList<>();
+        for(int i = 0; i < 20; i++){
+            placeDataWithDetails.add(new PlaceDataWithDetails(new PlaceData("test",
+                    "test",
+                    "test",
+                    new PlaceLocation(10.0, 10.0),
+                    "test"), new PlaceDataDetails(hours, 0.0, new ArrayList<Review>() )));
+        }
+        return placeDataWithDetails;
+    }
+    public List<PlaceDataWithDetails> findPlacesWithDetails(double latitude, double longitude,
+                                                            String placeSpecification) {
+
+        String urlPlaceString = makeUrl(latitude, longitude, placeSpecification);
+
+        try {
+            String json = getJSON(urlPlaceString);
+
+            JSONObject object = new JSONObject(json);
+            JSONArray array = object.getJSONArray("results");
+
+            List<PlaceDataWithDetails> arrayList = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                try {
+                    PlaceData place = PlaceData.parseJsonObjects((JSONObject) array.get(i));
+                    if (place != null) {
+                        PlaceDataDetails placeDataDetails = findPlaceDetails(place.getPlace_id());
+                        arrayList.add(new PlaceDataWithDetails(place, placeDataDetails));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -54,46 +141,13 @@ public class GooglePlacesController {
         }
         return null;
     }
-   public List<PlaceDataWithDetails> findPlacesWithDetails(double latitude, double longitude,
-                                                String placeSpecification) {
-
-       String urlPlaceString = makeUrl(latitude, longitude, placeSpecification);
-
-       try {
-           String json = getJSON(urlPlaceString);
-
-           JSONObject object = new JSONObject(json);
-           JSONArray array = object.getJSONArray("results");
-
-           List<PlaceDataWithDetails> arrayList = new ArrayList<>();
-           for (int i = 0; i < array.length(); i++) {
-               try {
-                   PlaceData place = PlaceData
-                           .parseJsonObjects((JSONObject) array.get(i));
-                   PlaceDataDetails placeDataDetails;
-                   if (place != null) {
-                       placeDataDetails = findPlaceDetails(place.getPlace_id());
-                       arrayList.add(new PlaceDataWithDetails(place, placeDataDetails));
-                   }
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }
-           return arrayList;
-       } catch (JSONException ex) {
-           ex.printStackTrace();
-       }
-       return null;
-   }
 
     public PlaceDataDetails findPlaceDetails(String place_id) throws JSONException {
         String urlString = makeUrl(place_id);
         String json = getJSON(urlString);
         JSONObject object = new JSONObject(json);
         JSONObject result = (JSONObject) object.get("result");
-        PlaceDataDetails placeDetails = PlaceDataDetails
-                .parseJsonObject(result);
-        return placeDetails;
+        return PlaceDataDetails.parseJsonObject(result);
     }
 
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey

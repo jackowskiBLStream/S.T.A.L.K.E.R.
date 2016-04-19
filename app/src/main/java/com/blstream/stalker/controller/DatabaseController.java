@@ -133,6 +133,7 @@ public class DatabaseController {
      * @return true when successfully added, false when error occurred during adding
      */
     public boolean addPlacesToDB(List<PlaceDataWithDetails> data) {
+        Log.d(TAG, "addPlacesToDB: Insert All data");
         clearDB();
         for (PlaceDataWithDetails place : data) {
             addPlace(place);
