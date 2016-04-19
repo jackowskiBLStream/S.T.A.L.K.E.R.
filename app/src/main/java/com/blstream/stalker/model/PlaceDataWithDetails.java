@@ -2,6 +2,7 @@ package com.blstream.stalker.model;
 
 import android.support.annotation.NonNull;
 
+
 /**
  * Used for storing PlaceData and PlaceDataDetails
  * List of those is added to Database
@@ -33,5 +34,6 @@ public class PlaceDataWithDetails {
     public PlaceDataDetails getPlaceDataDetails() {
         return placeDataDetails;
     }
+
 
 }

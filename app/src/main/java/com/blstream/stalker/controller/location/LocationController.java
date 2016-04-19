@@ -5,10 +5,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.blstream.stalker.controller.DatabaseController;
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceDataWithDetails;
 import com.blstream.stalker.model.PlaceLocation;
 import com.blstream.stalker.view.fragments.PlaceListView;
 import com.google.android.gms.common.ConnectionResult;
@@ -19,6 +22,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -26,20 +30,22 @@ import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFail
 /**
  *
  */
-public class LocationController implements IOperationsController, OnConnectionFailedListener,
+public class LocationController extends LocationFragmentController implements IOperationsController,
+        OnConnectionFailedListener,
         ConnectionCallbacks, LocationListener {
 
     private static final String TAG = "LocationController: ";
     private GoogleApiClient googleApiClientLocation;
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
-    private PlaceListView fragment;
+    private List<PlaceDataWithDetails> placeDataWithDetails;
+    private DatabaseController databaseController = new DatabaseController(fragment.getContext());
 
-    public LocationController(PlaceListView fragment) {
-        this.fragment = fragment;
+    public LocationController(Fragment fragment) {
+        super(fragment);
         createGoogleApiClientInstance();
         createLocationRequest();
-
+        placeDataWithDetails = new ArrayList<>();
     }
 
     /**
@@ -151,17 +157,22 @@ public class LocationController implements IOperationsController, OnConnectionFa
 
     private class GetPlaces extends AsyncTask<Object, Object, List<PlaceData>> {
 
-
         @Override
         protected List<PlaceData> doInBackground(Object... params) {
+            /*placeDataWithDetails = new ArrayList<>(googlePlacesController
+                    .findPlacesWithDetails((Double) params[0],
+                            (Double) params[1],
+                            ""));*/
             return googlePlacesController.findPlaces((Double) params[0],
-                    (Double) params[1], "");
+                    (Double) params[1],
+                    "");
         }
 
         @Override
         protected void onPostExecute(List<PlaceData> placeDataList) {
             super.onPostExecute(placeDataList);
-            fragment.updateList(placeDataList);
+           // databaseController.addPlacesToDB()
+            view.updateList(placeDataList);
         }
     }
 }

@@ -1,8 +1,11 @@
 package com.blstream.stalker.controller.places;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.blstream.stalker.model.PlaceData;
+import com.blstream.stalker.model.PlaceDataDetails;
+import com.blstream.stalker.model.PlaceDataWithDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +34,6 @@ public class GooglePlacesController {
         try {
             String json = getJSON(urlString);
 
-            System.out.println(json);
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
@@ -39,7 +41,7 @@ public class GooglePlacesController {
             for (int i = 0; i < array.length(); i++) {
                 try {
                     PlaceData place = PlaceData
-                            .jsonToPontoReferencia((JSONObject) array.get(i));
+                            .parseJsonObjects((JSONObject) array.get(i));
                     Log.v("Places Services ", "" + place);
                     arrayList.add(place);
                 } catch (Exception e) {
@@ -52,31 +54,83 @@ public class GooglePlacesController {
         }
         return null;
     }
+   public List<PlaceDataWithDetails> findPlacesWithDetails(double latitude, double longitude,
+                                                String placeSpecification) {
+
+       String urlPlaceString = makeUrl(latitude, longitude, placeSpecification);
+
+       try {
+           String json = getJSON(urlPlaceString);
+
+           JSONObject object = new JSONObject(json);
+           JSONArray array = object.getJSONArray("results");
+
+           List<PlaceDataWithDetails> arrayList = new ArrayList<>();
+           for (int i = 0; i < array.length(); i++) {
+               try {
+                   PlaceData place = PlaceData
+                           .parseJsonObjects((JSONObject) array.get(i));
+                   PlaceDataDetails placeDataDetails;
+                   if (place != null) {
+                       placeDataDetails = findPlaceDetails(place.getPlace_id());
+                       arrayList.add(new PlaceDataWithDetails(place, placeDataDetails));
+                   }
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+           return arrayList;
+       } catch (JSONException ex) {
+           ex.printStackTrace();
+       }
+       return null;
+   }
+
+    public PlaceDataDetails findPlaceDetails(String place_id) throws JSONException {
+        String urlString = makeUrl(place_id);
+        String json = getJSON(urlString);
+        JSONObject object = new JSONObject(json);
+        JSONObject result = (JSONObject) object.get("result");
+        PlaceDataDetails placeDetails = PlaceDataDetails
+                .parseJsonObject(result);
+        return placeDetails;
+    }
 
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
+    @NonNull
     private String makeUrl(double latitude, double longitude, String place) {
-        StringBuilder urlString = new StringBuilder(
+        StringBuilder searchPlaceUrl = new StringBuilder(
                 "https://maps.googleapis.com/maps/api/place/search/json?");
-
         if (place.equals("")) {
-            urlString.append("&location=");
-            urlString.append(Double.toString(latitude));
-            urlString.append(",");
-            urlString.append(Double.toString(longitude));
-            urlString.append("&radius=50000");
-            // urlString.append("&types="+place);
-            urlString.append("&sensor=false&key=" + API_KEY);
+            searchPlaceUrl.append("&location=");
+            searchPlaceUrl.append(Double.toString(latitude));
+            searchPlaceUrl.append(",");
+            searchPlaceUrl.append(Double.toString(longitude));
+            searchPlaceUrl.append("&radius=50000");
+            searchPlaceUrl.append("&sensor=false&key=" + API_KEY);
         } else {//it's only if you want to search sth
-            urlString.append("&location=");
-            urlString.append(Double.toString(latitude));
-            urlString.append(",");
-            urlString.append(Double.toString(longitude));
-            urlString.append("&radius=1000");
-            urlString.append("&types=").append(place);
-            urlString.append("&sensor=false&key=" + API_KEY);
+            searchPlaceUrl.append("&location=");
+            searchPlaceUrl.append(Double.toString(latitude));
+            searchPlaceUrl.append(",");
+            searchPlaceUrl.append(Double.toString(longitude));
+            searchPlaceUrl.append("&radius=1000");
+            searchPlaceUrl.append("&types=").append(place);
+            searchPlaceUrl.append("&sensor=false&key=" + API_KEY);
         }
-        return urlString.toString();
+        return searchPlaceUrl.toString();
     }
+
+    // https://maps.googleapis.com/maps/api/place/search/json?placeid=dasdasgwe&key=apikey
+    private String makeUrl(String place_id) {
+        StringBuilder detailsPlaceUrl = new StringBuilder(
+                "https://maps.googleapis.com/maps/api/place/details/json?");
+        detailsPlaceUrl.append("placeid=");
+        detailsPlaceUrl.append(place_id);
+        detailsPlaceUrl.append("&key=" + API_KEY);
+
+        return detailsPlaceUrl.toString();
+    }
+
     protected String getJSON(String url) {
         return getUrlContents(url);
     }

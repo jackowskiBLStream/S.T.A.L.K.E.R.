@@ -18,29 +18,28 @@ import android.widget.TextView;
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.ImageController;
 import com.blstream.stalker.model.PlaceData;
-import com.blstream.stalker.model.PlaceLocation;
 import com.blstream.stalker.view.fragments.DetailItemView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyViewHolder> {
+    OnItemClickListener mItemClickListener;
     private List<PlaceData> placeDataList = new ArrayList<>();
     private ImageController imageController;
-    OnItemClickListener mItemClickListener;
 
     public PlaceListAdapter(Context context) {
-        this.imageController = new ImageController(context,R.id.pubPlaceImageView,R.drawable.icon_camera);
+        this.imageController = new ImageController(context, R.id.pubPlaceImageView, R.drawable.icon_camera);
 //        placeDataList.add(1, new PlaceData("sdvsdv", "sdsdgdfg", "rthsdh", new PlaceLocation(23,67)));
+    }
+
+    public List<PlaceData> getPlaceDataList() {
+        return this.placeDataList;
     }
 
     public void setPlaceDataList(List<PlaceData> placeDataList) {
         this.placeDataList = placeDataList;
         notifyDataSetChanged();
-    }
-
-    public List<PlaceData> getPlaceDataList(){
-        return this.placeDataList;
     }
 
     @Override
@@ -53,19 +52,19 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        if (getItemCount() != 0){
+        if (getItemCount() != 0) {
 //             imageController.getImage(placeDataList.get(position).getIconUrl(),holder.mPubPlaceImage);
             holder.mPubName.setText(placeDataList.get(position).getName());
-            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
+//            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
             holder.mTags.setText(placeDataList.get(position).getTypes());
             generateAndSetMutedColorToCardViewBackground(holder);
         }
     }
 
-    private void generateAndSetMutedColorToCardViewBackground(final MyViewHolder holder){
+    private void generateAndSetMutedColorToCardViewBackground(final MyViewHolder holder) {
         Drawable drawable = holder.mPubPlaceImage.getDrawable();
-        if(drawable != null) {
-            Bitmap photo = ((BitmapDrawable)drawable).getBitmap();
+        if (drawable != null) {
+            Bitmap photo = ((BitmapDrawable) drawable).getBitmap();
             Palette.generateAsync(photo, new Palette.PaletteAsyncListener() {
                 public void onGenerated(Palette palette) {
                     int bgColor = palette.getMutedColor(holder.mView.getContext().getResources().getColor(android.R.color.black));
@@ -79,10 +78,18 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
     @Override
     public int getItemCount() {
         int itemsCount = 0;
-        if(placeDataList != null) {
+        if (placeDataList != null) {
             itemsCount = placeDataList.size();
         }
         return itemsCount;
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -114,22 +121,15 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
                 mItemClickListener.onItemClick(itemView, getAdapterPosition());
             }
         }
-         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-         private void initialTransactionName(){
-             if (android.os.Build.VERSION.SDK_INT >= 21) {
-                 mPubName.setTransitionName(DetailItemView.NAME_TRANSACTION_NAME);
-                 mOpenHours.setTransitionName(DetailItemView.OPEN_HOURS_TRANSACTION_NAME);
-                 mTags.setTransitionName(DetailItemView.TAGS_TRANSACTION_NAME);
-             }
-         }
 
-    }
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        private void initialTransactionName() {
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                mPubName.setTransitionName(DetailItemView.NAME_TRANSACTION_NAME);
+                mOpenHours.setTransitionName(DetailItemView.OPEN_HOURS_TRANSACTION_NAME);
+                mTags.setTransitionName(DetailItemView.TAGS_TRANSACTION_NAME);
+            }
+        }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
     }
 }

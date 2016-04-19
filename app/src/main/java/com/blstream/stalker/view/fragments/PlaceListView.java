@@ -110,6 +110,7 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
     private void initialControllers() {
         databaseController = new DatabaseController(getContext());
         locationController = new LocationController(this);
+        locationController.setView(this);
         detectActivityController = new DetectActivityController(this);
     }
 

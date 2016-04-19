@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -11,26 +12,30 @@ import org.json.JSONObject;
  */
 public class PlaceData implements Parcelable {
 
+
     private String name;
     private String icon;
     private String types;
+    private String place_id;
     private PlaceLocation placeLocation;
     private OpenHours todayOpenHours;
     private int id;
 
-
     public PlaceData(@NonNull String icon, @NonNull String types,
-                     @NonNull String name, @NonNull PlaceLocation placeLocation) {
+                     @NonNull String name, @NonNull PlaceLocation placeLocation, String place_id) {
         this.icon = icon;
         this.types = types;
         this.name = name;
         this.placeLocation = placeLocation;
+        this.place_id = place_id;
     }
+
 
     protected PlaceData(Parcel in) {
         name = in.readString();
         icon = in.readString();
         types = in.readString();
+        place_id = in.readString();
         id = in.readInt();
     }
 
@@ -45,6 +50,32 @@ public class PlaceData implements Parcelable {
             return new PlaceData[size];
         }
     };
+
+    public static PlaceData parseJsonObjects(JSONObject jsonObject) {
+        try {
+            JSONObject geometry = (JSONObject) jsonObject.get("geometry");
+            JSONObject location = (JSONObject) geometry.get("location");
+            return new PlaceData(jsonObject.getString("icon"),
+                    jsonObject.getString("types"),
+                    jsonObject.getString("name"),
+                    new PlaceLocation((Double) location.get("lng"),
+                            (Double) location.get("lng")),
+                    jsonObject.getString("place_id"));
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+
+    }
+
+
+    public String getPlace_id() {
+        return place_id;
+    }
+
+    public void setPlace_id(String place_id) {
+        this.place_id = place_id;
+    }
 
     /**
      * @return place icon
@@ -80,6 +111,7 @@ public class PlaceData implements Parcelable {
     public PlaceLocation getPlaceLocation() {
         return placeLocation;
     }
+
 
     /**
      * @param placeLocation placeLocation to which distance will be calculated
@@ -129,33 +161,18 @@ public class PlaceData implements Parcelable {
         this.todayOpenHours = hours;
     }
 
-    /**
-     * Describe the kinds of special objects contained in this Parcelable's
-     * marshalled representation.
-     *
-     * @return a bitmask indicating the set of special object types marshalled
-     * by the Parcelable.
-     */
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /**
-     * Flatten this object in to a Parcel.
-     *
-     * @param dest  The Parcel in which the object should be written.
-     * @param flags Additional flags about how the object should be written.
-     *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
-     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(icon);
         dest.writeString(types);
+        dest.writeString(place_id);
         dest.writeInt(id);
-    }
-    public static PlaceData jsonToPontoReferencia(JSONObject jsonObject) {
-        return null;
     }
 }

@@ -31,14 +31,14 @@ public class PlacesContentProvider extends ContentProvider {
 
     }
 
-    private DatabaseHelper databse;
+    private DatabaseHelper database;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean onCreate() {
-        databse = new DatabaseHelper(getContext());
+        database = new DatabaseHelper(getContext());
         return true;
     }
 
@@ -67,7 +67,7 @@ public class PlacesContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI");
         }
 
-        Cursor cursor = queryBuilder.query(databse.getReadableDatabase(),
+        Cursor cursor = queryBuilder.query(database.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);
         notifyChange(uri);
         return cursor;
@@ -90,7 +90,7 @@ public class PlacesContentProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         int uriType = uriMatcher.match(uri);
 
-        SQLiteDatabase sqLiteDatabase = databse.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
         long id;
         String tableName;
         switch (uriType) {
@@ -119,7 +119,7 @@ public class PlacesContentProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int uriType = uriMatcher.match(uri);
-        SQLiteDatabase sqLiteDatabase = databse.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
         int rowsDeleted = 0;
         switch (uriType) {
             case PLACES:

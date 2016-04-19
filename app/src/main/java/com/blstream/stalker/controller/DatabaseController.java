@@ -50,19 +50,20 @@ public class DatabaseController {
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             Log.d(TAG, "getAllPlacesData: " + i);
-            PlaceLocation placeLocation = new PlaceLocation(//Creates new PlaceLocation for current PlaceData class instance
+            PlaceLocation placeLocation =
+                    new PlaceLocation(//Creates new PlaceLocation for current PlaceData class instance
                     cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LATITUDE)),
                     cursor.getLong(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_LONGITUDE)));
-            PlaceData data = new PlaceData(  //Creates new PlaceData instance, and fills it fields by Ones Retrieved from Cursor
+            PlaceData data =
+                    new PlaceData(  //Creates new PlaceData instance, and fills it fields by Ones Retrieved from Cursor
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_IMG_URL)),
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_TYPES)),
                     cursor.getString(cursor.getColumnIndex(DatabaseContract.TablePlaces.COLUMN_NAME)),
-                    placeLocation);
-            data.setId(cursor.getInt(cursor.getColumnIndex(DatabaseContract.TablePlaces._ID)));    //Sets PlaceData id to one Row id fromd atabase
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2;
-            if (day == -1) {
-                day = 6;
-            }
+                    placeLocation,
+                    null);
+            //Sets PlaceData id to one Row id from database
+            data.setId(cursor.getInt(cursor.getColumnIndex(DatabaseContract.TablePlaces._ID)));
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
             data.setTodayOpeningHours(getPlaceDetails(data).getOpeningHours(day));
             list.add(data);
             cursor.moveToNext();
@@ -132,6 +133,7 @@ public class DatabaseController {
      * @return true when successfully added, false when error occurred during adding
      */
     public boolean addPlacesToDB(List<PlaceDataWithDetails> data) {
+        clearDB();
         for (PlaceDataWithDetails place : data) {
             addPlace(place);
         }
