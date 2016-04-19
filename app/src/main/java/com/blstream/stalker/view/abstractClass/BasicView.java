@@ -43,12 +43,10 @@ public abstract class BasicView extends Fragment implements IBasicView {
 
     @Override
     public void hideError() {
-
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit)
                 .remove(errorFragment).commit();
-        getFragmentManager().executePendingTransactions();
     }
 
 
