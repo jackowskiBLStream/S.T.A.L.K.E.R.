@@ -35,13 +35,13 @@ public class LoginScreenView extends BasicView implements ILoginView, GoogleApiC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
         return inflater.inflate(R.layout.login_screen_layout, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
 

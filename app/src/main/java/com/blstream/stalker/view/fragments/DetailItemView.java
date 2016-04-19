@@ -33,7 +33,7 @@ public class DetailItemView extends Fragment {
     private TextView nameTextView;
     private TextView openHoursTextView;
     private TextView tagsTextView;
-    CameraController cameraController;
+    private CameraController cameraController;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -90,4 +90,8 @@ public class DetailItemView extends Fragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+//    public void sendCameraResultToFragmentDetailFragment(int requestCode, int responseCode, final int RESULT_OK) {
+//        cameraController.sendCameraResultToController(requestCode, responseCode, RESULT_OK);
+//    }
 }

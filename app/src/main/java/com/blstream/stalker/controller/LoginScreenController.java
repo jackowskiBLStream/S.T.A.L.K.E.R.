@@ -17,7 +17,6 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
 
     protected GoogleApiClient googleApiClient;
 
-
     public LoginScreenController(Fragment fragment, GoogleApiClient googleApiClient) {
         super(fragment);
         this.googleApiClient = googleApiClient;
@@ -48,15 +47,6 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
             googleApiClient.connect();
             return;
         }
-    }
-
-    /**
-     * Method created for tests.
-     *
-     * @return boolean which defines if the user is loggedIn
-     */
-    public boolean isLoggedIn() {
-        return googleApiClient.isConnected();
     }
 
     public void connectionFailedHandling(ConnectionResult result) {

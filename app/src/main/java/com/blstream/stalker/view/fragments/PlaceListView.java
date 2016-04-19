@@ -23,6 +23,7 @@ public class PlaceListView extends BasicView implements IPlaceListView {
     private DetectActivityController detectActivityController;
     PlaceListAdapter adapter;
     private StaggeredGridLayoutManager mStaggeredLayoutManager;
+    private DetailItemView detailItemView;
 
     @Nullable
     @Override
@@ -77,7 +78,7 @@ public class PlaceListView extends BasicView implements IPlaceListView {
         PlaceListAdapter.OnItemClickListener onItemClickListener = new PlaceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                DetailItemView detailItemView = new DetailItemView();
+                detailItemView = new DetailItemView();
                 createBundleForDetailsFragment(detailItemView, position);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.mainContainer, detailItemView).addToBackStack("")
@@ -104,6 +105,10 @@ public class PlaceListView extends BasicView implements IPlaceListView {
         bundle.putString(DetailItemView.OPEN_HOURS_KEY, "11:00 - 22:00");
         detailItemView.setArguments(bundle);
     }
+
+//    public void sendCameraResultToFragmentList(int requestCode, int responseCode, final int RESULT_OK) {
+//        detailItemView.sendCameraResultToFragmentDetailFragment(requestCode, responseCode, RESULT_OK);
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
