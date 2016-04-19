@@ -45,7 +45,7 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
      * {@inheritDoc}
      */
     public void sendLoginResultToController(int requestCode, int responseCode, final int RESULT_OK) {
-        if (requestCode == Constants.RC_SIGN_IN && responseCode == RESULT_OK) {
+        if (requestCode == Constants.RC_SIGN_IN && !googleApiClient.isConnecting()) {
             googleApiClient.connect();
         }
     }
