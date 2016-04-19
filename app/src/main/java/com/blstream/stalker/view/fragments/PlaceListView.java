@@ -50,7 +50,6 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
     }
 
 
-
     @Override
     public void onStart() {
         locationController.onStart();
@@ -86,12 +85,6 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         locationController.onPause();
         detectActivityController.onPause();
         getActivity().getContentResolver().unregisterContentObserver(myContentObserver);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
     }
 
     @Override
@@ -159,7 +152,6 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         bundle.putString(DetailItemView.OPEN_HOURS_KEY, "11:00 - 22:00");
         detailItemView.setArguments(bundle);
     }
-}
 
 //    public void sendCameraResultToFragmentList(int requestCode, int responseCode, final int RESULT_OK) {
 //        detailItemView.sendCameraResultToFragmentDetailFragment(requestCode, responseCode, RESULT_OK);
@@ -170,4 +162,5 @@ public class PlaceListView extends BasicView implements IPlaceListView, ContentO
         super.onSaveInstanceState(outState);
 
     }
+}
 

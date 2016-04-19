@@ -20,7 +20,6 @@ import com.google.android.gms.plus.Plus;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String FRAGMENT_KEY = "LoginScreenView";
-    protected GoogleApiClient googleApiClient;
     LoginScreenView loginScreenView;
     private PlaceListView listFragment;
     protected GoogleApiClient googleApiClient;
