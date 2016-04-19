@@ -76,11 +76,4 @@ public abstract class BaseActivity extends AppCompatActivity {
     public GoogleApiClient getGoogleApiClient(){
         return googleApiClient;
     }
-
-    public boolean isInternetConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
 }

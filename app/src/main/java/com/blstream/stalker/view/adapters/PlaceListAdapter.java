@@ -55,9 +55,9 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.MyVi
 
         if (getItemCount() != 0){
 //             imageController.getImage(placeDataList.get(position).getIconUrl(),holder.mPubPlaceImage);
-//            holder.mPubName.setText(placeDataList.get(position).getName());
-//            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
-//            holder.mTags.setText(placeDataList.get(position).getTypes());
+            holder.mPubName.setText(placeDataList.get(position).getName());
+            holder.mOpenHours.setText(placeDataList.get(position).getTodayOpenHours().getOpenTime());
+            holder.mTags.setText(placeDataList.get(position).getTypes());
             generateAndSetMutedColorToCardViewBackground(holder);
         }
     }

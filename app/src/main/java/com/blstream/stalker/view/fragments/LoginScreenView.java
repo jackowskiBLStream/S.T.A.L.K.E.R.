@@ -42,16 +42,15 @@ public class LoginScreenView extends BasicView implements ILoginView, GoogleApiC
         googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
         signInButton = (SignInButton) view.findViewById(R.id.sign_in_button);
         noThanksButton = (Button) view.findViewById(R.id.no_thanks_button);
-
         loginScreenController = new LoginScreenController(this, googleApiClient);
         placeListController = new PlaceListController(this);
         loginScreenController.setView(this);
         db = new DatabaseController(getContext());
         customizeButtons();
-        if(!InternetConnectionListener.isOnline){
-            showError(IBasicView.NO_INTERNET_CONNECTION_ERROR);
+        if(isInternetConnection()){
+           hideError();
         }else {
-            hideError();
+            showError(IBasicView.NO_INTERNET_CONNECTION_ERROR);
         }
     }
     private void customizeButtons() {
