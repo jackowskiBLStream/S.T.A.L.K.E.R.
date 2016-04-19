@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.blstream.stalker.view.fragments.LoginScreenView;
 import com.blstream.stalker.view.fragments.PlaceListView;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
 
 
@@ -29,20 +30,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (requestCode == Constants.RC_SIGN_IN) {
             loginScreenView.sendLoginResultToFragment(requestCode, resultCode, RESULT_OK);
         }
-        super.onActivityResult(requestCode, resultCode, data);
 
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
      * Method initializes google plus api client
      */
     private void initializeGPApiClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(loginScreenView)
-                .addOnConnectionFailedListener(loginScreenView).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).
-                        addScope(Plus.SCOPE_PLUS_PROFILE).build();
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(loginScreenView)
+                    .addOnConnectionFailedListener(loginScreenView)
+                    .addApi(Plus.API)
+                    .addScope(Plus.SCOPE_PLUS_LOGIN)
+                    .addScope(Plus.SCOPE_PLUS_PROFILE)
+                    .build();
+        }
     }
+//    .addApi(Drive.API)
+//    .addScope(Drive.SCOPE_FILE)
 
     @Override
     protected void onPause() {

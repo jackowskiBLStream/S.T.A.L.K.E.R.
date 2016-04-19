@@ -1,6 +1,7 @@
 package com.blstream.stalker.controller;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -9,21 +10,22 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.blstream.stalker.Constants;
+import com.blstream.stalker.view.fragments.DetailItemView;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CameraController {
+public class CameraController extends FragmentController<DetailItemView>{
     private GoogleApiClient googleApiClient;
     Intent cameraIntent;
     Fragment fragment;
     private Uri fileUri;
 
     public CameraController(Fragment fragment, GoogleApiClient googleApiClient) {
+        super(fragment);
         this.cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        this.fragment = fragment;
         this.googleApiClient = googleApiClient;
     }
 
@@ -54,9 +56,11 @@ public class CameraController {
     }
 
     public void sendCameraResultToController(int requestCode, int responseCode, final int RESULT_OK) {
-        if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && responseCode == RESULT_OK) {
-            // Image captured and saved to fileUri specified in the Intent
-            Toast.makeText(fragment.getContext(), "Photo taken", Toast.LENGTH_LONG).show();
-        }
+//        if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && responseCode == RESULT_OK) {
+//            // Image captured and saved to fileUri specified in the Intent
+//            Toast.makeText(fragment.getContext(), "Photo taken", Toast.LENGTH_LONG).show();
+//            Bitmap bitmapToSave = (Bitmap) data.getExtras().get("data");
+//            googleDriveController.saveFileToDrive(bitmapToSave);
+//        }
     }
 }

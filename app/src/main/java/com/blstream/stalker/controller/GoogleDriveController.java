@@ -16,6 +16,9 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.blstream.stalker.BaseActivity;
+import com.blstream.stalker.Constants;
+import com.blstream.stalker.view.fragments.DetailItemView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,30 +30,30 @@ import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveApi.DriveContentsResult;
 import com.google.android.gms.drive.MetadataChangeSet;
 
-public class GoogleDriveController {
+public class GoogleDriveController extends FragmentController<DetailItemView>{
 
 private GoogleApiClient googleApiClient;
-    private static final int REQUEST_CODE_CREATOR = 2;
-    Fragment fragment;
+
+    private IntentSender intentSender;
 
     public GoogleDriveController(Fragment fragment, GoogleApiClient googleApiClient) {
+        super(fragment);
         this.googleApiClient = googleApiClient;
-        this.fragment = fragment;
     }
 
-   private void saveFileToDrive() {
+   public void saveFileToDrive(Bitmap bitmapToSave) {
         // Start by creating a new contents, and setting a callback.
 
-//        final Bitmap image = mBitmapToSave;
+        final Bitmap image = bitmapToSave;
         Drive.DriveApi.newDriveContents(googleApiClient)
                 .setResultCallback(new ResultCallback<DriveApi.DriveContentsResult>() {
 
                     @Override
                     public void onResult(DriveApi.DriveContentsResult result) {
                         // If the operation was not successful, we cannot do anything
-                        // and must
-                        // fail.
+                        // and must fail
                         if (!result.getStatus().isSuccess()) {
+                            Toast.makeText(fragment.getContext(), "Failed to create new contents.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         // Otherwise, we can write our data to the new contents.
@@ -58,28 +61,24 @@ private GoogleApiClient googleApiClient;
                         OutputStream outputStream = result.getDriveContents().getOutputStream();
                         // Write the bitmap data from it.
                         ByteArrayOutputStream bitmapStream = new ByteArrayOutputStream();
-//                        image.compress(Bitmap.CompressFormat.PNG, 100, bitmapStream);
+                        image.compress(Bitmap.CompressFormat.PNG, 100, bitmapStream);
                         try {
                             outputStream.write(bitmapStream.toByteArray());
                         } catch (IOException e1) {
-                            Toast.makeText(fragment.getContext(), "Unable to write file contents.", Toast.LENGTH_SHORT);
+                            Toast.makeText(fragment.getContext(), "Unable to write file contents.", Toast.LENGTH_SHORT).show();
                         }
                         // Create the initial metadata - MIME type and title.
                         // Note that the user will be able to change the title later.
                         MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
                                 .setMimeType("image/jpeg").setTitle("Android Photo.png").build();
                         // Create an intent for the file chooser, and start it.
-                        IntentSender intentSender = Drive.DriveApi
+                        intentSender = Drive.DriveApi
                                 .newCreateFileActivityBuilder()
                                 .setInitialMetadata(metadataChangeSet)
                                 .setInitialDriveContents(result.getDriveContents())
                                 .build(googleApiClient);
-//                        try {
-//                            startIntentSenderForResult(
-//                                    intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
-//                        } catch (SendIntentException e) {
-//                            Toast.makeText(fragment.getContext(), "Failed to launch file chooser.", Toast.LENGTH_SHORT);
-//                        }
+                        view.startIntentSenderForResultFromController(
+                                intentSender, Constants.REQUEST_CODE_CREATOR, null, 0, 0, 0);
                     }
                 });
     }

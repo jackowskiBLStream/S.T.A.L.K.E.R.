@@ -50,7 +50,6 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
         }
     }
 
-
     public void connectionFailedHandling(ConnectionResult result) {
         if (result != null && !result.hasResolution()) {
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
