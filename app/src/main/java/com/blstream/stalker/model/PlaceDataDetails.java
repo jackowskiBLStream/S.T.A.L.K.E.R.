@@ -3,8 +3,7 @@ package com.blstream.stalker.model;
 import java.util.ArrayList;
 
 /**
- * Created by Patryk Gwiazdowski on 13.04.2016.
- * // Good Job Patryk
+ * Used for storing Details about each place
  */
 public class PlaceDataDetails {
     private OpenHours[] openHours;

@@ -3,8 +3,7 @@ package com.blstream.stalker.model;
 import android.support.annotation.NonNull;
 
 /**
- * Created by Patryk Gwiazdowski on 15.04.2016.
- * // Good Job Patryk
+ * Used for strogin open hours of each place
  */
 public class OpenHours {
 
