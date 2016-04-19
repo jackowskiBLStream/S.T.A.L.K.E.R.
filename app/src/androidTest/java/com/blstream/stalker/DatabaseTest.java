@@ -110,7 +110,8 @@ public class DatabaseTest {
                 "http:/icon",
                 "Store, Bank",
                 "Name " + name,
-                new PlaceLocation(0, 0)
+                new PlaceLocation(0, 0),
+                null
         );
     }
 
