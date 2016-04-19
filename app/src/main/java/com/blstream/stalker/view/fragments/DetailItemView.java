@@ -17,6 +17,7 @@ import com.blstream.stalker.BaseActivity;
 import com.blstream.stalker.Constants;
 import com.blstream.stalker.R;
 import com.blstream.stalker.controller.CameraController;
+import com.blstream.stalker.controller.GoogleDriveController;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class DetailItemView extends Fragment {
@@ -34,6 +35,7 @@ public class DetailItemView extends Fragment {
     private TextView openHoursTextView;
     private TextView tagsTextView;
     private CameraController cameraController;
+    private GoogleDriveController googleDriveController;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -48,8 +50,6 @@ public class DetailItemView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
-        cameraController = new CameraController(this, googleApiClient);
         return inflater.inflate(R.layout.detail_item_layout, container, false);
     }
 
@@ -57,6 +57,9 @@ public class DetailItemView extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initialViewItems(view);
+        googleApiClient = ((BaseActivity)getActivity()).getGoogleApiClient();
+        cameraController = new CameraController(this, googleApiClient);
+        googleDriveController = new GoogleDriveController(this, googleApiClient);
         cameraButton = (ImageButton) view.findViewById(R.id.imageButton);
         cameraButton.setOnClickListener(onClickListener);
     }
@@ -87,6 +90,14 @@ public class DetailItemView extends Fragment {
 
         if (requestCode == Constants.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             cameraController.sendCameraResultToController(requestCode, resultCode, getActivity().RESULT_OK);
+        }
+        else if(requestCode == Constants.REQUEST_CODE_CREATOR) {
+//            if (resultCode == RESULT_OK) {
+//                mBitmapToSave = null;
+//                // Just start the camera again for another photo.
+//                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),
+//                        REQUEST_CODE_CAPTURE_IMAGE);
+//            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

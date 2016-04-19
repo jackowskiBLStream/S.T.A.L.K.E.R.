@@ -43,9 +43,8 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
      * {@inheritDoc}
      */
     public void sendLoginResultToController(int requestCode, int responseCode, final int RESULT_OK) {
-        if (requestCode == Constants.RC_SIGN_IN && !googleApiClient.isConnecting() && responseCode == RESULT_OK) {
+        if (requestCode == Constants.RC_SIGN_IN && responseCode == RESULT_OK) {
             googleApiClient.connect();
-            return;
         }
     }
 
@@ -55,13 +54,14 @@ public class LoginScreenController extends FragmentController<LoginScreenView> i
             int code = googleApiAvailability.isGooglePlayServicesAvailable(fragment.getContext());
             if (googleApiAvailability.isUserResolvableError(code)) {
                 googleApiAvailability.getErrorDialog(fragment.getActivity(), code, Constants.RC_SIGN_IN).show();
-                return;
             }
         } else {
             try {
-                result.startResolutionForResult(fragment.getActivity(), Constants.RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
-                Toast.makeText(fragment.getContext(), "SendIntent Exception. Try again.", Toast.LENGTH_SHORT);
+                if(result != null) {
+                    result.startResolutionForResult(fragment.getActivity(), Constants.RC_SIGN_IN);
+                }
+            } catch (IntentSender.SendIntentException e ) {
+                Toast.makeText(fragment.getContext(), "SendIntent Exception. Try again.", Toast.LENGTH_SHORT).show();
             }
         }
     }
