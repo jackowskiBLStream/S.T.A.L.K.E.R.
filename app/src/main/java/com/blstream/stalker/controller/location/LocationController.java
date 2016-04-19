@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.blstream.stalker.controller.DatabaseController;
 import com.blstream.stalker.controller.places.GooglePlacesController;
 import com.blstream.stalker.model.PlaceData;
 import com.blstream.stalker.model.PlaceDataWithDetails;
@@ -38,6 +39,7 @@ public class LocationController extends LocationFragmentController implements IO
     private LocationRequest locationRequest;
     private GooglePlacesController googlePlacesController = new GooglePlacesController();
     private List<PlaceDataWithDetails> placeDataWithDetails;
+    private DatabaseController databaseController = new DatabaseController(fragment.getContext());
 
     public LocationController(Fragment fragment) {
         super(fragment);
@@ -169,6 +171,7 @@ public class LocationController extends LocationFragmentController implements IO
         @Override
         protected void onPostExecute(List<PlaceData> placeDataList) {
             super.onPostExecute(placeDataList);
+           // databaseController.addPlacesToDB()
             view.updateList(placeDataList);
         }
     }

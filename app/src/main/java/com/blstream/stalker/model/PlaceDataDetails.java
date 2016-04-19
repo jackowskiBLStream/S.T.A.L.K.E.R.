@@ -8,12 +8,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * <<<<<<< HEAD
- * Created by Patryk Gwiazdowski on 13.04.2016.
- * // Good Job Patryk COS
- * =======
  * Used for storing Details about each place
- * >>>>>>> master
  */
 public class PlaceDataDetails {
     private OpenHours[] openHours;
